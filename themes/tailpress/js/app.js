@@ -2069,39 +2069,81 @@ function SignIn() {
   return _SignIn.apply(this, arguments);
 }
 function _SignIn() {
-  _SignIn = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+  _SignIn = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
     var email, password, _yield$axios$post, data;
-    return _regeneratorRuntime().wrap(function _callee$(_context) {
-      while (1) switch (_context.prev = _context.next) {
+    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+      while (1) switch (_context2.prev = _context2.next) {
         case 0:
           email = document.querySelector('#email').value;
           password = document.querySelector('#password').value;
-          _context.next = 4;
+          _context2.next = 4;
           return axios.post("".concat(tailpress_object.homeUrl, "/wp-json/loginsystem/v1/login"), {
             email: email,
             password: password
           });
         case 4:
-          _yield$axios$post = _context.sent;
+          _yield$axios$post = _context2.sent;
           data = _yield$axios$post.data;
-          window.location.href = "/dashboard";
-          console.log(data);
+          if (data.role == "administrator") {
+            window.location.href = "/admin-dashboard";
+          } else {
+            window.location.href = "/dashboard";
+          }
+          console.log(data.role);
         case 8:
         case "end":
-          return _context.stop();
+          return _context2.stop();
       }
-    }, _callee);
+    }, _callee2);
   }));
   return _SignIn.apply(this, arguments);
+}
+function SignUp() {
+  return _SignUp.apply(this, arguments);
+}
+function _SignUp() {
+  _SignUp = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+    var name, email, password, _yield$axios$post2, data;
+    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+      while (1) switch (_context3.prev = _context3.next) {
+        case 0:
+          name = document.querySelector('#name').value;
+          email = document.querySelector('#email').value;
+          password = document.querySelector('#password').value;
+          _context3.prev = 3;
+          _context3.next = 6;
+          return axios.post("".concat(tailpress_object.homeUrl, "/wp-json/loginsystem/v1/register"), {
+            name: name,
+            email: email,
+            password: password
+          });
+        case 6:
+          _yield$axios$post2 = _context3.sent;
+          data = _yield$axios$post2.data;
+          window.location.href = "/dashboard";
+          console.log(data);
+          _context3.next = 15;
+          break;
+        case 12:
+          _context3.prev = 12;
+          _context3.t0 = _context3["catch"](3);
+          console.log(_context3.t0);
+        case 15:
+        case "end":
+          return _context3.stop();
+      }
+    }, _callee3, null, [[3, 12]]);
+  }));
+  return _SignUp.apply(this, arguments);
 }
 function PublishProduct() {
   return _PublishProduct.apply(this, arguments);
 }
 function _PublishProduct() {
-  _PublishProduct = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-    var Product, _yield$axios$post2, data;
-    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-      while (1) switch (_context2.prev = _context2.next) {
+  _PublishProduct = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+    var Product, _yield$axios$post3, data;
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) switch (_context4.prev = _context4.next) {
         case 0:
           Product = {
             author: tailpress_object.userID,
@@ -2111,11 +2153,11 @@ function _PublishProduct() {
             price: document.querySelector('#productPrice').value,
             category: document.querySelector('#productCategory').value
           };
-          _context2.next = 3;
+          _context4.next = 3;
           return axios.post("".concat(tailpress_object.homeUrl, "/wp-json/loginsystem/v1/products"), Product);
         case 3:
-          _yield$axios$post2 = _context2.sent;
-          data = _yield$axios$post2.data;
+          _yield$axios$post3 = _context4.sent;
+          data = _yield$axios$post3.data;
           console.log(data);
           if (data.success == true) {
             alert('produto cadastrado');
@@ -2123,12 +2165,105 @@ function _PublishProduct() {
           }
         case 7:
         case "end":
-          return _context2.stop();
+          return _context4.stop();
       }
-    }, _callee2);
+    }, _callee4);
   }));
   return _PublishProduct.apply(this, arguments);
 }
+function getProducts() {
+  return _getProducts.apply(this, arguments);
+}
+function _getProducts() {
+  _getProducts = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
+    var _yield$axios$get, data;
+    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+      while (1) switch (_context5.prev = _context5.next) {
+        case 0:
+          _context5.next = 2;
+          return axios.get("".concat(tailpress_object.homeUrl, "/wp-json/loginsystem/v1/products"));
+        case 2:
+          _yield$axios$get = _context5.sent;
+          data = _yield$axios$get.data;
+          return _context5.abrupt("return", data);
+        case 5:
+        case "end":
+          return _context5.stop();
+      }
+    }, _callee5);
+  }));
+  return _getProducts.apply(this, arguments);
+}
+document.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+  var products, cart, updateCartCounter, createDrawerCart, qtyElements, increaseButtons, decreaseButtons, addToCartButtons;
+  return _regeneratorRuntime().wrap(function _callee$(_context) {
+    while (1) switch (_context.prev = _context.next) {
+      case 0:
+        createDrawerCart = function _createDrawerCart() {
+          var cartList = document.querySelector('#productDrawerList');
+          cartList.innerHTML = '';
+          cart.forEach(function (product) {
+            var row = document.createElement('div');
+            row.classList.add('py-4');
+            row.innerHTML = "\n                        <div class=\"flex justify-between mb-3\">\n                              <p class=\"font-semibold\">".concat(product.title, "</p>\n                              <p class=\"font-bold\">").concat(product.price, "</p>\n                        </div>\n                        <div class=\"flex justify-between\">\n                              <div class=\"flex items-center\">\n                                    <a id=\"qtyDecrease\" class=\"relative inline-flex items-center rounded-l-md px-1 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0\">\n                                          <svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-6 h-6\">\n                                                <path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M18 12H6\" />\n                                          </svg>                              \n                                    </a>\n                                    <a id=\"qty\" class=\"relative inline-flex items-center px-2 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0\">").concat(product.quantity, "</a>\n                                    <a id=\"qtyIncrease\" class=\"relative inline-flex items-center rounded-r-md px-1 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0\">\n                                          <svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-6 h-6\">\n                                                <path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M12 6v12m6-6H6\" />\n                                          </svg>                                  \n                                    </a>\n                              </div>\n                              <button type=\"button\" class=\"text-red-700 hover:text-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium text-sm\">Delete</button>\n                        </div>\n                        \n                  ");
+            cartList === null || cartList === void 0 ? void 0 : cartList.appendChild(row);
+          });
+        };
+        updateCartCounter = function _updateCartCounter() {
+          document.querySelector('#cartCounter').innerText = cart.length;
+          if (cart.length > 0) {
+            var _document$querySelect;
+            (_document$querySelect = document.querySelector('#cartButton')) === null || _document$querySelect === void 0 ? void 0 : _document$querySelect.classList.remove('hidden');
+          } else {
+            var _document$querySelect2;
+            (_document$querySelect2 = document.querySelector('#cartButton')) === null || _document$querySelect2 === void 0 ? void 0 : _document$querySelect2.classList.add('hidden');
+          }
+        };
+        _context.next = 4;
+        return getProducts();
+      case 4:
+        products = _context.sent;
+        cart = JSON.parse(localStorage.getItem('cart')) || [];
+        updateCartCounter();
+        createDrawerCart();
+        qtyElements = document.querySelectorAll('#qty');
+        increaseButtons = document.querySelectorAll('#qtyIncrease');
+        decreaseButtons = document.querySelectorAll('#qtyDecrease');
+        increaseButtons.forEach(function (button, index) {
+          button.addEventListener('click', function () {
+            qtyElements[index].innerText++;
+            console.log(qtyElements[index].value);
+          });
+        });
+        decreaseButtons.forEach(function (button, index) {
+          button.addEventListener('click', function () {
+            if (qtyElements[index].innerText > 1) {
+              qtyElements[index].innerText--;
+              console.log(qtyElements[index].value);
+            }
+          });
+        });
+        addToCartButtons = document.querySelectorAll('#productsTable tbody button');
+        addToCartButtons.forEach(function (button) {
+          button.addEventListener('click', function () {
+            var productId = parseInt(button.dataset.id);
+            var productToAdd = products.find(function (product) {
+              return product.id == productId;
+            });
+            productToAdd["quantity"] = 1;
+            cart.push(productToAdd);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCounter();
+            createDrawerCart();
+            alert('Produto adicionado ao carrinho');
+          });
+        });
+      case 15:
+      case "end":
+        return _context.stop();
+    }
+  }, _callee);
+})));
 document.addEventListener('DOMContentLoaded', function () {
   var Modal = {
     modal: document.querySelector('#AdicionarProdutoModal'),
@@ -2166,18 +2301,12 @@ document.addEventListener('DOMContentLoaded', function () {
       SignIn();
     };
   }
-
-  // const UserMenu = {
-  //       menuButton: document.querySelector('#user-menu-button'),
-  //       menu: document.querySelector('#user-dropdown'),
-  //       openMenu: () => {
-  //             UserMenu.menuButton.onclick = () => {
-  //                   UserMenu.menu.classList.remove('hidden');
-  //             }
-  //       }
-  // }
-
-  // UserMenu.openMenu();
+  var signUpButton = document.querySelector('#signUpButton');
+  if (signUpButton) {
+    signUpButton.onclick = function () {
+      SignUp();
+    };
+  }
 });
 
 /***/ }),

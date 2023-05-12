@@ -18,7 +18,7 @@
 	<?php do_action( 'tailpress_header' ); ?>
 
 	<header class="bg-white border-gray-200">
-		<?php if ( ! is_front_page() ) { ?>
+		<?php if ( !is_page( 54 ) && !is_front_page() ) { ?>
 			<div class="max-w-xs sm:max-w-lg md:max-w-3xl lg:max-w-5xl max-2xl:max-w-7xl flex flex-wrap items-center justify-between mx-auto p-4">
 				<a href="https://flowbite.com/" class="flex items-center">
 					<img src="https://flowbite.com/docs/images/logo.svg" class="h-8 mr-3" alt="Flowbite Logo" />
@@ -62,9 +62,11 @@
 						<svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
 					</button>
 				</div>
-				<?php
+				<?php if( current_user_can( 'manage_options' ) ) {
+					echo "batata";
 					wp_nav_menu(
 						array(
+							'menu'			  => 'Menu Admin Dashboard',
 							'container_id'    => 'primary-menu',
 							'container_class' => 'items-center justify-between hidden w-full md:flex md:w-auto md:order-1',
 							'menu_class'      => 'flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white',
@@ -74,6 +76,20 @@
 							'add_a_class'     => 'flex items-center py-2 pl-3 pr-4 text-sm text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0',
 						)
 					);
+				} else {
+					wp_nav_menu(
+						array(
+							'menu'			  => 'Menu Vendedor Dashboard',
+							'container_id'    => 'secondary-menu',
+							'container_class' => 'items-center justify-between hidden w-full md:flex md:w-auto md:order-1',
+							'menu_class'      => 'flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white',
+							'theme_location'  => 'primary',
+							'li_class'        => '',
+							'fallback_cb'     => false,
+							'add_a_class'     => 'flex items-center py-2 pl-3 pr-4 text-sm text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0',
+						)
+					);
+				}
 				?>
 			</div>
 		<?php } ?>

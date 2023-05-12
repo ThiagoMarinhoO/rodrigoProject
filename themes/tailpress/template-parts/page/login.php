@@ -1,4 +1,5 @@
-<?php get_header();?>
+
+     
     <header class="bg-gray-900 pattern">
         <div class="container px-6 mx-auto">
 
@@ -24,10 +25,14 @@
                                     <input id="password" class="block w-full px-4 py-2 mt-4 text-gray-700 placeholder-gray-400 bg-white border rounded-md dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-500 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-opacity-40 focus:ring-blue-300 focus:outline-none focus:ring" type="password" placeholder="Senha" aria-label="Password">
                                 </div>
 
-                                <div class="flex items-center justify-between mt-4">
-                                    <a href="#" class="text-sm text-gray-600 dark:text-gray-200 hover:underline">Esqueceu a senha?</a>
-
-                                    <div class="cursor-pointer px-6 py-2 font-medium text-white transition-colors duration-300 transform bg-gray-900 rounded-md hover:bg-gray-800 focus:outline-none focus:bg-gray-800" id="signin">Entrar</div>
+                                <div class="divide-y divide-gray-100">
+                                    <div class="flex items-center justify-between mt-4">
+                                        <a href="#" class="text-sm text-gray-600 dark:text-gray-200 hover:underline">Esqueceu a senha?</a>
+                                        <div class="cursor-pointer px-6 py-2 font-medium text-white transition-colors duration-300 transform bg-gray-900 rounded-md hover:bg-gray-800 focus:outline-none focus:bg-gray-800" id="signin">Entrar</div>
+                                    </div>
+                                    <div class="flex-column mt-4">
+                                        <a href="/cadastro" class="text-sm text-gray-600 hover:underline">ou <span class="font-bold text-blue-600">Cadastre-se</span></a>
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -36,5 +41,3 @@
             </div>
         </div>
     </header>
-
-<?php get_footer(); ?>

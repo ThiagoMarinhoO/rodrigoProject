@@ -542,32 +542,56 @@ video {
     top: 0px;
     bottom: 0px
 }
+.bottom-0{
+    bottom: 0px
+}
+.bottom-5{
+    bottom: 1.25rem
+}
 .left-0{
     left: 0px
 }
 .right-0{
     right: 0px
 }
+.right-2{
+    right: 0.5rem
+}
+.right-2\.5{
+    right: 0.625rem
+}
+.right-5{
+    right: 1.25rem
+}
 .top-0{
     top: 0px
 }
-.top-6{
-    top: 1.5rem
+.top-2{
+    top: 0.5rem
+}
+.top-2\.5{
+    top: 0.625rem
 }
 .top-full{
     top: 100%
 }
-.z-10{
-    z-index: 10
+.z-40{
+    z-index: 40
 }
 .z-50{
     z-index: 50
+}
+.z-10{
+    z-index: 10
 }
 .col-span-2{
     grid-column: span 2 / span 2
 }
 .col-span-3{
     grid-column: span 3 / span 3
+}
+.m-5{
+    margin: 1.25rem
 }
 .m-8{
     margin: 2rem
@@ -580,16 +604,22 @@ video {
     margin-top: 0.75rem;
     margin-bottom: 0.75rem
 }
-.my-4{
-    margin-top: 1rem;
-    margin-bottom: 1rem
-}
 .my-8{
     margin-top: 2rem;
     margin-bottom: 2rem
 }
+.mx-2{
+    margin-left: 0.5rem;
+    margin-right: 0.5rem
+}
+.-ml-1{
+    margin-left: -0.25rem
+}
 .mb-1{
     margin-bottom: 0.25rem
+}
+.mb-1\.5{
+    margin-bottom: 0.375rem
 }
 .mb-12{
     margin-bottom: 3rem
@@ -620,6 +650,12 @@ video {
 }
 .ml-2{
     margin-left: 0.5rem
+}
+.mr-1{
+    margin-right: 0.25rem
+}
+.mr-1\.5{
+    margin-right: 0.375rem
 }
 .mr-2{
     margin-right: 0.5rem
@@ -660,6 +696,9 @@ video {
 .h-10{
     height: 2.5rem
 }
+.h-4{
+    height: 1rem
+}
 .h-5{
     height: 1.25rem
 }
@@ -672,8 +711,11 @@ video {
 .h-\[calc\(100\%-1rem\)\]{
     height: calc(100% - 1rem)
 }
-.h-full{
-    height: 100%
+.h-screen{
+    height: 100vh
+}
+.h-3{
+    height: 0.75rem
 }
 .max-h-full{
     max-height: 100%
@@ -686,6 +728,9 @@ video {
 }
 .w-16{
     width: 4rem
+}
+.w-4{
+    width: 1rem
 }
 .w-5{
     width: 1.25rem
@@ -703,6 +748,15 @@ video {
 .w-full{
     width: 100%
 }
+.w-1\/5{
+    width: 20%
+}
+.w-3{
+    width: 0.75rem
+}
+.w-8{
+    width: 2rem
+}
 .max-w-3xl{
     max-width: 48rem
 }
@@ -717,6 +771,10 @@ video {
 }
 .flex-grow{
     flex-grow: 1
+}
+.-translate-x-full{
+    --tw-translate-x: -100%;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))
 }
 .transform{
     transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))
@@ -751,19 +809,27 @@ video {
 .justify-between{
     justify-content: space-between
 }
+.gap-2{
+    gap: 0.5rem
+}
+.gap-5{
+    gap: 1.25rem
+}
 .gap-6{
     gap: 1.5rem
 }
 .gap-7{
     gap: 1.75rem
 }
-.gap-2{
-    gap: 0.5rem
-}
 .space-x-2 > :not([hidden]) ~ :not([hidden]){
     --tw-space-x-reverse: 0;
     margin-right: calc(0.5rem * var(--tw-space-x-reverse));
     margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)))
+}
+.space-x-4 > :not([hidden]) ~ :not([hidden]){
+    --tw-space-x-reverse: 0;
+    margin-right: calc(1rem * var(--tw-space-x-reverse));
+    margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)))
 }
 .divide-y > :not([hidden]) ~ :not([hidden]){
     --tw-divide-y-reverse: 0;
@@ -774,8 +840,19 @@ video {
     --tw-divide-opacity: 1;
     border-color: rgb(243 244 246 / var(--tw-divide-opacity))
 }
+.divide-gray-50 > :not([hidden]) ~ :not([hidden]){
+    --tw-divide-opacity: 1;
+    border-color: rgb(249 250 251 / var(--tw-divide-opacity))
+}
+.divide-gray-200 > :not([hidden]) ~ :not([hidden]){
+    --tw-divide-opacity: 1;
+    border-color: rgb(229 231 235 / var(--tw-divide-opacity))
+}
 .self-center{
     align-self: center
+}
+.overflow-hidden{
+    overflow: hidden
 }
 .overflow-x-auto{
     overflow-x: auto
@@ -785,6 +862,9 @@ video {
 }
 .overflow-x-hidden{
     overflow-x: hidden
+}
+.overflow-y-scroll{
+    overflow-y: scroll
 }
 .truncate{
     overflow: hidden;
@@ -806,6 +886,9 @@ video {
 .rounded-md{
     border-radius: 0.375rem
 }
+.rounded-3xl{
+    border-radius: 1.5rem
+}
 .rounded-b{
     border-bottom-right-radius: 0.25rem;
     border-bottom-left-radius: 0.25rem
@@ -813,6 +896,14 @@ video {
 .rounded-t{
     border-top-left-radius: 0.25rem;
     border-top-right-radius: 0.25rem
+}
+.rounded-l-md{
+    border-top-left-radius: 0.375rem;
+    border-bottom-left-radius: 0.375rem
+}
+.rounded-r-md{
+    border-top-right-radius: 0.375rem;
+    border-bottom-right-radius: 0.375rem
 }
 .border{
     border-width: 1px
@@ -843,10 +934,6 @@ video {
     --tw-border-opacity: 1;
     border-color: rgb(14 165 233 / var(--tw-border-opacity))
 }
-.bg-black{
-    --tw-bg-opacity: 1;
-    background-color: rgb(0 0 0 / var(--tw-bg-opacity))
-}
 .bg-blue-700{
     --tw-bg-opacity: 1;
     background-color: rgb(29 78 216 / var(--tw-bg-opacity))
@@ -875,18 +962,38 @@ video {
     --tw-bg-opacity: 1;
     background-color: rgb(14 165 233 / var(--tw-bg-opacity))
 }
+.bg-red-600{
+    --tw-bg-opacity: 1;
+    background-color: rgb(220 38 38 / var(--tw-bg-opacity))
+}
+.bg-transparent{
+    background-color: transparent
+}
 .bg-white{
     --tw-bg-opacity: 1;
     background-color: rgb(255 255 255 / var(--tw-bg-opacity))
 }
-.bg-opacity-50{
-    --tw-bg-opacity: 0.5
+.bg-indigo-600{
+    --tw-bg-opacity: 1;
+    background-color: rgb(79 70 229 / var(--tw-bg-opacity))
+}
+.fill-current{
+    fill: currentColor
+}
+.p-1{
+    padding: 0.25rem
+}
+.p-1\.5{
+    padding: 0.375rem
 }
 .p-2{
     padding: 0.5rem
 }
 .p-2\.5{
     padding: 0.625rem
+}
+.p-3{
+    padding: 0.75rem
 }
 .p-4{
     padding: 1rem
@@ -937,6 +1044,21 @@ video {
 .py-8{
     padding-top: 2rem;
     padding-bottom: 2rem
+}
+.py-1{
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem
+}
+.px-2{
+    padding-left: 0.5rem;
+    padding-right: 0.5rem
+}
+.px-1{
+    padding-left: 0.25rem;
+    padding-right: 0.25rem
+}
+.pb-4{
+    padding-bottom: 1rem
 }
 .pl-10{
     padding-left: 2.5rem
@@ -1015,8 +1137,15 @@ video {
 .uppercase{
     text-transform: uppercase
 }
+.leading-none{
+    line-height: 1
+}
 .leading-tight{
     line-height: 1.25
+}
+.text-black{
+    --tw-text-opacity: 1;
+    color: rgb(0 0 0 / var(--tw-text-opacity))
 }
 .text-blue-400{
     --tw-text-opacity: 1;
@@ -1037,6 +1166,10 @@ video {
 .text-gray-100{
     --tw-text-opacity: 1;
     color: rgb(243 244 246 / var(--tw-text-opacity))
+}
+.text-gray-400{
+    --tw-text-opacity: 1;
+    color: rgb(156 163 175 / var(--tw-text-opacity))
 }
 .text-gray-500{
     --tw-text-opacity: 1;
@@ -1065,6 +1198,10 @@ video {
 .text-white{
     --tw-text-opacity: 1;
     color: rgb(255 255 255 / var(--tw-text-opacity))
+}
+.text-red-700{
+    --tw-text-opacity: 1;
+    color: rgb(185 28 28 / var(--tw-text-opacity))
 }
 .underline{
     text-decoration-line: underline
@@ -1102,26 +1239,30 @@ video {
     --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
 }
-.transition{
-    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
-    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
-    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 150ms
+.ring-1{
+    --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+    --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+    box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)
+}
+.ring-inset{
+    --tw-ring-inset: inset
+}
+.ring-gray-300{
+    --tw-ring-opacity: 1;
+    --tw-ring-color: rgb(209 213 219 / var(--tw-ring-opacity))
 }
 .transition-colors{
     transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms
 }
+.transition-transform{
+    transition-property: transform;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms
+}
 .duration-300{
     transition-duration: 300ms
-}
-.duration-500{
-    transition-duration: 500ms
-}
-.ease-in-out{
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1)
 }
 .alignfull{
     margin: 2rem calc(50% - 50vw) !important;
@@ -1251,6 +1392,10 @@ article > *:not(.entry-content),
     --tw-bg-opacity: 1;
     background-color: rgb(243 244 246 / var(--tw-bg-opacity))
 }
+.hover\:bg-gray-200:hover{
+    --tw-bg-opacity: 1;
+    background-color: rgb(229 231 235 / var(--tw-bg-opacity))
+}
 .hover\:bg-gray-400:hover{
     --tw-bg-opacity: 1;
     background-color: rgb(156 163 175 / var(--tw-bg-opacity))
@@ -1263,11 +1408,30 @@ article > *:not(.entry-content),
     --tw-bg-opacity: 1;
     background-color: rgb(31 41 55 / var(--tw-bg-opacity))
 }
+.hover\:bg-red-700:hover{
+    --tw-bg-opacity: 1;
+    background-color: rgb(185 28 28 / var(--tw-bg-opacity))
+}
+.hover\:bg-red-900:hover{
+    --tw-bg-opacity: 1;
+    background-color: rgb(127 29 29 / var(--tw-bg-opacity))
+}
+.hover\:text-gray-900:hover{
+    --tw-text-opacity: 1;
+    color: rgb(17 24 39 / var(--tw-text-opacity))
+}
+.hover\:text-red-900:hover{
+    --tw-text-opacity: 1;
+    color: rgb(127 29 29 / var(--tw-text-opacity))
+}
 .hover\:underline:hover{
     text-decoration-line: underline
 }
 .focus\:z-10:focus{
     z-index: 10
+}
+.focus\:z-20:focus{
+    z-index: 20
 }
 .focus\:border-blue-400:focus{
     --tw-border-opacity: 1;
@@ -1292,6 +1456,9 @@ article > *:not(.entry-content),
 .focus\:outline-none:focus{
     outline: 2px solid transparent;
     outline-offset: 2px
+}
+.focus\:outline-offset-0:focus{
+    outline-offset: 0px
 }
 .focus\:ring:focus{
     --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
@@ -1332,23 +1499,27 @@ article > *:not(.entry-content),
     --tw-ring-opacity: 1;
     --tw-ring-color: rgb(209 213 219 / var(--tw-ring-opacity))
 }
+.focus\:ring-red-300:focus{
+    --tw-ring-opacity: 1;
+    --tw-ring-color: rgb(252 165 165 / var(--tw-ring-opacity))
+}
 .focus\:ring-opacity-40:focus{
     --tw-ring-opacity: 0.4
 }
+.focus-visible\:outline:focus-visible{
+    outline-style: solid
+}
+.focus-visible\:outline-2:focus-visible{
+    outline-width: 2px
+}
+.focus-visible\:outline-offset-2:focus-visible{
+    outline-offset: 2px
+}
+.focus-visible\:outline-indigo-600:focus-visible{
+    outline-color: #4f46e5
+}
 .group:hover .group-hover\:block{
     display: block
-}
-.group:hover .group-hover\:flex{
-    display: flex
-}
-.group:hover .group-hover\:translate-y-full{
-    --tw-translate-y: 100%;
-    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))
-}
-.group:hover .group-hover\:scale-105{
-    --tw-scale-x: 1.05;
-    --tw-scale-y: 1.05;
-    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))
 }
 @media (prefers-color-scheme: dark){
 
@@ -1365,6 +1536,11 @@ article > *:not(.entry-content),
     .dark\:bg-gray-800{
         --tw-bg-opacity: 1;
         background-color: rgb(31 41 55 / var(--tw-bg-opacity))
+    }
+
+    .dark\:bg-red-500{
+        --tw-bg-opacity: 1;
+        background-color: rgb(239 68 68 / var(--tw-bg-opacity))
     }
 
     .dark\:text-blue-500{
@@ -1402,6 +1578,11 @@ article > *:not(.entry-content),
         background-color: rgb(29 78 216 / var(--tw-bg-opacity))
     }
 
+    .dark\:hover\:bg-red-600:hover{
+        --tw-bg-opacity: 1;
+        background-color: rgb(220 38 38 / var(--tw-bg-opacity))
+    }
+
     .dark\:focus\:border-blue-300:focus{
         --tw-border-opacity: 1;
         border-color: rgb(147 197 253 / var(--tw-border-opacity))
@@ -1410,6 +1591,11 @@ article > *:not(.entry-content),
     .dark\:focus\:ring-blue-800:focus{
         --tw-ring-opacity: 1;
         --tw-ring-color: rgb(30 64 175 / var(--tw-ring-opacity))
+    }
+
+    .dark\:focus\:ring-red-900:focus{
+        --tw-ring-opacity: 1;
+        --tw-ring-color: rgb(127 29 29 / var(--tw-ring-opacity))
     }
 }
 @media not all and (min-width: 1440px){
@@ -1429,6 +1615,10 @@ article > *:not(.entry-content),
     }
 }
 @media (min-width: 782px){
+
+    .md\:absolute{
+        position: absolute
+    }
 
     .md\:inset-0{
         inset: 0px
@@ -1500,6 +1690,11 @@ article > *:not(.entry-content),
 
     .md\:p-0{
         padding: 0px
+    }
+
+    .md\:px-4{
+        padding-left: 1rem;
+        padding-right: 1rem
     }
 
     .md\:text-3xl{

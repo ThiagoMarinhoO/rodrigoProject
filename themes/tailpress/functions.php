@@ -9,6 +9,7 @@ function tailpress_setup() {
 	register_nav_menus(
 		array(
 			'primary' => __( 'Primary Menu', 'tailpress' ),
+			'secondary' => __( 'Secondary Menu', 'tailpress' ),
 		)
 	);
 

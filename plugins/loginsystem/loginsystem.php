@@ -9,32 +9,11 @@
     License: GPL2
     */
 
-    add_action( 'rest_api_init', function () {
-      register_rest_route( 'loginsystem/v1', '/login', array(
-        'methods' => 'POST',
-        'callback' => 'custom_login',
-      ) );
-    } );
     
-    function custom_login( WP_REST_Request $request ) {
-      $creds = array();
-      $creds['user_login'] = $request['email'];
-      $creds['user_password'] = $request['password'];
-      $creds['remember'] = true;
-      $user = wp_signon( $creds, false );
-      if ( is_wp_error( $user ) ) {
-        return $user;
-      } else {
-        return array(
-          'user_id' => $user->ID,
-          'username' => $user->user_login,
-          'display_name' => $user->display_name,
-          'email' => $user->user_email,
-          'role' => $user->roles[0],
-        );
-      }
-    }
+    $plugin_dir_path = plugin_dir_path( __FILE__ );
 
+    require_once($plugin_dir_path . "/routes/login.php");
+    require_once($plugin_dir_path . "/routes/cadastro.php");
 
     function create_products(WP_REST_Request $request) {
       // Recebe os dados da requisição
@@ -107,41 +86,10 @@
               $post = get_post();
               $post_data = array(
                   'id' => $post->ID,
-                  'date' => date('M d, Y', strtotime($post->post_date)),
-                  'date_gmt' => $post->post_date_gmt,
-                  'guid' => array(
-                      'rendered' => get_permalink( $post->ID ),
-                  ),
-                  'modified' => $post->post_modified,
-                  'modified_gmt' => $post->post_modified_gmt,
-                  'slug' => $post->post_name,
-                  'status' => $post->post_status,
-                  'type' => $post->post_type,
-                  'link' => get_permalink( $post->ID ),
-                  'title' => array(
-                      'rendered' => get_the_title( $post->ID ),
-                  ),
-                  'content' => array(
-                      'rendered' => strip_tags(get_the_content($post->ID)),
-                      'protected' => false,
-                  ),
-                  'excerpt' => array(
-                      'rendered' => apply_filters( 'the_excerpt', $post->post_excerpt ),
-                      'protected' => false,
-                  ),
-                  'author' => array(
-                      'name' => get_the_author($post),
-                      'bio' => get_the_author_meta('description', $post->post_author ),
-                  ),
-                  'featured_media' => $post->featured_media,
-                  'comment_status' => $post->comment_status,
-                  'ping_status' => $post->ping_status,
-                  // 'sticky' => $post->is_sticky(),
-                  'template' => $post->page_template,
-                  'format' => get_post_format( $post->ID ),
-                  'categories' => wp_get_post_categories( $post->ID, array( 'fields' => 'names' ) ),
-                  'tags' => wp_get_post_tags( $post->ID, array( 'fields' => 'names' ) ),
-                  'meta' => get_post_meta( $post->ID ),
+                  'title' =>  get_the_title( $post->ID ),
+                  'price' => get_field('product_price', $post->ID),
+                  'category' => get_field('product_category', $post->ID),
+                  'brand' => get_field('product_brand', $post->ID),
               );
               $posts[] = $post_data;
           }
