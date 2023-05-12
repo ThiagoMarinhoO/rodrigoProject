@@ -43,14 +43,13 @@ function tailpress_enqueue_scripts() {
 	$theme = wp_get_theme();
 
 	wp_enqueue_style( 'tailpress', tailpress_asset( 'css/app.css' ), array(), $theme->get( 'Version' ) );
-	wp_enqueue_script( 'tailpress', tailpress_asset( 'js/app.js' ), array(), $theme->get( 'Version' ) );
+	wp_enqueue_script( 'tailpress', tailpress_asset( 'js/app.js' ), array('jquery'), $theme->get( 'Version' ) );
 	wp_enqueue_script( 'axios', 'https://unpkg.com/axios/dist/axios.min.js' );
 	wp_localize_script( 'tailpress', 'tailpress_object',
 		array( 
-			// 'ajaxurl' => admin_url( 'admin-ajax.php' ),
+			'ajaxurl' => admin_url( 'admin-ajax.php' ),
 			'homeUrl' => home_url(),
 			'userID' => get_current_user_id(),
-			// '' => 'value 2',
 		)
 	);
 }
@@ -147,3 +146,5 @@ $functions_path = get_template_directory() . '/functions/';
  * Require functions partials.
  */
 require_once($functions_path . 'theme-options.php');
+require_once($functions_path . 'add-to-cart.php');
+require_once($functions_path . 'create-order.php');

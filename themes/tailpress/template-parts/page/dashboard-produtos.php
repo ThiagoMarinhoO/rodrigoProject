@@ -48,7 +48,7 @@ $products_query = new WP_Query( $args );
                 <?php if($products_query->have_posts()):?>
                 <tbody>
                     <?php while($products_query->have_posts()): $products_query->the_post();?>
-                    <tr class="bg-white border-b hover:bg-gray-50">
+                    <tr class="bg-white border-b hover:bg-gray-50 product-table" product-id="<?php echo get_the_ID()?>">
                             <input type="hidden" name="quantidade" value="1">
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                                 <?php the_title();?>
@@ -63,7 +63,7 @@ $products_query = new WP_Query( $args );
                                 <?php echo get_field('product_price', $post->ID);?>
                             </td>
                             <td class="px-6 py-4">
-                                <button data-id="<?php echo $post->ID;?>" class="font-medium text-blue-600 hover:underline">Adicionar ao Carrinho</button>
+                                <button class="font-medium text-blue-600 hover:underline add-to-cart-btn">Adicionar ao Carrinho</button>
                             </td>
                         </tr>
                     <?php endwhile; ?>

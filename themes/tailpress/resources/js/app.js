@@ -1,6 +1,9 @@
 
 const axios = require('axios').default;
-
+// window.products = []
+// let products = window.products
+let cart = [];
+let total = 0
 async function SignIn() {
       const email = document.querySelector('#email').value;
       const password = document.querySelector('#password').value;
@@ -61,52 +64,6 @@ async function getProducts() {
 
 document.addEventListener('DOMContentLoaded', async function() {
       const products = await getProducts();
-      
-      const cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-      function updateCartCounter() {
-            document.querySelector('#cartCounter').innerText = cart.length;
-            if ( cart.length > 0 ) {
-                  document.querySelector('#cartButton')?.classList.remove('hidden');
-            } else {
-                  document.querySelector('#cartButton')?.classList.add('hidden');
-            }
-      }
-      updateCartCounter();
-
-      function createDrawerCart() {
-            const cartList = document.querySelector('#productDrawerList');
-            cartList.innerHTML = '';
-            cart.forEach((product) => {
-                  const row = document.createElement('div');
-                  row.classList.add('py-4')
-                  row.innerHTML = `
-                        <div class="flex justify-between mb-3">
-                              <p class="font-semibold">${product.title}</p>
-                              <p class="font-bold">${product.price}</p>
-                        </div>
-                        <div class="flex justify-between">
-                              <div class="flex items-center">
-                                    <a id="qtyDecrease" class="relative inline-flex items-center rounded-l-md px-1 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
-                                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
-                                          </svg>                              
-                                    </a>
-                                    <a id="qty" class="relative inline-flex items-center px-2 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">${product.quantity}</a>
-                                    <a id="qtyIncrease" class="relative inline-flex items-center rounded-r-md px-1 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
-                                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
-                                          </svg>                                  
-                                    </a>
-                              </div>
-                              <button type="button" class="text-red-700 hover:text-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium text-sm">Delete</button>
-                        </div>
-                        
-                  `;
-                  cartList?.appendChild(row);
-            });
-      }
-      createDrawerCart();
 
       const qtyElements = document.querySelectorAll('#qty');
       const increaseButtons = document.querySelectorAll('#qtyIncrease');
@@ -128,19 +85,19 @@ document.addEventListener('DOMContentLoaded', async function() {
             });
       })
 
-      const addToCartButtons = document.querySelectorAll('#productsTable tbody button');
-      addToCartButtons.forEach((button) => {
-            button.addEventListener('click', () => {
-                  const productId = parseInt(button.dataset.id);
-                  const productToAdd = products.find((product) => product.id == productId);
-                  productToAdd["quantity"] = 1;
-                  cart.push(productToAdd);
-                  localStorage.setItem('cart', JSON.stringify(cart));
-                  updateCartCounter();
-                  createDrawerCart();
-                  alert('Produto adicionado ao carrinho')
-            });
-      })
+      // const addToCartButtons = document.querySelectorAll('#productsTable tbody button');
+      // addToCartButtons.forEach((button) => {
+      //       button.addEventListener('click', () => {
+      //             const productId = parseInt(button.dataset.id);
+      //             const productToAdd = products.find((product) => product.id == productId);
+      //             productToAdd["quantity"] = 1;
+      //             cart.push(productToAdd);
+      //             localStorage.setItem('cart', JSON.stringify(cart));
+      //             updateCartCounter();
+      //             createDrawerCart();
+      //             alert('Produto adicionado ao carrinho')
+      //       });
+      // })
 });
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -189,3 +146,83 @@ document.addEventListener('DOMContentLoaded', function () {
             }
       }
 });
+
+jQuery(document).ready(function($){
+      $('.add-to-cart-btn').on('click' , function(e){
+            e.preventDefault()
+            productID = $(this).closest('.product-table').attr('product-id');
+            addProduct(productID)
+      })
+
+      function addProduct(id) {
+            if (id === '') {
+              alert('Produto inválido');
+              return;
+            }
+          
+            $.ajax({
+              url: tailpress_object.ajaxurl,
+              type: 'POST',
+              dataType: 'json',
+              data: {
+                action: 'add_product',
+                produto_id: id
+              },
+              success: function(response) {
+                cart = response.data.products
+                total = response.data.total_price
+                console.log(JSON.stringify(response, null, 2));
+                  updateCartCounter();
+                  createDrawerCart();        
+                  updateCartTotal()
+                  $('#readProductDrawer').removeClass('-translate-x-full')
+              },
+              error: function(xhr, status, error) {
+                  console.log(error)
+                alert('Erro ao adicionar o produto.121212');
+              }
+            });
+      }
+
+      function updateCartCounter() {
+            cartCount = cart.length
+            $('#cartCounter').text(cartCount)
+            if ( cart.length > 0 ) {
+                  $('#cartButton').removeClass('hidden');
+            } else {
+                  $('#cartButton').addClass('hidden');
+            }
+      }
+      function createDrawerCart() {
+            let row = ''
+            cart.forEach((product) => {
+                   row += `
+                        <div class="flex justify-between mb-3">
+                              <p class="font-semibold">${product.title}</p>
+                              <p class="font-bold">${product.price}</p>
+                        </div>
+                        <div class="flex justify-between">
+                              <div class="flex items-center">
+                                    <a id="qtyDecrease" class="relative inline-flex items-center rounded-l-md px-1 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
+                                          </svg>                              
+                                    </a>
+                                    <a id="qty" class="relative inline-flex items-center px-2 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">${product.quantity}</a>
+                                    <a id="qtyIncrease" class="relative inline-flex items-center rounded-r-md px-1 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+                                          </svg>                                  
+                                    </a>
+                              </div>
+                              <button type="button" class="text-red-700 hover:text-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium text-sm">Delete</button>
+                        </div>
+                        
+                  `;
+            });
+            $('#productDrawerList').html(row)
+      }
+      function updateCartTotal(){
+            $('#subtotal').text(total)
+      }
+})

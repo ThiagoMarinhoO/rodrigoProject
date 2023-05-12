@@ -2065,6 +2065,10 @@ function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyri
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 var axios = (__webpack_require__(/*! axios */ "./node_modules/axios/index.js")["default"]);
+// window.products = []
+// let products = window.products
+var cart = [];
+var total = 0;
 function SignIn() {
   return _SignIn.apply(this, arguments);
 }
@@ -2195,37 +2199,14 @@ function _getProducts() {
   return _getProducts.apply(this, arguments);
 }
 document.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-  var products, cart, updateCartCounter, createDrawerCart, qtyElements, increaseButtons, decreaseButtons, addToCartButtons;
+  var products, qtyElements, increaseButtons, decreaseButtons;
   return _regeneratorRuntime().wrap(function _callee$(_context) {
     while (1) switch (_context.prev = _context.next) {
       case 0:
-        createDrawerCart = function _createDrawerCart() {
-          var cartList = document.querySelector('#productDrawerList');
-          cartList.innerHTML = '';
-          cart.forEach(function (product) {
-            var row = document.createElement('div');
-            row.classList.add('py-4');
-            row.innerHTML = "\n                        <div class=\"flex justify-between mb-3\">\n                              <p class=\"font-semibold\">".concat(product.title, "</p>\n                              <p class=\"font-bold\">").concat(product.price, "</p>\n                        </div>\n                        <div class=\"flex justify-between\">\n                              <div class=\"flex items-center\">\n                                    <a id=\"qtyDecrease\" class=\"relative inline-flex items-center rounded-l-md px-1 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0\">\n                                          <svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-6 h-6\">\n                                                <path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M18 12H6\" />\n                                          </svg>                              \n                                    </a>\n                                    <a id=\"qty\" class=\"relative inline-flex items-center px-2 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0\">").concat(product.quantity, "</a>\n                                    <a id=\"qtyIncrease\" class=\"relative inline-flex items-center rounded-r-md px-1 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0\">\n                                          <svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-6 h-6\">\n                                                <path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M12 6v12m6-6H6\" />\n                                          </svg>                                  \n                                    </a>\n                              </div>\n                              <button type=\"button\" class=\"text-red-700 hover:text-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium text-sm\">Delete</button>\n                        </div>\n                        \n                  ");
-            cartList === null || cartList === void 0 ? void 0 : cartList.appendChild(row);
-          });
-        };
-        updateCartCounter = function _updateCartCounter() {
-          document.querySelector('#cartCounter').innerText = cart.length;
-          if (cart.length > 0) {
-            var _document$querySelect;
-            (_document$querySelect = document.querySelector('#cartButton')) === null || _document$querySelect === void 0 ? void 0 : _document$querySelect.classList.remove('hidden');
-          } else {
-            var _document$querySelect2;
-            (_document$querySelect2 = document.querySelector('#cartButton')) === null || _document$querySelect2 === void 0 ? void 0 : _document$querySelect2.classList.add('hidden');
-          }
-        };
-        _context.next = 4;
+        _context.next = 2;
         return getProducts();
-      case 4:
+      case 2:
         products = _context.sent;
-        cart = JSON.parse(localStorage.getItem('cart')) || [];
-        updateCartCounter();
-        createDrawerCart();
         qtyElements = document.querySelectorAll('#qty');
         increaseButtons = document.querySelectorAll('#qtyIncrease');
         decreaseButtons = document.querySelectorAll('#qtyDecrease');
@@ -2243,22 +2224,21 @@ document.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*
             }
           });
         });
-        addToCartButtons = document.querySelectorAll('#productsTable tbody button');
-        addToCartButtons.forEach(function (button) {
-          button.addEventListener('click', function () {
-            var productId = parseInt(button.dataset.id);
-            var productToAdd = products.find(function (product) {
-              return product.id == productId;
-            });
-            productToAdd["quantity"] = 1;
-            cart.push(productToAdd);
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartCounter();
-            createDrawerCart();
-            alert('Produto adicionado ao carrinho');
-          });
-        });
-      case 15:
+
+        // const addToCartButtons = document.querySelectorAll('#productsTable tbody button');
+        // addToCartButtons.forEach((button) => {
+        //       button.addEventListener('click', () => {
+        //             const productId = parseInt(button.dataset.id);
+        //             const productToAdd = products.find((product) => product.id == productId);
+        //             productToAdd["quantity"] = 1;
+        //             cart.push(productToAdd);
+        //             localStorage.setItem('cart', JSON.stringify(cart));
+        //             updateCartCounter();
+        //             createDrawerCart();
+        //             alert('Produto adicionado ao carrinho')
+        //       });
+        // })
+      case 8:
       case "end":
         return _context.stop();
     }
@@ -2306,6 +2286,60 @@ document.addEventListener('DOMContentLoaded', function () {
     signUpButton.onclick = function () {
       SignUp();
     };
+  }
+});
+jQuery(document).ready(function ($) {
+  $('.add-to-cart-btn').on('click', function (e) {
+    e.preventDefault();
+    productID = $(this).closest('.product-table').attr('product-id');
+    addProduct(productID);
+  });
+  function addProduct(id) {
+    if (id === '') {
+      alert('Produto inválido');
+      return;
+    }
+    $.ajax({
+      url: tailpress_object.ajaxurl,
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        action: 'add_product',
+        produto_id: id
+      },
+      success: function success(response) {
+        cart = response.data.products;
+        total = response.data.total_price;
+        console.log(JSON.stringify(response, null, 2));
+        updateCartCounter();
+        createDrawerCart();
+        updateCartTotal();
+        $('#readProductDrawer').removeClass('-translate-x-full');
+      },
+      error: function error(xhr, status, _error) {
+        console.log(_error);
+        alert('Erro ao adicionar o produto.121212');
+      }
+    });
+  }
+  function updateCartCounter() {
+    cartCount = cart.length;
+    $('#cartCounter').text(cartCount);
+    if (cart.length > 0) {
+      $('#cartButton').removeClass('hidden');
+    } else {
+      $('#cartButton').addClass('hidden');
+    }
+  }
+  function createDrawerCart() {
+    var row = '';
+    cart.forEach(function (product) {
+      row += "\n                        <div class=\"flex justify-between mb-3\">\n                              <p class=\"font-semibold\">".concat(product.title, "</p>\n                              <p class=\"font-bold\">").concat(product.price, "</p>\n                        </div>\n                        <div class=\"flex justify-between\">\n                              <div class=\"flex items-center\">\n                                    <a id=\"qtyDecrease\" class=\"relative inline-flex items-center rounded-l-md px-1 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0\">\n                                          <svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-6 h-6\">\n                                                <path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M18 12H6\" />\n                                          </svg>                              \n                                    </a>\n                                    <a id=\"qty\" class=\"relative inline-flex items-center px-2 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0\">").concat(product.quantity, "</a>\n                                    <a id=\"qtyIncrease\" class=\"relative inline-flex items-center rounded-r-md px-1 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0\">\n                                          <svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-6 h-6\">\n                                                <path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M12 6v12m6-6H6\" />\n                                          </svg>                                  \n                                    </a>\n                              </div>\n                              <button type=\"button\" class=\"text-red-700 hover:text-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium text-sm\">Delete</button>\n                        </div>\n                        \n                  ");
+    });
+    $('#productDrawerList').html(row);
+  }
+  function updateCartTotal() {
+    $('#subtotal').text(total);
   }
 });
 
