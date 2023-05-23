@@ -18,7 +18,7 @@
 	<?php do_action( 'tailpress_header' ); ?>
 
 	<header class="bg-white border-gray-200">
-		<?php if ( !is_page( 54 ) && !is_front_page() ) { ?>
+		<?php if (!is_page( 54 ) && !is_front_page() ) { ?>
 			<div class="max-w-xs sm:max-w-lg md:max-w-3xl lg:max-w-5xl max-2xl:max-w-7xl flex flex-wrap items-center justify-between mx-auto p-4">
 				<a href="https://flowbite.com/" class="flex items-center">
 					<img src="https://flowbite.com/docs/images/logo.svg" class="h-8 mr-3" alt="Flowbite Logo" />
@@ -63,7 +63,6 @@
 					</button>
 				</div>
 				<?php if( current_user_can( 'manage_options' ) ) {
-					echo "batata";
 					wp_nav_menu(
 						array(
 							'menu'			  => 'Menu Admin Dashboard',

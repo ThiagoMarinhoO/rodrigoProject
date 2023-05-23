@@ -25,7 +25,7 @@ $products_query = new WP_Query( $args );
                         </svg>
                     </button>
                     <!-- Modal content -->
-                    <div id="AdicionarProdutoModal" class="fixed top-0 left-0 right-0 z-50 items-center justify-center hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                    <div id="AdicionarProdutoModal" class="fixed top-0 left-0 right-0 z-50 items-center justify-center hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 max-h-full bg-gray-950 bg-opacity-50">
                         <div class="container max-w-3xl p-6 relative bg-white rounded-lg shadow">
                             <!-- Modal header -->
                             <div class="py-2 border-b rounded-t mb-4">
@@ -64,14 +64,14 @@ $products_query = new WP_Query( $args );
                             </div>
                         </div>
                     </div>
-                    <button id="importarProdutos" type="button" class="py-2 px-5 mr-2 text-sm font-medium text-blue-700 bg-white rounded-lg border border-blue-700 hover:bg-gray-100 hover:underline focus:z-10 focus:ring-4 focus:outline-none focus:ring-blue-700 focus:text-blue-700 inline-flex items-center cursor-pointer">
+                    <button id="importarProdutos" type="button" class="py-2 px-5 mr-2 text-sm font-medium text-blue-700 bg-white rounded-lg border border-blue-700 hover:bg-gray-100 hover:underline focus:z-10 focus:ring-2 focus:outline-none focus:ring-blue-700 focus:text-blue-700 inline-flex items-center cursor-pointer">
                         Importar Produtos
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 ml-2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </button>
                     <!-- Modal content -->
-                    <div id="contentImportarProdutoModal" class="hidden">
+                    <div id="importarProdutoModal" class="fixed top-0 left-0 right-0 z-50 items-center justify-center hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 max-h-full bg-gray-950 bg-opacity-50">
                         <div class="container max-w-3xl p-6 relative bg-white rounded-lg shadow">
                             <!-- Modal header -->
                             <div class="py-2 border-b rounded-t mb-4">
@@ -82,13 +82,22 @@ $products_query = new WP_Query( $args );
                             <!-- Modal body -->
                             <div class="mb-5">
                             <div>
-                                <input type="file" class="cursor-pointer file:cursor-pointer file:mr-3 block w-full mt-2 text-sm text-gray-950 bg-gray-100 border border-gray-200 rounded-lg file:bg-gray-900 file:text-white file:text-sm file:px-4 file:py-2 file:border-none file:rounded-md placeholder-gray-400/70 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
+                                <!-- <input type="file" class="cursor-pointer file:cursor-pointer file:mr-3 block w-full mt-2 text-sm text-gray-950 bg-gray-100 border border-gray-200 rounded-lg file:bg-gray-900 file:text-white file:text-sm file:px-4 file:py-2 file:border-none file:rounded-md placeholder-gray-400/70 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" /> -->
+                                <form method="post" enctype="multipart/form-data" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+                                    <input type="hidden" name="action" value="import_products">
+                                    <label for="csv_file">Arquivo CSV:</label>
+                                    <input type="file" class="cursor-pointer file:cursor-pointer file:mr-3 block w-full mt-2 text-sm text-gray-950 bg-gray-100 border border-gray-200 rounded-lg file:bg-gray-900 file:text-white file:text-sm file:px-4 file:py-2 file:border-none file:rounded-md placeholder-gray-400/70 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" name="csv_file" id="csv_file">
+                                    <?php wp_nonce_field( 'import_products_nonce', 'import_products_nonce' ); ?>
+                                    <hr class="mt-8 mb-3">
+                                    <input type="submit" class="admin-btn text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" name="submit" value="Importar">
+                                </form>
                             </div>
+                            
                             </div>
                             <!-- Modal footer -->
-                            <div class="pt-5 flex items-center space-x-2 border-t border-gray-200 rounded-b">
+                            <!-- <div class="pt-5 flex items-center space-x-2 border-t border-gray-200 rounded-b">
                                 <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Importar Produtos</button>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -97,7 +106,7 @@ $products_query = new WP_Query( $args );
                     <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                         <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
                     </div>
-                    <input type="text" id="table-search-users" class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search for users">
+                    <input type="text" id="table-search-users" class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Buscar produtos">
                 </div>
             </div>
             <table class="w-full text-sm text-left text-gray-500">
@@ -108,9 +117,6 @@ $products_query = new WP_Query( $args );
                         </th>
                         <th scope="col" class="px-6 py-3 font-semibold text-gray-600">
                             ID
-                        </th>
-                        <th scope="col" class="px-6 py-3 font-semibold text-gray-600">
-                            Categoria
                         </th>
                         <th scope="col" class="px-6 py-3 font-semibold text-gray-600">
                             Preço
@@ -131,10 +137,7 @@ $products_query = new WP_Query( $args );
                             <?php echo '#' . $post->ID;?>
                         </td>
                         <td class="px-6 py-4">
-                            <?php echo get_field('product_category', $post->ID);?>
-                        </td>
-                        <td class="px-6 py-4">
-                            <?php echo get_field('product_price', $post->ID);?>
+                            <?php echo 'R$' . number_format(get_field('product_price', $post->ID), 2, ',', '.');?>
                         </td>
                         <td class="px-6 py-4">
                             <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>

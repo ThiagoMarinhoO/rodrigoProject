@@ -2069,23 +2069,66 @@ var axios = (__webpack_require__(/*! axios */ "./node_modules/axios/index.js")["
 // let products = window.products
 var cart = [];
 var total = 0;
+var date = new Date();
+var Datas = {
+  dia: function dia() {
+    var date = new Date();
+    var ano = date.getFullYear();
+    var mes = ('0' + (date.getMonth() + 1)).slice(-2);
+    var dia = ('0' + date.getDate()).slice(-2);
+    return "".concat(ano, "-").concat(mes, "-").concat(dia);
+  },
+  primeiroDiaSemana: new Date(date.setDate(date.getDate() - date.getDay())),
+  ultimoDiaSemana: new Date(date.setDate(date.getDate() - date.getDay() + 6)),
+  primeiroDiaMes: new Date(date.getFullYear(), date.getMonth(), 1),
+  ultimoDiaMes: new Date(date.getFullYear(), date.getMonth() + 1, 0),
+  recorteSemestre: function recorteSemestre() {
+    var ano = date.getFullYear();
+    var mes = date.getMonth();
+    var mesInicioSemestre, mesFimSemestre;
+    if (mes >= 0 && mes <= 5) {
+      mesInicioSemestre = 0;
+      mesFimSemestre = 5;
+    } else {
+      mesInicioSemestre = 6;
+      mesFimSemestre = 11;
+    }
+    var primeiroDiaSemestre = new Date(ano, mesInicioSemestre, 1);
+    var ultimoDiaSemestre = new Date(ano, mesFimSemestre + 1, 0);
+    return {
+      primeiroDia: primeiroDiaSemestre,
+      ultimoDia: ultimoDiaSemestre
+    };
+  },
+  recorteAnual: function recorteAnual() {
+    var ano = date.getFullYear();
+    var primeiroDiaAno = new Date(ano, 0, 1);
+    var ultimoDiaAno = new Date(ano, 11, 31);
+    return {
+      primeiroDia: primeiroDiaAno,
+      ultimoDia: ultimoDiaAno
+    };
+  }
+};
 function SignIn() {
   return _SignIn.apply(this, arguments);
 }
 function _SignIn() {
   _SignIn = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-    var email, password, _yield$axios$post, data;
+    var email, password, loginForm, _yield$axios$post, data, errorLabel;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
           email = document.querySelector('#email').value;
           password = document.querySelector('#password').value;
-          _context2.next = 4;
+          loginForm = document.querySelector('#loginForm');
+          _context2.prev = 3;
+          _context2.next = 6;
           return axios.post("".concat(tailpress_object.homeUrl, "/wp-json/loginsystem/v1/login"), {
             email: email,
             password: password
           });
-        case 4:
+        case 6:
           _yield$axios$post = _context2.sent;
           data = _yield$axios$post.data;
           if (data.role == "administrator") {
@@ -2093,12 +2136,23 @@ function _SignIn() {
           } else {
             window.location.href = "/dashboard";
           }
-          console.log(data.role);
-        case 8:
+          _context2.next = 18;
+          break;
+        case 11:
+          _context2.prev = 11;
+          _context2.t0 = _context2["catch"](3);
+          errorLabel = document.createElement('div');
+          errorLabel.classList.add("absolute", "container", "p-4", "my-4", "text-sm", "text-red-800", "rounded-lg", "bg-red-50");
+          errorLabel.innerHTML = _context2.t0.response.data.message;
+          loginForm.appendChild(errorLabel);
+          setTimeout(function () {
+            errorLabel.remove();
+          }, 5000);
+        case 18:
         case "end":
           return _context2.stop();
       }
-    }, _callee2);
+    }, _callee2, null, [[3, 11]]);
   }));
   return _SignIn.apply(this, arguments);
 }
@@ -2198,75 +2252,55 @@ function _getProducts() {
   }));
   return _getProducts.apply(this, arguments);
 }
-document.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-  var products, qtyElements, increaseButtons, decreaseButtons;
-  return _regeneratorRuntime().wrap(function _callee$(_context) {
-    while (1) switch (_context.prev = _context.next) {
-      case 0:
-        _context.next = 2;
-        return getProducts();
-      case 2:
-        products = _context.sent;
-        qtyElements = document.querySelectorAll('#qty');
-        increaseButtons = document.querySelectorAll('#qtyIncrease');
-        decreaseButtons = document.querySelectorAll('#qtyDecrease');
-        increaseButtons.forEach(function (button, index) {
-          button.addEventListener('click', function () {
-            qtyElements[index].innerText++;
-            console.log(qtyElements[index].value);
-          });
-        });
-        decreaseButtons.forEach(function (button, index) {
-          button.addEventListener('click', function () {
-            if (qtyElements[index].innerText > 1) {
-              qtyElements[index].innerText--;
-              console.log(qtyElements[index].value);
-            }
-          });
-        });
-
-        // const addToCartButtons = document.querySelectorAll('#productsTable tbody button');
-        // addToCartButtons.forEach((button) => {
-        //       button.addEventListener('click', () => {
-        //             const productId = parseInt(button.dataset.id);
-        //             const productToAdd = products.find((product) => product.id == productId);
-        //             productToAdd["quantity"] = 1;
-        //             cart.push(productToAdd);
-        //             localStorage.setItem('cart', JSON.stringify(cart));
-        //             updateCartCounter();
-        //             createDrawerCart();
-        //             alert('Produto adicionado ao carrinho')
-        //       });
-        // })
-      case 8:
-      case "end":
-        return _context.stop();
-    }
-  }, _callee);
-})));
 document.addEventListener('DOMContentLoaded', function () {
   var Modal = {
     modal: document.querySelector('#AdicionarProdutoModal'),
     adicionarProduto: document.querySelector('#adicionarProduto'),
     openModal: function openModal() {
       if (Modal.adicionarProduto) {
-        adicionarProduto.onclick = function () {
+        Modal.adicionarProduto.onclick = function () {
           Modal.modal.classList.remove('hidden');
           Modal.modal.classList.add('flex');
         };
       }
     },
     closeModal: function closeModal() {
-      window.onclick = function (event) {
-        if (event.target == Modal.modal) {
-          Modal.modal.classList.add('hidden');
-          Modal.modal.classList.remove('flex');
-        }
-      };
+      if (Modal.modal) {
+        Modal.modal.onclick = function (event) {
+          if (event.target == Modal.modal) {
+            Modal.modal.classList.remove('flex');
+            Modal.modal.classList.add('hidden');
+          }
+        };
+      }
     }
   };
   Modal.openModal();
   Modal.closeModal();
+  var ModalImportar = {
+    modalImportar: document.querySelector('#importarProdutoModal'),
+    importarProduto: document.querySelector('#importarProdutos'),
+    openModal: function openModal() {
+      if (ModalImportar.importarProduto) {
+        ModalImportar.importarProduto.onclick = function () {
+          ModalImportar.modalImportar.classList.remove('hidden');
+          ModalImportar.modalImportar.classList.add('flex');
+        };
+      }
+    },
+    closeModal: function closeModal() {
+      if (ModalImportar.modalImportar) {
+        ModalImportar.modalImportar.onclick = function (event) {
+          if (event.target == ModalImportar.modalImportar) {
+            ModalImportar.modalImportar.classList.add('hidden');
+            ModalImportar.modalImportar.classList.remove('flex');
+          }
+        };
+      }
+    }
+  };
+  ModalImportar.openModal();
+  ModalImportar.closeModal();
   var publishButton = document.querySelector('#publishButton');
   if (publishButton) {
     publishButton.onclick = function () {
@@ -2289,11 +2323,6 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 jQuery(document).ready(function ($) {
-  $('.add-to-cart-btn').on('click', function (e) {
-    e.preventDefault();
-    productID = $(this).closest('.product-table').attr('product-id');
-    addProduct(productID);
-  });
   function addProduct(id) {
     if (id === '') {
       alert('Produto inválido');
@@ -2314,8 +2343,9 @@ jQuery(document).ready(function ($) {
         updateCartCounter();
         createDrawerCart();
         updateCartTotal();
-        $('#readProductDrawer').removeClass('-translate-x-full');
+        // $('#readProductDrawer').removeClass('-translate-x-full')
       },
+
       error: function error(xhr, status, _error) {
         console.log(_error);
         alert('Erro ao adicionar o produto.121212');
@@ -2334,14 +2364,233 @@ jQuery(document).ready(function ($) {
   function createDrawerCart() {
     var row = '';
     cart.forEach(function (product) {
-      row += "\n                        <div class=\"flex justify-between mb-3\">\n                              <p class=\"font-semibold\">".concat(product.title, "</p>\n                              <p class=\"font-bold\">").concat(product.price, "</p>\n                        </div>\n                        <div class=\"flex justify-between\">\n                              <div class=\"flex items-center\">\n                                    <a id=\"qtyDecrease\" class=\"relative inline-flex items-center rounded-l-md px-1 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0\">\n                                          <svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-6 h-6\">\n                                                <path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M18 12H6\" />\n                                          </svg>                              \n                                    </a>\n                                    <a id=\"qty\" class=\"relative inline-flex items-center px-2 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0\">").concat(product.quantity, "</a>\n                                    <a id=\"qtyIncrease\" class=\"relative inline-flex items-center rounded-r-md px-1 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0\">\n                                          <svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-6 h-6\">\n                                                <path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M12 6v12m6-6H6\" />\n                                          </svg>                                  \n                                    </a>\n                              </div>\n                              <button type=\"button\" class=\"text-red-700 hover:text-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium text-sm\">Delete</button>\n                        </div>\n                        \n                  ");
+      row += "\n                   <div>\n                        <div class=\"product py-3\" data-id=\"".concat(product.produto_id, "\">\n                              <div class=\"flex justify-between mb-3\">\n                                    <p class=\"font-semibold\">").concat(product.title, "</p>\n                                    <p class=\"font-bold\">").concat(product.price, "</p>\n                              </div>\n                              <div class=\"flex justify-between\">\n                                    <div class=\"flex items-center\">\n                                          <a id=\"qtyDecrease\" data-id=\"").concat(product.produto_id, "\" class=\"relative inline-flex items-center rounded-l-md px-1 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0\">\n                                                <svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-6 h-6\">\n                                                      <path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M18 12H6\" />\n                                                </svg>                              \n                                          </a>\n                                          <a id=\"qty\" class=\"relative inline-flex items-center px-2 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0\">").concat(product.quantity, "</a>\n                                          <a id=\"qtyIncrease\" data-id=\"").concat(product.produto_id, "\" class=\"relative inline-flex items-center rounded-r-md px-1 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0\">\n                                                <svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-6 h-6\">\n                                                      <path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M12 6v12m6-6H6\" />\n                                                </svg>                                  \n                                          </a>\n                                    </div>\n                                    <button id=\"deleteButton\" type=\"button\" data-id=\"").concat(product.produto_id, "\" class=\"text-red-700 hover:text-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium text-sm\">Delete</button>\n                              </div>\n                        </div>\n                  </div>\n                  ");
     });
     $('#productDrawerList').html(row);
   }
   function updateCartTotal() {
     $('#subtotal').text(total);
   }
+  function closeSale() {
+    var author = parseInt($('#vendedores').val());
+    $.ajax({
+      url: tailpress_object.ajaxurl,
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        action: 'create_order',
+        products: cart,
+        total: total,
+        author: author
+      },
+      success: function success(response) {
+        alert('Venda efetuada com sucesso');
+        $('#readProductDrawer').addClass('-translate-x-full');
+        window.location.reload();
+      },
+      error: function error(xhr, status, _error2) {
+        console.log(_error2);
+        alert('Erro ao fechar venda');
+      }
+    });
+  }
+  $('.add-to-cart-btn').on('click', function (e) {
+    e.preventDefault();
+    productID = $(this).closest('.product-table').attr('product-id');
+    addProduct(productID);
+  });
+  $(document).on("click", "#qtyIncrease", function (e) {
+    e.preventDefault();
+    productID = $(this).attr("data-id");
+    addProduct(productID);
+    console.log(cart);
+    console.log(total);
+  });
+  $(document).on("click", "#qtyDecrease", function (e) {
+    var productID = $(this).attr("data-id");
+    $.ajax({
+      url: tailpress_object.ajaxurl,
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        action: 'decrease_product',
+        produto_id: productID
+      },
+      success: function success(response) {
+        cart = response.data.products;
+        total = response.data.total_price;
+        updateCartCounter();
+        createDrawerCart();
+        updateCartTotal();
+        console.log(JSON.stringify(response, null, 2));
+        // updateTableAndTotalPrice(products);
+      },
+
+      error: function error(xhr, status, _error3) {
+        alert('Erro ao excluir o produto.');
+      }
+    });
+  });
+  $(document).on('click', '#deleteButton', function () {
+    var productID = $(this).attr("data-id");
+    // console.log(productID)
+    $.ajax({
+      url: tailpress_object.ajaxurl,
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        action: 'delete_product',
+        produto_id: productID
+      },
+      success: function success(response) {
+        cart = response.data.products;
+        total = response.data.total_price;
+        updateCartCounter();
+        createDrawerCart();
+        updateCartTotal();
+        // updateTableAndTotalPrice(products);
+      },
+
+      error: function error(xhr, status, _error4) {
+        alert('Erro ao excluir o produto.');
+      }
+    });
+  });
+  $('#close_sale').on('click', function (e) {
+    e.preventDefault();
+    closeSale();
+  });
+
+  //balanço diario
+  $.ajax({
+    url: tailpress_object.ajaxurl,
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      action: 'daily_report',
+      init_date: Datas.dia(),
+      final_date: Datas.dia()
+    },
+    success: function success(response) {
+      console.log(response);
+      $('#balanco_diario').text(response.data.valor_final.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      }));
+      // $('.nome-produto-daily').text(response.data.produto_mais_vendido.title)
+      // $('.barcode-produto-daily').text(response.data.produto_mais_vendido.barcode)
+      // $('.quantity-produto-daily').text(response.data.quantidade_mais_vendida)
+      // $('.total-produto-daily').text(response.data.produto_mais_vendido.unity_price * response.data.quantidade_mais_vendida)
+    },
+
+    error: function error(xhr, status, _error5) {
+      console.log(_error5);
+    }
+  });
+  //balanço semanal
+  $.ajax({
+    url: tailpress_object.ajaxurl,
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      action: 'daily_report',
+      init_date: Datas.primeiroDiaSemana.toISOString().slice(0, 10),
+      final_date: Datas.ultimoDiaSemana.toISOString().slice(0, 10)
+    },
+    success: function success(response) {
+      console.log(response);
+      $('#balanco_semanal').text(response.data.valor_final.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      }));
+    },
+    error: function error(xhr, status, _error6) {
+      console.log(_error6);
+    }
+  });
+  // //balanço mensal
+  $.ajax({
+    url: tailpress_object.ajaxurl,
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      action: 'daily_report',
+      init_date: Datas.primeiroDiaMes.toISOString().slice(0, 10),
+      final_date: Datas.ultimoDiaMes.toISOString().slice(0, 10)
+    },
+    success: function success(response) {
+      console.log(response);
+      $('#balanco_mensal').text(response.data.valor_final.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      }));
+      $('#produtoMaisVendidoPreco').text(parseInt(response.data.produto_mais_vendido.produto_preco).toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      }));
+      $('#produtoMaisVendidoNome').text(response.data.produto_mais_vendido.produto_nome);
+    },
+    error: function error(xhr, status, _error7) {
+      console.log(_error7);
+    }
+  });
+  // //balanço semestral
+  $.ajax({
+    url: tailpress_object.ajaxurl,
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      action: 'daily_report',
+      init_date: Datas.recorteSemestre().primeiroDia.toISOString().slice(0, 10),
+      final_date: Datas.recorteSemestre().ultimoDia.toISOString().slice(0, 10)
+    },
+    success: function success(response) {
+      console.log(response);
+      $('#balanco_semestral').text(response.data.valor_final.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      }));
+    },
+    error: function error(xhr, status, _error8) {
+      console.log(_error8);
+    }
+  });
+  // //balanço anual
+  $.ajax({
+    url: tailpress_object.ajaxurl,
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      action: 'daily_report',
+      init_date: Datas.recorteAnual().primeiroDia.toISOString().slice(0, 10),
+      final_date: Datas.recorteAnual().ultimoDia.toISOString().slice(0, 10)
+    },
+    success: function success(response) {
+      $('#balanco_anual').text(response.data.valor_final.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      }));
+    },
+    error: function error(xhr, status, _error9) {
+      console.log(_error9);
+    }
+  });
 });
+document.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+  var products;
+  return _regeneratorRuntime().wrap(function _callee$(_context) {
+    while (1) switch (_context.prev = _context.next) {
+      case 0:
+        _context.next = 2;
+        return getProducts();
+      case 2:
+        products = _context.sent;
+      case 3:
+      case "end":
+        return _context.stop();
+    }
+  }, _callee);
+})));
 
 /***/ }),
 

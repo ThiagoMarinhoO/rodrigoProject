@@ -9,10 +9,17 @@ function create_order(){
     if(isset($_POST['total'])) {
         $total = $_POST['total'];
     }
+    if(isset($_POST['author'])) {
+        $author = $_POST['author'];
+    }else {
+        $author = 6;
+    }
+
     $post_data = array(
         'post_title'   => date('d-m-Y'), 
         'post_status'  => 'publish', 
-        'post_type'    => 'sales', 
+        'post_type'    => 'sales',
+        'post_author'  => $author,
     );
     
     $post_id = wp_insert_post( $post_data );
@@ -20,7 +27,7 @@ function create_order(){
     update_field( 'valor_da_venda', $total, $post_id );
     
     foreach ( $products as $product ) {
-        $produto_id = $product['product_id'];
+        $produto_id = $product['produto_id'];
         $title = $product['title'];
         $price = $product['price'];
         $quantity = $product['quantity'];
@@ -33,7 +40,7 @@ function create_order(){
             'preco' => $price,
             'quantidade' => $quantity,
             'marca' => $marca,
-            'preco_total' => $total_price,
+            'valor_total' => $total_price,
         ), $post_id );
 
         $product_id = null;

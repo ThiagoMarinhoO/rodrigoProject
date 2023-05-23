@@ -6,7 +6,7 @@ $args = array(
 $dash_product_query = new WP_Query($args);
 ?>
 
-<?php if ( is_user_logged_in() ) { ?>
+<?php if ( current_user_can('manage_options') ) { ?>
     <div class="max-w-xs sm:max-w-lg md:max-w-3xl lg:max-w-5xl max-2xl:max-w-7xl mx-auto pt-12">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7 mb-32">
             <div class="px-4 py-3 bg-white rounded-md shadow-md">
@@ -16,7 +16,7 @@ $dash_product_query = new WP_Query($args);
                     </svg>
                 </div>
                 <div class="my-3">
-                    <h1 class="text-2xl font-bold text-gray-800">R$2000,00</h1>
+                    <h1 id="balanco_diario" class="text-2xl font-bold text-gray-800">R$2000,00</h1>
                     <p class="text-sm font-normal text-gray-500">Balanço Diário</p>
                 </div>
             </div>
@@ -27,7 +27,7 @@ $dash_product_query = new WP_Query($args);
                     </svg>
                 </div>
                 <div class="my-3">
-                    <h1 class="text-2xl font-bold text-gray-800">R$2000,00</h1>
+                    <h1 id="balanco_semanal" class="text-2xl font-bold text-gray-800">R$2000,00</h1>
                     <p class="text-sm font-normal text-gray-500">Balanço Semanal</p>
                 </div>
             </div>
@@ -38,7 +38,7 @@ $dash_product_query = new WP_Query($args);
                     </svg>
                 </div>
                 <div class="my-3">
-                    <h1 class="text-2xl font-bold text-gray-800">R$2000,00</h1>
+                    <h1 id="balanco_mensal" class="text-2xl font-bold text-gray-800">R$2000,00</h1>
                     <p class="text-sm font-normal text-gray-500">Balanço Mensal</p>
                 </div>
             </div>
@@ -49,7 +49,7 @@ $dash_product_query = new WP_Query($args);
                     </svg>
                 </div>
                 <div class="my-3">
-                    <h1 class="text-2xl font-bold text-gray-800">R$2000,00</h1>
+                    <h1 id="balanco_semestral" class="text-2xl font-bold text-gray-800">R$2000,00</h1>
                     <p class="text-sm font-normal text-gray-500">Balanço Semestral</p>
                 </div>
             </div>
@@ -58,24 +58,28 @@ $dash_product_query = new WP_Query($args);
                     <img src="/wp-content/themes/tailpress/assets/linessla.svg" alt="">
                 </div>
                 <div class="">
-                    <h1 class="text-4xl font-bold text-white mb-3">R$2000,00</h1>
-                    <p class="text-sm font-normal text-white text-center">Balanço Semestral</p>
+                    <h1 id="balanco_anual" class="text-4xl font-bold text-white mb-3">R$2000,00</h1>
+                    <p class="text-sm font-normal text-white text-center">Balanço Anual</p>
                 </div>
             </div>
             <div class="px-4 py-3 bg-white rounded-md shadow-md">
-                <p class="text-lg font-semibold text-gray-950 mb-6">Mais Vendido</p>
+                <p class="text-lg font-semibold text-gray-950 mb-6">Mais Vendido <span class="text-sm text-gray-950">(mês)</span></p>
                 <div class="">
                     <img src="https://images.unsplash.com/photo-1634712282287-14ed57b9cc89?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1206&q=80" class="rounded-md" />
                 </div>
                 <div class="my-3">
-                    <h1 class="text-lg font-bold text-gray-800">R$2000,00</h1>
-                    <p class="text-sm font-normal text-gray-500">Nome de Produto</p>
+                    <h1 id="produtoMaisVendidoPreco" class="text-lg font-bold text-gray-800">R$2000,00</h1>
+                    <p id="produtoMaisVendidoNome" class="text-sm font-normal text-gray-500">Nome de Produto</p>
                 </div>
             </div>
         </div>
-        <div class="mb-12">
+        <div class="mb-12 flex justify-between">
             <h2 class="text-gray-950 text-3xl font-semibold">Nossos Produtos</h2>
-            <p class="text-gray-600 text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ultrices lectus sem.</p>
+            <a href="/admin-produtos" class="inline-flex items-center font-medium text-blue-600 hover:underline">
+                Ver todos
+                <svg class="ml-2 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+            </a>
+            <!-- <p class="text-gray-600 text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ultrices lectus sem.</p> -->
         </div>
         <div class="mb-12">
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -87,9 +91,6 @@ $dash_product_query = new WP_Query($args);
                             </th>
                             <th scope="col" class="px-6 py-3 font-semibold text-gray-600">
                                 ID
-                            </th>
-                            <th scope="col" class="px-6 py-3 font-semibold text-gray-600">
-                                Categoria
                             </th>
                             <th scope="col" class="px-6 py-3 font-semibold text-gray-600">
                                 Preço
@@ -107,10 +108,7 @@ $dash_product_query = new WP_Query($args);
                                 <?php echo '#' . $post->ID;?>
                             </td>
                             <td class="px-6 py-4">
-                                <?php echo get_field('product_category', $post->ID);?>
-                            </td>
-                            <td class="px-6 py-4">
-                                <?php echo 'R$' . get_field('product_price', $post->ID);?>
+                                <?php echo 'R$' . number_format(get_field('product_price', $post->ID), 2, ',', '.');?>
                             </td>
                         </tr>
                         <?php endwhile; ?>
@@ -120,17 +118,30 @@ $dash_product_query = new WP_Query($args);
             </div>
         </div>
     </div>
-<?php } else { ?>
+<?php } else if(is_user_logged_in(  ) && ! current_user_can('manage_options')){ ?>
     <div class="md:flex min-h-screen">
-    <div class="w-full md:w-1/2 flex items-center justify-center">
-        <div class="max-w-sm m-8">
-            <div class="text-5xl md:text-15xl text-gray-800 border-primary border-b">Não autenticado</div>
-            <div class="w-16 h-1 bg-purple-light my-3 md:my-6"></div>
-            <p class="text-gray-800 text-2xl md:text-3xl font-light mb-8"><?php _e( 'Desculpe, use as suas credenciais para fazer login', 'tailpress' ); ?></p>
-            <a href="<?php echo get_bloginfo( 'url' ); ?>" class="bg-primary px-4 py-2 rounded text-white">
-                <?php _e( 'Fazer Login', 'tailpress' ); ?>
-            </a>
+        <div class="w-full md:w-1/2 flex items-center justify-center">
+            <div class="max-w-sm md:max-w-md m-8">
+                <div class="text-5xl md:text-15xl text-gray-800 border-primary border-b">Você não tem permissão para acessar esta página</div>
+                <div class="w-16 h-1 bg-purple-light my-3 md:my-6"></div>
+                <p class="text-gray-800 text-2xl md:text-3xl font-light mb-8"><?php _e( 'Desculpe, volte ao seu Dashboard', 'tailpress' ); ?></p>
+                <a href="<?php echo get_bloginfo( 'url' ); ?>" class="bg-primary px-4 py-2 rounded text-white">
+                    <?php _e( 'Voltar ao Dashboard', 'tailpress' ); ?>
+                </a>
+            </div>
         </div>
     </div>
-</div>
+<?php } else {?>
+    <div class="md:flex min-h-screen">
+        <div class="w-full md:w-1/2 flex items-center justify-center">
+            <div class="max-w-sm m-8">
+                <div class="text-5xl md:text-15xl text-gray-800 border-primary border-b">Não autenticado</div>
+                <div class="w-16 h-1 bg-purple-light my-3 md:my-6"></div>
+                <p class="text-gray-800 text-2xl md:text-3xl font-light mb-8"><?php _e( 'Desculpe, use as suas credenciais para fazer login', 'tailpress' ); ?></p>
+                <a href="<?php echo get_bloginfo( 'url' ); ?>" class="bg-primary px-4 py-2 rounded text-white">
+                    <?php _e( 'Fazer Login', 'tailpress' ); ?>
+                </a>
+            </div>
+        </div>
+    </div>
 <?php } ?>

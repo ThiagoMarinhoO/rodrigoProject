@@ -2,7 +2,7 @@
 get_header();
 
 $args = array(
-    'post_type' => 'products',
+    'post_type' => 'sales',
     'posts_per_page' => 5
 );
 $dash_product_query = new WP_Query($args);
@@ -12,25 +12,32 @@ $dash_product_query = new WP_Query($args);
 <?php if ( is_user_logged_in() ) { ?>
     <div class="max-w-xs sm:max-w-lg md:max-w-3xl lg:max-w-5xl max-2xl:max-w-7xl mx-auto pt-12">
         <div class="mb-12">
-            <h2 class="text-gray-950 text-3xl font-semibold">Nossos Produtos</h2>
-            <p class="text-gray-600 text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ultrices lectus sem.</p>
+            <h2 class="text-gray-950 text-3xl font-semibold">Bem vindo ao Dashboard de Vendas</h2>
+            <p class="text-gray-600 text-sm">Gerencie por aqui suas vendas</p>
         </div>
         <div class="mb-12">
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <table class="w-full text-sm text-left text-gray-500">
+                    <caption class="p-5 text-lg font-semibold text-left text-gray-900 bg-white">
+                        Transações
+                        <p class="mt-1 text-sm font-normal text-gray-500">Browse a list of Flowbite products designed to help you work and play, stay organized, get answers, keep in touch, grow your business, and more.</p>
+                    </caption>
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                         <tr>
-                            <th scope="col" class="px-6 py-3 font-semibold text-gray-600">
-                                Nome
+                            <th scope="col" class="px-6 py-3 font-semibold text-gray-600 whitespace-nowrap">
+                                Produtos
                             </th>
-                            <th scope="col" class="px-6 py-3 font-semibold text-gray-600">
-                                ID
+                            <th scope="col" class="px-6 py-3 font-semibold text-gray-600 whitespace-nowrap">
+                                Data & Hora
                             </th>
-                            <th scope="col" class="px-6 py-3 font-semibold text-gray-600">
-                                Categoria
+                            <th scope="col" class="px-6 py-3 font-semibold text-gray-600 whitespace-nowrap">
+                                Valor (R$)
                             </th>
-                            <th scope="col" class="px-6 py-3 font-semibold text-gray-600">
-                                Preço
+                            <th scope="col" class="px-6 py-3 font-semibold text-gray-600 whitespace-nowrap">
+                                Vendedor
+                            </th>
+                            <th scope="col" class="px-6 py-3 font-semibold text-gray-600 whitespace-nowrap">
+                                Status
                             </th>
                         </tr>
                     </thead>
@@ -38,17 +45,32 @@ $dash_product_query = new WP_Query($args);
                     <tbody>
                         <?php while($dash_product_query->have_posts()): $dash_product_query->the_post();?>
                         <tr class="bg-white border-b hover:bg-gray-50">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                <?php the_title();?>
+                            <?php if( have_rows('produtos_da_venda') ): ?>
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900">
+                                <?php while( have_rows('produtos_da_venda') ) : the_row(); ?>
+                                    <?php 
+                                        $nome_do_produto = get_sub_field('nome');
+                                        $qty_do_produto = get_sub_field('quantidade');
+                                        echo $nome_do_produto. ' ' . '(' . $qty_do_produto . ')';  
+                                    ?>
+                                <?php endwhile; ?>
                             </th>
-                            <td class="px-6 py-4">
-                                <?php echo '#' . $post->ID;?>
+                            <?php endif;?>
+                            <td class="px-6 py-4 text-gray-600 whitespace-nowrap">
+                                <?php echo get_the_date('d/m/Y'); ?>
+                            </td>
+                            <td class="px-6 py-4 text-gray-950 font-bold">
+                                <?php echo 'R$' . number_format(get_field('valor_da_venda' , get_the_ID()), 2, ',', '.');?>
                             </td>
                             <td class="px-6 py-4">
-                                <?php echo get_field('product_category', $post->ID);?>
+                                <?php the_author()?>
                             </td>
                             <td class="px-6 py-4">
-                                <?php echo 'R$' . get_field('product_price', $post->ID);?>
+                                <?php if (get_post_status() == 'publish') {
+                                    echo '<span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Efetuada</span>';
+                                } else {
+                                    echo '<span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Pendente</span>';
+                                }?>
                             </td>
                         </tr>
                         <?php endwhile; ?>
@@ -72,9 +94,6 @@ $dash_product_query = new WP_Query($args);
     </div>
 </div>
 <?php } ?>
-
-
-
 
 
 <?php

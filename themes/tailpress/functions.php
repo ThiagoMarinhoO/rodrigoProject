@@ -148,3 +148,6 @@ $functions_path = get_template_directory() . '/functions/';
 require_once($functions_path . 'theme-options.php');
 require_once($functions_path . 'add-to-cart.php');
 require_once($functions_path . 'create-order.php');
+require_once($functions_path . 'delete-product.php');
+require_once($functions_path . 'daily-report.php');
+require_once($functions_path . 'import-product.php');

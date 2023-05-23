@@ -55,13 +55,21 @@ function cpt_vendas() {
 }
 add_action('init', 'cpt_vendas');
 
+function redirecionar_admin_logado() {
+    if ( is_user_logged_in() && current_user_can('manage_options') && is_page('login') ) {
+        wp_redirect( '/admin-dashboard' );
+        exit;
+    }
+}
+add_action( 'template_redirect', 'redirecionar_admin_logado' );
+
 function redirecionar_usuario_logado() {
-    if ( is_user_logged_in() && is_page('login') ) {
+    if ( is_user_logged_in() && ! current_user_can('manage_options') && is_page('login') ) {
         wp_redirect( '/dashboard' );
         exit;
     }
 }
-// add_action( 'template_redirect', 'redirecionar_usuario_logado' );
+add_action( 'template_redirect', 'redirecionar_usuario_logado' );
 
 add_role(
 	'Vendedor',
