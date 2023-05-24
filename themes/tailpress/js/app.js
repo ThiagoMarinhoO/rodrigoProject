@@ -2165,9 +2165,9 @@ function _SignUp() {
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
         case 0:
-          name = document.querySelector('#name').value;
-          email = document.querySelector('#email').value;
-          password = document.querySelector('#password').value;
+          name = document.querySelector('#newUserName').value;
+          email = document.querySelector('#newUserEmail').value;
+          password = document.querySelector('#newUserPassword').value;
           _context3.prev = 3;
           _context3.next = 6;
           return axios.post("".concat(tailpress_object.homeUrl, "/wp-json/loginsystem/v1/register"), {
@@ -2178,19 +2178,18 @@ function _SignUp() {
         case 6:
           _yield$axios$post2 = _context3.sent;
           data = _yield$axios$post2.data;
-          window.location.href = "/dashboard";
-          console.log(data);
-          _context3.next = 15;
+          window.location.reload();
+          _context3.next = 14;
           break;
-        case 12:
-          _context3.prev = 12;
+        case 11:
+          _context3.prev = 11;
           _context3.t0 = _context3["catch"](3);
-          console.log(_context3.t0);
-        case 15:
+          alert(_context3.t0.response.data.error);
+        case 14:
         case "end":
           return _context3.stop();
       }
-    }, _callee3, null, [[3, 12]]);
+    }, _callee3, null, [[3, 11]]);
   }));
   return _SignUp.apply(this, arguments);
 }
@@ -2301,6 +2300,30 @@ document.addEventListener('DOMContentLoaded', function () {
   };
   ModalImportar.openModal();
   ModalImportar.closeModal();
+  var ModalNewUser = {
+    modal: document.querySelector('#newUserModal'),
+    registerButton: document.querySelector('#addNewUser'),
+    openModal: function openModal() {
+      if (ModalNewUser.registerButton) {
+        ModalNewUser.registerButton.onclick = function () {
+          ModalNewUser.modal.classList.remove('hidden');
+          ModalNewUser.modal.classList.add('flex');
+        };
+      }
+    },
+    closeModal: function closeModal() {
+      if (ModalNewUser.modal) {
+        ModalNewUser.modal.onclick = function (event) {
+          if (event.target == ModalNewUser.modal) {
+            ModalNewUser.modal.classList.remove('flex');
+            ModalNewUser.modal.classList.add('hidden');
+          }
+        };
+      }
+    }
+  };
+  ModalNewUser.openModal();
+  ModalNewUser.closeModal();
   var publishButton = document.querySelector('#publishButton');
   if (publishButton) {
     publishButton.onclick = function () {
@@ -2315,7 +2338,7 @@ document.addEventListener('DOMContentLoaded', function () {
       SignIn();
     };
   }
-  var signUpButton = document.querySelector('#signUpButton');
+  var signUpButton = document.querySelector('#createNewUserButton');
   if (signUpButton) {
     signUpButton.onclick = function () {
       SignUp();
@@ -2373,26 +2396,36 @@ jQuery(document).ready(function ($) {
   }
   function closeSale() {
     var author = parseInt($('#vendedores').val());
-    $.ajax({
-      url: tailpress_object.ajaxurl,
-      type: 'POST',
-      dataType: 'json',
-      data: {
-        action: 'create_order',
-        products: cart,
-        total: total,
-        author: author
-      },
-      success: function success(response) {
-        alert('Venda efetuada com sucesso');
-        $('#readProductDrawer').addClass('-translate-x-full');
-        window.location.reload();
-      },
-      error: function error(xhr, status, _error2) {
-        console.log(_error2);
-        alert('Erro ao fechar venda');
-      }
-    });
+    if (author) {
+      $.ajax({
+        url: tailpress_object.ajaxurl,
+        type: 'POST',
+        dataType: 'json',
+        data: {
+          action: 'create_order',
+          products: cart,
+          total: total,
+          author: author
+        },
+        success: function success(response) {
+          alert('Venda efetuada com sucesso');
+          $('#readProductDrawer').addClass('-translate-x-full');
+          window.location.reload();
+        },
+        error: function error(xhr, status, _error2) {
+          console.log(_error2);
+          alert('Erro ao fechar venda');
+        }
+      });
+    } else {
+      $('#vendedores').addClass('border-red-500');
+      $('#labelVendedores').addClass('text-red-500');
+      setTimeout(function () {
+        $('#vendedores').removeClass('border-red-500');
+        $('#labelVendedores').removeClass('text-red-500');
+      }, 5000);
+      alert('Selecione um vendedor');
+    }
   }
   $('.add-to-cart-btn').on('click', function (e) {
     e.preventDefault();

@@ -91,9 +91,9 @@ $products_query = new WP_Query( $args );
                 <p id="subtotal" class="font-lg font-extrabold">R$ XXXX</p>
             </div>
             <div class="mb-4">
-                <label for="vendedores" class="block mb-2 text-sm font-medium text-gray-900">Selecione um vendedor</label>
+                <label id="labelVendedores" for="vendedores" class="block mb-2 text-sm font-medium text-gray-900">Selecione um vendedor</label>
                 <select id="vendedores" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                    <option selected value="6">Vendedor</option>
+                    <option selected value="">Vendedor</option>
                     <?php
                         $vendedores = get_users( array(
                             'role'    => 'Subscriber',
