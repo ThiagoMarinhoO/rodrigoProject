@@ -11,6 +11,7 @@ $products_query = new WP_Query( $args );
 
 <?php if ( is_user_logged_in() ) { ?>
     <div class="max-w-xs sm:max-w-lg md:max-w-3xl lg:max-w-5xl max-2xl:max-w-7xl mx-auto pt-12">
+        <div id="loading-animation"></div>
         <div class="mb-12">
             <h2 class="text-gray-950 text-3xl font-semibold">Seus Produtos</h2>
             <p class="text-gray-600 text-sm">Digite o nome do produto desejado.</p>
@@ -47,7 +48,7 @@ $products_query = new WP_Query( $args );
                     <?php while($products_query->have_posts()): $products_query->the_post();?>
                     <tr class="bg-white border-b hover:bg-gray-50 product-table" product-id="<?php echo get_the_ID()?>">
                             <input type="hidden" name="quantidade" value="1">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap product-name">
                                 <?php the_title();?>
                             </th>
                             <td class="px-6 py-4">

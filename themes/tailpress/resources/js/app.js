@@ -110,7 +110,12 @@ async function PublishProduct() {
       const { data } = await axios.post(`${tailpress_object.homeUrl}/wp-json/loginsystem/v1/products`, Product);
       console.log(data);
       if (data.success == true) {
-            alert('produto cadastrado')
+            Swal.fire({
+                  title: 'Sucesso!',
+                  text: 'Produto cadastrado!',
+                  icon: 'success',
+                  confirmButtonText: 'OK'
+            })
             window.location.reload();
       }
 }
@@ -195,9 +200,40 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 jQuery(document).ready(function($){
+      function loading(isLoading){
+            if(isLoading){
+              console.log('true')
+              var animationData = {
+                container: document.getElementById('loading-animation'),
+                renderer: 'svg',
+                loop: true,
+                autoplay: true,
+                path: '/wp-content/themes/tailpress/resources/json/98288-loading.json',
+                rendererSettings: {
+                  scale: 0.1 
+                },
+                zIndex: 99999999
+              };
+              var anim = bodymovin.loadAnimation(animationData);
+              $('#loading-animation').addClass('active')
+        
+              return anim
+            }else{
+              console.log('false')
+              $('#loading-animation').fadeOut('fast', function() {
+                $(this).remove();
+                $(this).removeClass('active')
+              });
+            }
+          }
       function addProduct(id) {
             if (id === '') {
-              alert('Produto inválido');
+                  Swal.fire({
+                        title: 'Erro!',
+                        text: 'Produto inválido',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                  });
               return;
             }
           
@@ -216,12 +252,17 @@ jQuery(document).ready(function($){
                   updateCartCounter();
                   createDrawerCart();        
                   updateCartTotal()
-                  // $('#readProductDrawer').removeClass('-translate-x-full')
+                  $('#readProductDrawer').removeClass('-translate-x-full')
               },
               error: function(xhr, status, error) {
                   console.log(error)
-                alert('Erro ao adicionar o produto.121212');
-              }
+                  Swal.fire({
+                        title: 'Erro!',
+                        text: 'Erro ao adicionar o produto',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                      });
+              },
             });
       }
       function updateCartCounter() {
@@ -241,7 +282,7 @@ jQuery(document).ready(function($){
                         <div class="product py-3" data-id="${product.produto_id}">
                               <div class="flex justify-between mb-3">
                                     <p class="font-semibold">${product.title}</p>
-                                    <p class="font-bold">${product.price}</p>
+                                    <p class="font-bold">${formatPrice(product.price)}</p>
                               </div>
                               <div class="flex justify-between">
                                     <div class="flex items-center">
@@ -257,7 +298,7 @@ jQuery(document).ready(function($){
                                                 </svg>                                  
                                           </a>
                                     </div>
-                                    <button id="deleteButton" type="button" data-id="${product.produto_id}" class="text-red-700 hover:text-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium text-sm">Delete</button>
+                                    <button id="deleteButton" type="button" data-id="${product.produto_id}" class="text-red-700 hover:text-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium text-sm"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg></button>
                               </div>
                         </div>
                   </div>
@@ -266,7 +307,7 @@ jQuery(document).ready(function($){
             $('#productDrawerList').html(row)
       }
       function updateCartTotal(){
-            $('#subtotal').text(total)
+            $('#subtotal').text(formatPrice(total))
       }
       function closeSale() {
             const author  = parseInt($('#vendedores').val());
@@ -280,15 +321,34 @@ jQuery(document).ready(function($){
                     total,
                     author
                   },
+                  beforeSend: function() {
+                        loading(true)
+                        },
                   success: function(response) {
-                        alert('Venda efetuada com sucesso')
-                        $('#readProductDrawer').addClass('-translate-x-full')
-                        window.location.reload();
+                        Swal.fire({
+                              title: 'Sucesso!',
+                              text: 'Venda efetuada!',
+                              icon: 'success',
+                              confirmButtonText: 'OK'
+                            }).then((result) => {
+                              if (result.isConfirmed) {
+                                $('#readProductDrawer').addClass('-translate-x-full');
+                                window.location.reload();
+                              }
+                            });
                   },
                   error: function(xhr, status, error) {
                       console.log(error)
-                    alert('Erro ao fechar venda');
-                  }
+                      Swal.fire({
+                        title: 'Erro!',
+                        text: 'Erro ao fechar a venda',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                      });
+                  },
+                  complete: function() {
+                        loading(false)
+                      }
                 });
       }
       
@@ -326,7 +386,12 @@ jQuery(document).ready(function($){
                         // updateTableAndTotalPrice(products);
                   },
                   error: function(xhr, status, error) {
-                        alert('Erro ao excluir o produto.');
+                        Swal.fire({
+                              title: 'Erro!',
+                              text: 'Erro ao excluir o produto',
+                              icon: 'error',
+                              confirmButtonText: 'OK'
+                            });
             }
             });
       });
@@ -351,7 +416,12 @@ jQuery(document).ready(function($){
                         // updateTableAndTotalPrice(products);
                   },
                   error: function(xhr, status, error) {
-                        alert('Erro ao excluir o produto.');
+                        Swal.fire({
+                              title: 'Erro!',
+                              text: 'Erro ao excluir o produto',
+                              icon: 'error',
+                              confirmButtonText: 'OK'
+                            });
             }
             });
       });
@@ -371,6 +441,9 @@ jQuery(document).ready(function($){
               init_date: Datas.dia(),
               final_date: Datas.dia()
             },
+            beforeSend: function() {
+                  loading(true)
+                  },
             success: function(response) {
                   console.log(response)
                   $('#balanco_diario').text(response.data.valor_final.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }))
@@ -381,7 +454,7 @@ jQuery(document).ready(function($){
             },
             error: function(xhr, status, error) {
                   console.log(error)
-            }
+            },
       });
       //balanço semanal
       $.ajax({
@@ -454,9 +527,32 @@ jQuery(document).ready(function($){
             },
             error: function(xhr, status, error) {
                   console.log(error);
+            },
+            complete: function(){
+                  loading(false)
             }
       });
+      // search input
+  $('#table-search-users').on('keyup', function() {
+      var searchTerm = $(this).val().toLowerCase();
+  
+      $('#productsTable tbody tr').each(function() {
+        var productName = $(this).find('.product-name').text().toLowerCase();
+  
+        if (productName.includes(searchTerm)) {
+          $(this).show();
+        } else {
+          $(this).hide();
+        }
+      });
+    });
+  
 })
+
+function formatPrice(value) {
+      var formattedValue = parseFloat(value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      return formattedValue;
+}
 
 document.addEventListener('DOMContentLoaded', async function() {
       const products = await getProducts();

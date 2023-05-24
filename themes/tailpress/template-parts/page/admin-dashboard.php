@@ -7,6 +7,7 @@ $dash_product_query = new WP_Query($args);
 ?>
 
 <?php if ( current_user_can('manage_options') ) { ?>
+    <div id="loading-animation"></div>
     <div class="max-w-xs sm:max-w-lg md:max-w-3xl lg:max-w-5xl max-2xl:max-w-7xl mx-auto pt-12">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7 mb-32">
             <div class="px-4 py-3 bg-white rounded-md shadow-md">

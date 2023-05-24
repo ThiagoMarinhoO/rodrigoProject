@@ -3,3 +3,18 @@
 @import "tailwindcss/utilities";
 
 @import "custom.css";
+
+#loading-animation {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999999999;
+    height: 100%;
+    background: #e5e7eb;
+    width: 100%;
+    display: none;
+}
+#loading-animation.active{
+    display: block;
+}

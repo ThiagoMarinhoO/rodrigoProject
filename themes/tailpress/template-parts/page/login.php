@@ -3,6 +3,7 @@
 redirecionar_admin_logado();
 redirecionar_usuario_logado();
 ?>
+<div id="loading-animation"></div>
 <div class="min-h-screen flex items-center">
     <div class="container max-w-4xl mx-auto flex">
         <div class="lg:w-1/2 py-20 px-12 bg-white">
