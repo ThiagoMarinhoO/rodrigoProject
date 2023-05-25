@@ -21,7 +21,7 @@ $dash_product_query = new WP_Query($args);
                 <table class="w-full text-sm text-left text-gray-500">
                     <caption class="p-5 text-lg font-semibold text-left text-gray-900 bg-white">
                         Transações
-                        <p class="mt-1 text-sm font-normal text-gray-500">Browse a list of Flowbite products designed to help you work and play, stay organized, get answers, keep in touch, grow your business, and more.</p>
+                        <p class="mt-1 text-sm font-normal text-gray-500">Esta é sua lista de transações desenvolvida para te ajudar a se manter organizado e informados de suas vendas recentes</p>
                     </caption>
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                         <tr>
@@ -29,7 +29,7 @@ $dash_product_query = new WP_Query($args);
                                 Produtos
                             </th>
                             <th scope="col" class="px-6 py-3 font-semibold text-gray-600 whitespace-nowrap">
-                                Data & Hora
+                                Data
                             </th>
                             <th scope="col" class="px-6 py-3 font-semibold text-gray-600 whitespace-nowrap">
                                 Valor (R$)

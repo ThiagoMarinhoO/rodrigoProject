@@ -20,9 +20,8 @@
 	<header class="bg-white border-gray-200">
 		<?php if (!is_page( 54 ) && !is_front_page() ) { ?>
 			<div class="max-w-xs sm:max-w-lg md:max-w-3xl lg:max-w-5xl max-2xl:max-w-7xl flex flex-wrap items-center justify-between mx-auto p-4">
-				<a href="https://flowbite.com/" class="flex items-center">
-					<img src="https://flowbite.com/docs/images/logo.svg" class="h-8 mr-3" alt="Flowbite Logo" />
-					<span class="self-center text-2xl font-semibold whitespace-nowrap">Flowbite</span>
+				<a href="<?php get_bloginfo( 'url' );?>" class="flex items-center gap-2 text-2xl font-semibold">
+					<img src="<?php echo esc_html( get_field('logo_header') ); ?>" alt="" class="w-6 h-6">
 				</a>
 				<div class="flex items-center md:order-2 group relative">
 					<div class="flex-column gap-2 mr-3 cursor-pointer">
@@ -48,8 +47,14 @@
 					<!-- Dropdown menu -->
 					<div class="hidden z-50 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow group-hover:block absolute right-0 top-full" id="user-dropdown">
 						<div class="px-4 py-3">
-						<span class="block text-sm text-gray-900"><?php echo wp_get_current_user()->display_name;?></span>
-						<span class="block text-sm  text-gray-500 truncate"><?php echo wp_get_current_user()->user_email;?></span>
+							<span class="block text-sm text-gray-900"><?php echo wp_get_current_user()->display_name;?></span>
+							<span class="block text-sm  text-gray-500 truncate"><?php echo wp_get_current_user()->user_email;?></span>
+						</div>
+						<div id="addNewUser" class="px-4 py-3 hover:bg-gray-100 flex items-center gap-2">
+							<p class="text-sm text-gray-700 cursor-pointer">Funcionários</p>
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+							</svg>
 						</div>
 						<ul class="py-2" aria-labelledby="user-menu-button">
 							<li>

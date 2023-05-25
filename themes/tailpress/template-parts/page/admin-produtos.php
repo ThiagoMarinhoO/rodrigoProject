@@ -14,7 +14,7 @@ $products_query = new WP_Query( $args );
     <div class="max-w-xs sm:max-w-lg md:max-w-3xl lg:max-w-5xl max-2xl:max-w-7xl mx-auto pt-12">
         <div class="mb-12">
             <h2 class="text-gray-950 text-3xl font-semibold">Seus Produtos</h2>
-            <p class="text-gray-600 text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ultrices lectus sem.</p>
+            <p class="text-gray-600 text-sm">Busque os produtos cadastrados no estoque ou adicione novos.</p>
         </div>
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <div class="flex items-center justify-between p-4 bg-white">
