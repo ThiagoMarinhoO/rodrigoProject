@@ -1,6 +1,6 @@
 <?php get_header();
 ?>
-
+    <div id="loading-animation"></div>
     <header class="bg-gray-900 pattern min-h-screen flex justify-center items-center">
         <div class="w-full max-w-md bg-white rounded-lg">
             <div class="px-6 py-8 text-center">

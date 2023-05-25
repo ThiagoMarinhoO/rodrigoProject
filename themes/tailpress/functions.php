@@ -40,18 +40,22 @@ add_action( 'after_setup_theme', 'tailpress_setup' );
  * Enqueue theme assets.
  */
 function tailpress_enqueue_scripts() {
-	$theme = wp_get_theme();
+    $theme = wp_get_theme();
 
-	wp_enqueue_style( 'tailpress', tailpress_asset( 'css/app.css' ), array(), $theme->get( 'Version' ) );
-	wp_enqueue_script( 'tailpress', tailpress_asset( 'js/app.js' ), array('jquery'), $theme->get( 'Version' ) );
-	wp_enqueue_script( 'axios', 'https://unpkg.com/axios/dist/axios.min.js' );
-	wp_localize_script( 'tailpress', 'tailpress_object',
-		array( 
-			'ajaxurl' => admin_url( 'admin-ajax.php' ),
-			'homeUrl' => home_url(),
-			'userID' => get_current_user_id(),
-		)
-	);
+    wp_enqueue_style( 'tailpress', tailpress_asset( 'css/app.css' ), array(), $theme->get( 'Version' ) );
+    wp_enqueue_script( 'jquery' );
+    wp_enqueue_script( 'axios', 'https://unpkg.com/axios/dist/axios.min.js' );
+    wp_enqueue_script('lottie', 'https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.4/lottie.min.js', array(), '5.7.4', true);
+    wp_enqueue_script( 'tailpress', tailpress_asset( 'js/app.js' ), array('jquery', 'sweetalert'), $theme->get( 'Version' ) );
+	wp_enqueue_script('sweetalert', 'https://cdn.jsdelivr.net/npm/sweetalert2@10.0.0/dist/sweetalert2.all.min.js', array('jquery'), '10.0.0', true);
+
+    wp_localize_script( 'tailpress', 'tailpress_object',
+        array( 
+            'ajaxurl' => admin_url( 'admin-ajax.php' ),
+            'homeUrl' => home_url(),
+            'userID' => get_current_user_id(),
+        )
+    );
 }
 
 add_action( 'wp_enqueue_scripts', 'tailpress_enqueue_scripts' );

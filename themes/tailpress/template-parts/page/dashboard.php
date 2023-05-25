@@ -10,6 +10,7 @@ $dash_product_query = new WP_Query($args);
 
 
 <?php if ( is_user_logged_in() ) { ?>
+    <div id="loading-animation"></div>
     <div class="max-w-xs sm:max-w-lg md:max-w-3xl lg:max-w-5xl max-2xl:max-w-7xl mx-auto pt-12">
         <div class="mb-12">
             <h2 class="text-gray-950 text-3xl font-semibold">Bem vindo ao Dashboard de Vendas</h2>

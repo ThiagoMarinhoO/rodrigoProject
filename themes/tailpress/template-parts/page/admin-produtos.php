@@ -10,6 +10,7 @@ $products_query = new WP_Query( $args );
 
 
 <?php if ( is_user_logged_in() ) { ?>
+    <div id="loading-animation"></div>
     <div class="max-w-xs sm:max-w-lg md:max-w-3xl lg:max-w-5xl max-2xl:max-w-7xl mx-auto pt-12">
         <div class="mb-12">
             <h2 class="text-gray-950 text-3xl font-semibold">Seus Produtos</h2>
@@ -109,7 +110,7 @@ $products_query = new WP_Query( $args );
                     <input type="text" id="table-search-users" class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Buscar produtos">
                 </div>
             </div>
-            <table class="w-full text-sm text-left text-gray-500">
+            <table id="productsTable" class="w-full text-sm text-left text-gray-500">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
                         <th scope="col" class="px-6 py-3 font-semibold text-gray-600">
@@ -130,7 +131,7 @@ $products_query = new WP_Query( $args );
                 <tbody>
                     <?php while($products_query->have_posts()): $products_query->the_post();?>
                     <tr class="bg-white border-b hover:bg-gray-50">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap product-name">
                             <?php the_title();?>
                         </th>
                         <td class="px-6 py-4">
