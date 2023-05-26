@@ -79,3 +79,34 @@ function create_order(){
         'venda' => $post_data,
     ));
 }
+
+add_action('wp_ajax_status_order', 'status_order');
+add_action('wp_ajax_nopriv_status_order', 'status_order');
+
+function status_order() {
+    $post_id = $_POST['product_id'];
+    $post_status = $_POST['status_order'];
+    
+    $post_data = array(
+        'ID' => $post_id,
+        'post_status' => $post_status,
+    );
+    $post_updated = wp_update_post($post_data);
+    
+    if ($post_updated instanceof WP_Error) {
+        echo 'Ocorreu um erro ao atualizar o post: ' . $post_updated->get_error_message();
+    } else {
+        wp_send_json_success(array(
+            'postID' => $post_id,
+            'post_status' => $post_status,
+        ));
+    }
+    // $post_id = $_POST['product_id'];
+    
+
+    // wp_delete_post($post_id, true);
+
+    // wp_send_json_success(array(
+    //     'message' => 'post deletado com sucesso',
+    // ));
+}
