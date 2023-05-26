@@ -124,6 +124,40 @@ async function getProducts() {
       return data;
 }
 
+function formatPrice(value) {
+      var formattedValue = parseFloat(value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      return formattedValue;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+      const editarProdutosModal = {
+            modal: document.querySelectorAll("#editarProdutoModal"),
+            openModalButton: document.querySelectorAll("#editarProdutoButton"),
+            openModal: () => {
+                  editarProdutosModal.openModalButton.forEach((button, index) => {
+                        button.addEventListener('click', () => {
+                              editarProdutosModal.modal[index].classList.remove('hidden');
+                              editarProdutosModal.modal[index].classList.add('flex');
+                        })
+                  })
+            },
+            closeModal: () => {
+                  editarProdutosModal.modal.forEach((modal, index) => {
+                        modal.addEventListener('click', (event) => {
+                              if(event.target == modal) {
+                                    editarProdutosModal.modal[index].classList.remove('flex');
+                                    editarProdutosModal.modal[index].classList.add('hidden');
+                              }
+                        })
+                  })
+            }
+      }
+      editarProdutosModal.openModal();
+      editarProdutosModal.closeModal();
+
+
+});
+
 document.addEventListener('DOMContentLoaded', function () {
       const Modal = {
             modal: document.querySelector('#AdicionarProdutoModal'),
@@ -346,15 +380,34 @@ jQuery(document).ready(function($){
                               total,
                               author
                         },
+                        beforeSend: function() {
+                              loading(true)
+                              },
                         success: function(response) {
-                              alert('Venda efetuada com sucesso')
-                              $('#readProductDrawer').addClass('-translate-x-full')
-                              window.location.reload();
+                              Swal.fire({
+                                    title: 'Sucesso!',
+                                    text: 'Venda efetuada!',
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                    }).then((result) => {
+                                    if (result.isConfirmed) {
+                                          $('#readProductDrawer').addClass('-translate-x-full');
+                                          window.location.reload();
+                                    }
+                                    });
                         },
                         error: function(xhr, status, error) {
                               console.log(error)
-                              alert('Erro ao fechar venda');
-                        }
+                              Swal.fire({
+                              title: 'Erro!',
+                              text: 'Erro ao fechar a venda',
+                              icon: 'error',
+                              confirmButtonText: 'OK'
+                              });
+                        },
+                        complete: function() {
+                              loading(false)
+                              }
                   });
             }else {
                   $('#vendedores').addClass('border-red-500');
@@ -365,45 +418,7 @@ jQuery(document).ready(function($){
                   }, 5000)
                   alert('Selecione um vendedor');
             }
-            $.ajax({
-                  url: tailpress_object.ajaxurl,
-                  type: 'POST',
-                  dataType: 'json',
-                  data: {
-                    action: 'create_order',
-                    products: cart,
-                    total,
-                    author
-                  },
-                  beforeSend: function() {
-                        loading(true)
-                        },
-                  success: function(response) {
-                        Swal.fire({
-                              title: 'Sucesso!',
-                              text: 'Venda efetuada!',
-                              icon: 'success',
-                              confirmButtonText: 'OK'
-                            }).then((result) => {
-                              if (result.isConfirmed) {
-                                $('#readProductDrawer').addClass('-translate-x-full');
-                                window.location.reload();
-                              }
-                            });
-                  },
-                  error: function(xhr, status, error) {
-                      console.log(error)
-                      Swal.fire({
-                        title: 'Erro!',
-                        text: 'Erro ao fechar a venda',
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                      });
-                  },
-                  complete: function() {
-                        loading(false)
-                      }
-                });
+            
       }
       
       $('.add-to-cart-btn').on('click' , function(e){
@@ -587,26 +602,70 @@ jQuery(document).ready(function($){
             }
       });
       // search input
-  $('#table-search-users').on('keyup', function() {
+      $('#table-search-users').on('keyup', function() {
       var searchTerm = $(this).val().toLowerCase();
-  
-      $('#productsTable tbody tr').each(function() {
-        var productName = $(this).find('.product-name').text().toLowerCase();
-  
-        if (productName.includes(searchTerm)) {
-          $(this).show();
-        } else {
-          $(this).hide();
-        }
-      });
-    });
-  
-})
 
-function formatPrice(value) {
-      var formattedValue = parseFloat(value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-      return formattedValue;
-}
+      $('#productsTable tbody tr').each(function() {
+            var productName = $(this).find('.product-name').text().toLowerCase();
+
+            if (productName.includes(searchTerm)) {
+            $(this).show();
+            } else {
+            $(this).hide();
+            }
+      });
+      });
+      
+      //ATUALIZAR PRODUTOS
+      $('.atualizarProdutoButton').each(function(index, button) {
+            $(button).on('click',function() {
+              let title = $(".updateProductName").eq(index).val();
+              let price = $(".updateProductPrice").eq(index).val();
+              let product_id = $(".atualizarProdutoButton").eq(index).attr("data-id");
+              console.log(product_id)
+          
+              $.ajax({
+                url: tailpress_object.ajaxurl,
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                  action: 'update_product',
+                  product_id: product_id,
+                  title: title,
+                  price: price,
+                },
+                beforeSend: function() {
+                  loading(true);
+                },
+                success: function(response) {
+                  Swal.fire({
+                    title: 'Sucesso!',
+                    text: 'Produto atualizado!',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                  }).then(function(result) {
+                    if (result.isConfirmed) {
+                      $('#readProductDrawer').addClass('-translate-x-full');
+                      window.location.reload();
+                    }
+                  });
+                },
+                error: function(xhr, status, error) {
+                  console.log(error);
+                  Swal.fire({
+                    title: 'Erro!',
+                    text: 'Erro ao atualizar produto',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                  });
+                },
+                complete: function() {
+                  loading(false);
+                }
+              });
+            });
+      });            
+})
 
 document.addEventListener('DOMContentLoaded', async function() {
       const products = await getProducts();

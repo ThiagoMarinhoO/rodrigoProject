@@ -141,7 +141,34 @@ $products_query = new WP_Query( $args );
                             <?php echo 'R$' . number_format(get_field('product_price', $post->ID), 2, ',', '.');?>
                         </td>
                         <td class="px-6 py-4">
-                            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
+                            <a id="editarProdutoButton" href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
+                        </td>
+                        <td id="editarProdutoModal" class="fixed top-0 left-0 right-0 z-50 items-center justify-center hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 max-h-full bg-gray-950 bg-opacity-50">
+                            <div class="container max-w-3xl p-6 relative bg-white rounded-lg shadow">
+                                <!-- Modal header -->
+                                <div class="py-2 border-b rounded-t mb-4">
+                                    <h3 class="text-xl font-semibold text-gray-900">
+                                        Informações do Produto
+                                    </h3>
+                                </div>
+                                <!-- Modal body -->
+                                <div class="mb-5">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                            <div class="">
+                                                <label for="productName" class="block mb-2 text-sm font-medium text-gray-900">Nome</label>
+                                                <input type="text" name="product_name" id="" class="updateProductName shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" placeholder="<?php echo the_title();?>" required="">
+                                            </div>
+                                            <div class="">
+                                                <label for="price" class="block mb-2 text-sm font-medium text-gray-900">Preço</label>
+                                                <input type="number" name="product_price" id="" class="updateProductPrice shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" placeholder="<?php echo 'R$' . number_format(get_field('product_price', $post->ID), 2, ',', '.');?>" required="">
+                                            </div>
+                                    </div>
+                                </div>
+                                <!-- Modal footer -->
+                                <div id="" data-id="<?php echo $post->ID;?>" class="atualizarProdutoButton pt-5 flex items-center space-x-2 border-t border-gray-200 rounded-b">
+                                    <button type="button"  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Atualizar Produto</button>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                     <?php endwhile; ?>

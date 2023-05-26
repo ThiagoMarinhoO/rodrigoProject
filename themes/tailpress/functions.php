@@ -155,3 +155,4 @@ require_once($functions_path . 'create-order.php');
 require_once($functions_path . 'delete-product.php');
 require_once($functions_path . 'daily-report.php');
 require_once($functions_path . 'import-product.php');
+require_once($functions_path . 'update-products.php');
