@@ -2609,7 +2609,7 @@ jQuery(document).ready(function ($) {
       loading(true);
     },
     success: function success(response) {
-      console.log(response);
+      // console.log(response)
       $('#balanco_diario').text(response.data.valor_final.toLocaleString('pt-BR', {
         style: 'currency',
         currency: 'BRL'
@@ -2635,7 +2635,7 @@ jQuery(document).ready(function ($) {
       final_date: Datas.ultimoDiaSemana.toISOString().slice(0, 10)
     },
     success: function success(response) {
-      console.log(response);
+      // console.log(response)
       $('#balanco_semanal').text(response.data.valor_final.toLocaleString('pt-BR', {
         style: 'currency',
         currency: 'BRL'
@@ -2656,16 +2656,17 @@ jQuery(document).ready(function ($) {
       final_date: Datas.ultimoDiaMes.toISOString().slice(0, 10)
     },
     success: function success(response) {
-      console.log(response);
+      var _response$data$produt, _response$data$produt2;
+      // console.log(response)
       $('#balanco_mensal').text(response.data.valor_final.toLocaleString('pt-BR', {
         style: 'currency',
         currency: 'BRL'
       }));
-      $('#produtoMaisVendidoPreco').text(parseInt(response.data.produto_mais_vendido.produto_preco).toLocaleString('pt-BR', {
+      $('#produtoMaisVendidoPreco').text(parseInt((_response$data$produt = response.data.produto_mais_vendido) === null || _response$data$produt === void 0 ? void 0 : _response$data$produt.produto_preco).toLocaleString('pt-BR', {
         style: 'currency',
         currency: 'BRL'
       }));
-      $('#produtoMaisVendidoNome').text(response.data.produto_mais_vendido.produto_nome);
+      $('#produtoMaisVendidoNome').text((_response$data$produt2 = response.data.produto_mais_vendido) === null || _response$data$produt2 === void 0 ? void 0 : _response$data$produt2.produto_nome);
     },
     error: function error(xhr, status, _error7) {
       console.log(_error7);
@@ -2682,7 +2683,7 @@ jQuery(document).ready(function ($) {
       final_date: Datas.recorteSemestre().ultimoDia.toISOString().slice(0, 10)
     },
     success: function success(response) {
-      console.log(response);
+      // console.log(response)
       $('#balanco_semestral').text(response.data.valor_final.toLocaleString('pt-BR', {
         style: 'currency',
         currency: 'BRL'
@@ -2728,52 +2729,110 @@ jQuery(document).ready(function ($) {
     });
   });
 
-  //ATUALIZAR PRODUTOS
+  //ATUALIZAR PRODUTOS (ADMIN)
   $('.atualizarProdutoButton').each(function (index, button) {
     $(button).on('click', function () {
       var title = $(".updateProductName").eq(index).val();
       var price = $(".updateProductPrice").eq(index).val();
       var product_id = $(".atualizarProdutoButton").eq(index).attr("data-id");
-      console.log(product_id);
-      $.ajax({
-        url: tailpress_object.ajaxurl,
-        type: 'POST',
-        dataType: 'json',
-        data: {
-          action: 'update_product',
-          product_id: product_id,
-          title: title,
-          price: price
-        },
-        beforeSend: function beforeSend() {
-          loading(true);
-        },
-        success: function success(response) {
-          Swal.fire({
-            title: 'Sucesso!',
-            text: 'Produto atualizado!',
-            icon: 'success',
-            confirmButtonText: 'OK'
-          }).then(function (result) {
-            if (result.isConfirmed) {
-              $('#readProductDrawer').addClass('-translate-x-full');
-              window.location.reload();
-            }
-          });
-        },
-        error: function error(xhr, status, _error10) {
-          console.log(_error10);
-          Swal.fire({
-            title: 'Erro!',
-            text: 'Erro ao atualizar produto',
-            icon: 'error',
-            confirmButtonText: 'OK'
-          });
-        },
-        complete: function complete() {
-          loading(false);
-        }
-      });
+      if (!title || !price) {
+        Swal.fire({
+          title: 'Atenção!',
+          text: 'Preencha todos os campos!',
+          icon: 'warning',
+          confirmButtonText: 'OK'
+        }).then(function (result) {
+          if (result.isConfirmed) {
+            $('#readProductDrawer').addClass('-translate-x-full');
+          }
+        });
+      } else {
+        $.ajax({
+          url: tailpress_object.ajaxurl,
+          type: 'POST',
+          dataType: 'json',
+          data: {
+            action: 'update_product',
+            product_id: product_id,
+            title: title,
+            price: price
+          },
+          beforeSend: function beforeSend() {
+            loading(true);
+          },
+          success: function success(response) {
+            Swal.fire({
+              title: 'Sucesso!',
+              text: 'Produto atualizado!',
+              icon: 'success',
+              confirmButtonText: 'OK'
+            }).then(function (result) {
+              if (result.isConfirmed) {
+                $('#readProductDrawer').addClass('-translate-x-full');
+                window.location.reload();
+              }
+            });
+          },
+          error: function error(xhr, status, _error10) {
+            console.log(_error10);
+            Swal.fire({
+              title: 'Erro!',
+              text: 'Erro ao atualizar produto',
+              icon: 'error',
+              confirmButtonText: 'OK'
+            });
+          },
+          complete: function complete() {
+            loading(false);
+          }
+        });
+      }
+    });
+  });
+
+  //DELETAR PRODUTOS (ADMIN)
+  $('.deletarProdutoButton').each(function (index, button) {
+    $(button).on('click', function () {
+      var product_id = $(".atualizarProdutoButton").eq(index).attr("data-id");
+      if (product_id) {
+        $.ajax({
+          url: tailpress_object.ajaxurl,
+          type: 'POST',
+          dataType: 'json',
+          data: {
+            action: 'delete_product_post',
+            product_id: product_id
+          },
+          beforeSend: function beforeSend() {
+            loading(true);
+          },
+          success: function success(response) {
+            Swal.fire({
+              title: 'Sucesso!',
+              text: 'Produto deletado!',
+              icon: 'success',
+              confirmButtonText: 'OK'
+            }).then(function (result) {
+              if (result.isConfirmed) {
+                $('#readProductDrawer').addClass('-translate-x-full');
+                window.location.reload();
+              }
+            });
+          },
+          error: function error(xhr, status, _error11) {
+            console.log(_error11);
+            Swal.fire({
+              title: 'Erro!',
+              text: 'Erro ao deletar produto',
+              icon: 'error',
+              confirmButtonText: 'OK'
+            });
+          },
+          complete: function complete() {
+            loading(false);
+          }
+        });
+      }
     });
   });
   $('.deleteSale').each(function (index, button) {
@@ -2812,8 +2871,8 @@ jQuery(document).ready(function ($) {
                 }
               });
             },
-            error: function error(xhr, status, _error11) {
-              console.log(_error11);
+            error: function error(xhr, status, _error12) {
+              console.log(_error12);
               Swal.fire({
                 title: 'Erro!',
                 text: 'Erro ao cancelar venda',
@@ -2865,8 +2924,8 @@ jQuery(document).ready(function ($) {
                 }
               });
             },
-            error: function error(xhr, status, _error12) {
-              console.log(_error12);
+            error: function error(xhr, status, _error13) {
+              console.log(_error13);
               Swal.fire({
                 title: 'Erro!',
                 text: 'Erro ao efetuar venda',

@@ -11,7 +11,7 @@ $products_query = new WP_Query( $args );
 
 <?php if ( is_user_logged_in() ) { ?>
     <div id="loading-animation"></div>
-    <div class="max-w-xs sm:max-w-lg md:max-w-3xl lg:max-w-5xl max-2xl:max-w-7xl mx-auto pt-12">
+    <div class="max-w-xs sm:max-w-lg md:max-w-3xl lg:max-w-5xl max-2xl:max-w-7xl mx-auto py-12">
         <div class="mb-12">
             <h2 class="text-gray-950 text-3xl font-semibold">Seus Produtos</h2>
             <p class="text-gray-600 text-sm">Busque os produtos cadastrados no estoque ou adicione novos.</p>
@@ -141,7 +141,11 @@ $products_query = new WP_Query( $args );
                             <?php echo 'R$' . number_format(get_field('product_price', $post->ID), 2, ',', '.');?>
                         </td>
                         <td class="px-6 py-4">
-                            <a id="editarProdutoButton" href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
+                            <a id="editarProdutoButton" href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                </svg>
+                            </a>
                         </td>
                         <td id="editarProdutoModal" class="fixed top-0 left-0 right-0 z-50 items-center justify-center hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 max-h-full bg-gray-950 bg-opacity-50">
                             <div class="container max-w-3xl p-6 relative bg-white rounded-lg shadow">
@@ -165,8 +169,16 @@ $products_query = new WP_Query( $args );
                                     </div>
                                 </div>
                                 <!-- Modal footer -->
-                                <div id="" data-id="<?php echo $post->ID;?>" class="atualizarProdutoButton pt-5 flex items-center space-x-2 border-t border-gray-200 rounded-b">
-                                    <button type="button"  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Atualizar Produto</button>
+                                <div class="container flex items-center gap-4 border-t border-gray-200 rounded-b">
+                                    <div id="" data-id="<?php echo $post->ID;?>" class="atualizarProdutoButton pt-5 flex items-center space-x-2">
+                                        <button type="button"  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Atualizar Produto</button>
+                                    </div>
+                                    <div id="" data-id="<?php echo $post->ID;?>" class="deletarProdutoButton pt-5 flex items-center space-x-2">
+                                        <button type="button" class="text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
+                                            <svg class="mr-1 -ml-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                                            Delete
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </td>

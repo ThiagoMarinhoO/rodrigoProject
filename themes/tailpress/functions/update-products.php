@@ -25,3 +25,16 @@ function update_product() {
     }
     
 }
+
+add_action('wp_ajax_delete_product_post', 'delete_product_post');
+add_action('wp_ajax_nopriv_delete_product_post', 'delete_product_post');
+
+function delete_product_post() {
+    $post_id = $_POST['product_id'];
+
+    wp_delete_post($post_id, true);
+
+    wp_send_json_success(array(
+        'message' => 'post deletado com sucesso',
+    ));
+}
