@@ -416,7 +416,12 @@ jQuery(document).ready(function($){
                         $('#vendedores').removeClass('border-red-500');
                         $('#labelVendedores').removeClass('text-red-500');
                   }, 5000)
-                  alert('Selecione um vendedor');
+                  Swal.fire({
+                        title: 'Atenção!',
+                        text: 'Selecione um vendedor!',
+                        icon: 'warning',
+                        confirmButtonText: 'OK'
+                  })
             }
             
       }
