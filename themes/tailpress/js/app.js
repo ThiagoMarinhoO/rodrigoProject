@@ -2069,7 +2069,6 @@ var axios = (__webpack_require__(/*! axios */ "./node_modules/axios/index.js")["
 // let products = window.products
 var cart = [];
 var total = 0;
-var date = new Date();
 var Datas = {
   dia: function dia() {
     var date = new Date();
@@ -2078,11 +2077,24 @@ var Datas = {
     var dia = ('0' + date.getDate()).slice(-2);
     return "".concat(ano, "-").concat(mes, "-").concat(dia);
   },
-  primeiroDiaSemana: new Date(date.setDate(date.getDate() - date.getDay())),
-  ultimoDiaSemana: new Date(date.setDate(date.getDate() - date.getDay() + 6)),
-  primeiroDiaMes: new Date(date.getFullYear(), date.getMonth(), 1),
-  ultimoDiaMes: new Date(date.getFullYear(), date.getMonth() + 1, 0),
+  primeiroDiaSemana: function primeiroDiaSemana() {
+    var date = new Date();
+    return new Date(date.setDate(date.getDate() - date.getDay()));
+  },
+  ultimoDiaSemana: function ultimoDiaSemana() {
+    var date = new Date();
+    return new Date(date.setDate(date.getDate() - date.getDay() + 6));
+  },
+  primeiroDiaMes: function primeiroDiaMes() {
+    var date = new Date();
+    return new Date(date.getFullYear(), date.getMonth(), 1);
+  },
+  ultimoDiaMes: function ultimoDiaMes() {
+    var date = new Date();
+    return new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  },
   recorteSemestre: function recorteSemestre() {
+    var date = new Date();
     var ano = date.getFullYear();
     var mes = date.getMonth();
     var mesInicioSemestre, mesFimSemestre;
@@ -2101,6 +2113,7 @@ var Datas = {
     };
   },
   recorteAnual: function recorteAnual() {
+    var date = new Date();
     var ano = date.getFullYear();
     var primeiroDiaAno = new Date(ano, 0, 1);
     var ultimoDiaAno = new Date(ano, 11, 31);
@@ -2636,8 +2649,8 @@ jQuery(document).ready(function ($) {
     dataType: 'json',
     data: {
       action: 'daily_report',
-      init_date: Datas.primeiroDiaSemana.toISOString().slice(0, 10),
-      final_date: Datas.ultimoDiaSemana.toISOString().slice(0, 10)
+      init_date: Datas.primeiroDiaSemana().toISOString().slice(0, 10),
+      final_date: Datas.ultimoDiaSemana().toISOString().slice(0, 10)
     },
     success: function success(response) {
       // console.log(response)
@@ -2657,17 +2670,17 @@ jQuery(document).ready(function ($) {
     dataType: 'json',
     data: {
       action: 'daily_report',
-      init_date: Datas.primeiroDiaMes.toISOString().slice(0, 10),
-      final_date: Datas.ultimoDiaMes.toISOString().slice(0, 10)
+      init_date: Datas.primeiroDiaMes().toISOString().slice(0, 10),
+      final_date: Datas.ultimoDiaMes().toISOString().slice(0, 10)
     },
     success: function success(response) {
-      var _response$data$produt, _response$data$produt2;
+      var _parseInt, _response$data$produt, _response$data$produt2;
       // console.log(response)
       $('#balanco_mensal').text(response.data.valor_final.toLocaleString('pt-BR', {
         style: 'currency',
         currency: 'BRL'
       }));
-      $('#produtoMaisVendidoPreco').text(parseInt((_response$data$produt = response.data.produto_mais_vendido) === null || _response$data$produt === void 0 ? void 0 : _response$data$produt.produto_preco).toLocaleString('pt-BR', {
+      $('#produtoMaisVendidoPreco').text((_parseInt = parseInt((_response$data$produt = response.data.produto_mais_vendido) === null || _response$data$produt === void 0 ? void 0 : _response$data$produt.produto_preco)) === null || _parseInt === void 0 ? void 0 : _parseInt.toLocaleString('pt-BR', {
         style: 'currency',
         currency: 'BRL'
       }));

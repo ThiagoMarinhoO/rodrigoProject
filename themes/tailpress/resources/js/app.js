@@ -4,56 +4,67 @@ const axios = require('axios').default;
 // let products = window.products
 let cart = [];
 let total = 0
-
-const date = new Date();
 const Datas = {
       dia: () => {
-            let date = new Date();
-            let ano = date.getFullYear();
-            let mes = ('0' + (date.getMonth() + 1)).slice(-2);
-            let dia = ('0' + date.getDate()).slice(-2);
-
-            return `${ano}-${mes}-${dia}`
+        let date = new Date();
+        let ano = date.getFullYear();
+        let mes = ('0' + (date.getMonth() + 1)).slice(-2);
+        let dia = ('0' + date.getDate()).slice(-2);
+    
+        return `${ano}-${mes}-${dia}`;
       },
-      primeiroDiaSemana: new Date(date.setDate(date.getDate() - date.getDay())),
-      ultimoDiaSemana: new Date(date.setDate(date.getDate() - date.getDay() + 6)),
-      primeiroDiaMes: new Date(date.getFullYear(), date.getMonth(), 1),
-      ultimoDiaMes: new Date(date.getFullYear(), date.getMonth() + 1, 0),
+      primeiroDiaSemana: () => {
+        let date = new Date();
+        return new Date(date.setDate(date.getDate() - date.getDay()));
+      },
+      ultimoDiaSemana: () => {
+        let date = new Date();
+        return new Date(date.setDate(date.getDate() - date.getDay() + 6));
+      },
+      primeiroDiaMes: () => {
+        let date = new Date();
+        return new Date(date.getFullYear(), date.getMonth(), 1);
+      },
+      ultimoDiaMes: () => {
+        let date = new Date();
+        return new Date(date.getFullYear(), date.getMonth() + 1, 0);
+      },
       recorteSemestre: () => {
-            var ano = date.getFullYear();
-            var mes = date.getMonth();
-
-            var mesInicioSemestre, mesFimSemestre;
-            if (mes >= 0 && mes <= 5) {
-            mesInicioSemestre = 0;
-            mesFimSemestre = 5;
-            } else {
-            mesInicioSemestre = 6;
-            mesFimSemestre = 11;
-            }
-
-            var primeiroDiaSemestre = new Date(ano, mesInicioSemestre, 1);
-
-            var ultimoDiaSemestre = new Date(ano, mesFimSemestre + 1, 0);
-
-            return {
-                  primeiroDia: primeiroDiaSemestre,
-                  ultimoDia: ultimoDiaSemestre
-            };
+        let date = new Date();
+        let ano = date.getFullYear();
+        let mes = date.getMonth();
+    
+        let mesInicioSemestre, mesFimSemestre;
+        if (mes >= 0 && mes <= 5) {
+          mesInicioSemestre = 0;
+          mesFimSemestre = 5;
+        } else {
+          mesInicioSemestre = 6;
+          mesFimSemestre = 11;
+        }
+    
+        let primeiroDiaSemestre = new Date(ano, mesInicioSemestre, 1);
+        let ultimoDiaSemestre = new Date(ano, mesFimSemestre + 1, 0);
+    
+        return {
+          primeiroDia: primeiroDiaSemestre,
+          ultimoDia: ultimoDiaSemestre
+        };
       },
       recorteAnual: () => {
-            var ano = date.getFullYear();
-
-            var primeiroDiaAno = new Date(ano, 0, 1);
-
-            var ultimoDiaAno = new Date(ano, 11, 31);
-
-            return {
-                  primeiroDia: primeiroDiaAno,
-                  ultimoDia: ultimoDiaAno
-            };
+        let date = new Date();
+        let ano = date.getFullYear();
+    
+        let primeiroDiaAno = new Date(ano, 0, 1);
+        let ultimoDiaAno = new Date(ano, 11, 31);
+    
+        return {
+          primeiroDia: primeiroDiaAno,
+          ultimoDia: ultimoDiaAno
+        };
       }
-}
+};
+    
 
 async function SignIn() {
       const email = document.querySelector('#email').value;
@@ -537,8 +548,8 @@ jQuery(document).ready(function($){
             dataType: 'json',
             data: {
               action: 'daily_report',
-              init_date: Datas.primeiroDiaSemana.toISOString().slice(0, 10),
-              final_date: Datas.ultimoDiaSemana.toISOString().slice(0, 10)
+              init_date: Datas.primeiroDiaSemana().toISOString().slice(0, 10),
+              final_date: Datas.ultimoDiaSemana().toISOString().slice(0, 10)
             },
             success: function(response) {
                   // console.log(response)
@@ -555,13 +566,13 @@ jQuery(document).ready(function($){
             dataType: 'json',
             data: {
               action: 'daily_report',
-              init_date: Datas.primeiroDiaMes.toISOString().slice(0, 10),
-              final_date: Datas.ultimoDiaMes.toISOString().slice(0, 10)
+              init_date: Datas.primeiroDiaMes().toISOString().slice(0, 10),
+              final_date: Datas.ultimoDiaMes().toISOString().slice(0, 10)
             },
             success: function(response) {
                   // console.log(response)
                   $('#balanco_mensal').text(response.data.valor_final.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }))
-                  $('#produtoMaisVendidoPreco').text(parseInt(response.data.produto_mais_vendido?.produto_preco).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }))
+                  $('#produtoMaisVendidoPreco').text(parseInt(response.data.produto_mais_vendido?.produto_preco)?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }))
                   $('#produtoMaisVendidoNome').text(response.data.produto_mais_vendido?.produto_nome)
             },
             error: function(xhr, status, error) {
