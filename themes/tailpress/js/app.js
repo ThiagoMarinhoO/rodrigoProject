@@ -2357,8 +2357,9 @@ document.addEventListener('DOMContentLoaded', function () {
     openModal: function openModal() {
       if (ModalNewUser.registerButton) {
         ModalNewUser.registerButton.onclick = function () {
-          ModalNewUser.modal.classList.remove('hidden');
-          ModalNewUser.modal.classList.add('flex');
+          var _ModalNewUser$modal, _ModalNewUser$modal2;
+          (_ModalNewUser$modal = ModalNewUser.modal) === null || _ModalNewUser$modal === void 0 ? void 0 : _ModalNewUser$modal.classList.remove('hidden');
+          (_ModalNewUser$modal2 = ModalNewUser.modal) === null || _ModalNewUser$modal2 === void 0 ? void 0 : _ModalNewUser$modal2.classList.add('flex');
         };
       }
     },
@@ -2366,8 +2367,9 @@ document.addEventListener('DOMContentLoaded', function () {
       if (ModalNewUser.modal) {
         ModalNewUser.modal.onclick = function (event) {
           if (event.target == ModalNewUser.modal) {
-            ModalNewUser.modal.classList.remove('flex');
-            ModalNewUser.modal.classList.add('hidden');
+            var _ModalNewUser$modal3, _ModalNewUser$modal4;
+            (_ModalNewUser$modal3 = ModalNewUser.modal) === null || _ModalNewUser$modal3 === void 0 ? void 0 : _ModalNewUser$modal3.classList.remove('flex');
+            (_ModalNewUser$modal4 = ModalNewUser.modal) === null || _ModalNewUser$modal4 === void 0 ? void 0 : _ModalNewUser$modal4.classList.add('hidden');
           }
         };
       }

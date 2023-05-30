@@ -226,8 +226,8 @@ document.addEventListener('DOMContentLoaded', function () {
             openModal: () => {
                   if(ModalNewUser.registerButton) {
                         ModalNewUser.registerButton.onclick = () => {
-                              ModalNewUser.modal.classList.remove('hidden');
-                              ModalNewUser.modal.classList.add('flex');
+                              ModalNewUser.modal?.classList.remove('hidden');
+                              ModalNewUser.modal?.classList.add('flex');
                         }
                   }
             },
@@ -235,8 +235,8 @@ document.addEventListener('DOMContentLoaded', function () {
                   if (ModalNewUser.modal) {
                         ModalNewUser.modal.onclick = function(event) {
                               if(event.target == ModalNewUser.modal) {
-                                    ModalNewUser.modal.classList.remove('flex');
-                                    ModalNewUser.modal.classList.add('hidden');
+                                    ModalNewUser.modal?.classList.remove('flex');
+                                    ModalNewUser.modal?.classList.add('hidden');
                               }
                         }
                   }
