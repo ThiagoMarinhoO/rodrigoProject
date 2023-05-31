@@ -111,10 +111,7 @@ async function PublishProduct() {
       const Product = {
             author: tailpress_object.userID,
             title: document.querySelector('#productName').value,
-            description: document.querySelector('#productDescription').value,
-            brand: document.querySelector('#productMarca').value,
             price: document.querySelector('#productPrice').value,
-            category: document.querySelector('#productCategory').value,
       }
 
       const { data } = await axios.post(`${tailpress_object.homeUrl}/wp-json/loginsystem/v1/products`, Product);

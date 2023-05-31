@@ -2218,10 +2218,7 @@ function _PublishProduct() {
           Product = {
             author: tailpress_object.userID,
             title: document.querySelector('#productName').value,
-            description: document.querySelector('#productDescription').value,
-            brand: document.querySelector('#productMarca').value,
-            price: document.querySelector('#productPrice').value,
-            category: document.querySelector('#productCategory').value
+            price: document.querySelector('#productPrice').value
           };
           _context4.next = 3;
           return axios.post("".concat(tailpress_object.homeUrl, "/wp-json/loginsystem/v1/products"), Product);
