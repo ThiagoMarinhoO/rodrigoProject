@@ -18,16 +18,17 @@
     function create_products(WP_REST_Request $request) {
       // Recebe os dados da requisição
       $title = $request['title'];
-      $excerpt = $request['description'];
       $author = $request['author'];
-      $brand = $request['brand'];
       $price = $request['price'];
-      $category = $request['category'];
+      $marketPrice = $request['marketPrice'];
+      $barcode = $request['barcode'];
+      $quantity = $request['estoque'];
+
+      $transacao_value = $marketPrice * $quantity;
   
       // Cria um novo post
       $post = array(
         'post_title'   => $title,
-        'post_excerpt' => $excerpt,
         'post_status'  => 'publish',
         'post_type'    => 'products',
         'post_author'  => $author,
@@ -35,9 +36,25 @@
 
       $post_id = wp_insert_post( $post );
 
-      update_field('product_brand' , $brand , $post_id);
       update_field('product_price' , $price , $post_id);
-      update_field('product_category' , $category , $post_id);
+      update_field('market_price' , $marketPrice , $post_id);
+      update_field('barcode' , $barcode , $post_id);
+      update_field('estoque' , $quantity , $post_id);
+
+      // Cria uma transação
+
+      $transacao = array(
+        'post_title'   => '[Saída] - ' . $title,
+        'post_status'  => 'publish',
+        'post_type'    => 'transacoes',
+        'post_author'  => $author,
+      );
+
+      $transacao_id = wp_insert_post( $transacao );
+
+      update_field('produto_cadastrado' , $title , $transacao_id);
+      update_field('valor_da_transacao' , $transacao_value , $transacao_id);
+      update_field('quantidade_cadastrada' , $quantity , $transacao_id);
   
       // Retorna a resposta da API
       if ( $post_id ) {
@@ -49,7 +66,7 @@
       } else {
         $response = array(
           'success' => false,
-          'error'   => 'Erro ao criar o post'
+          'error'   => 'Erro ao criar o produto'
         );
         wp_send_json_error( $response );
       }

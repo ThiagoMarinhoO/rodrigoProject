@@ -31,7 +31,7 @@ $products_query = new WP_Query( $args );
                             <!-- Modal header -->
                             <div class="py-2 border-b rounded-t mb-4">
                                 <h3 class="text-xl font-semibold text-gray-900">
-                                    Informações do Produto
+                                    Cadastrar Produto
                                 </h3>
                             </div>
                             <!-- Modal body -->
@@ -40,22 +40,22 @@ $products_query = new WP_Query( $args );
                                     <div class="">
                                         <label for="productName" class="block mb-2 text-sm font-medium text-gray-900">Nome</label>
                                         <input type="text" name="product_name" id="productName" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" placeholder="Nome" required="">
+                                    </div>                                    
+                                    <div class="">
+                                        <label for="marketPrice" class="block mb-2 text-sm font-medium text-gray-900">Preço de mercado</label>
+                                        <input type="number" name="market_price" id="marketPrice" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" placeholder="Preço de mercado" required="">
                                     </div>
                                     <div class="">
-                                        <label for="marca" class="block mb-2 text-sm font-medium text-gray-900">Marca</label>
-                                        <input type="text" name="product_marca" id="productMarca" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" placeholder="Marca" required="">
+                                        <label for="barcode" class="block mb-2 text-sm font-medium text-gray-900">Código de barras</label>
+                                        <input type="number" name="barcode" id="barcode" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" placeholder="Código de barras" required="">
                                     </div>
                                     <div class="">
-                                        <label for="price" class="block mb-2 text-sm font-medium text-gray-900">Preço</label>
+                                        <label for="estoque" class="block mb-2 text-sm font-medium text-gray-900">Quantidade</label>
+                                        <input type="number" name="estoque" id="estoque" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" placeholder="Estoque" required="">
+                                    </div>
+                                    <div class="">
+                                        <label for="productPrice" class="block mb-2 text-sm font-medium text-gray-900">Preço (Porcentagem)</label>
                                         <input type="number" name="product_price" id="productPrice" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" placeholder="Preço" required="">
-                                    </div>
-                                    <div class="">
-                                        <label for="productCategory" class="block mb-2 text-sm font-medium text-gray-900">Categoria</label>
-                                        <input type="text" name="product_category" id="productCategory" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" placeholder="Categoria" required="">
-                                    </div>
-                                    <div class="col-span-2">
-                                        <label for="description" class="block mb-2 text-sm font-medium text-gray-900">Descrição</label>
-                                        <input type="text" name="product_description" id="productDescription" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" placeholder="adicione aqui uma breve descrição do produto" required="">
                                     </div>
                                 </div>
                             </div>
@@ -117,10 +117,13 @@ $products_query = new WP_Query( $args );
                             Nome
                         </th>
                         <th scope="col" class="px-6 py-3 font-semibold text-gray-600">
-                            ID
+                            Código de barras
                         </th>
                         <th scope="col" class="px-6 py-3 font-semibold text-gray-600">
                             Preço
+                        </th>
+                        <th>
+                            Estoque
                         </th>
                         <th scope="col" class="px-6 py-3 font-semibold text-gray-600">
                             Ação
@@ -135,10 +138,13 @@ $products_query = new WP_Query( $args );
                             <?php the_title();?>
                         </th>
                         <td class="px-6 py-4">
-                            <?php echo '#' . $post->ID;?>
+                            <?php echo get_field('barcode' , $post->ID)?>
                         </td>
                         <td class="px-6 py-4">
                             <?php echo 'R$' . number_format(get_field('product_price', $post->ID), 2, ',', '.');?>
+                        </td>
+                        <td class="px-6 py-4">
+                            <?php echo get_field('estoque' , $post->ID);?>
                         </td>
                         <td class="px-6 py-4">
                             <a id="editarProdutoButton" href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
@@ -152,7 +158,7 @@ $products_query = new WP_Query( $args );
                                 <!-- Modal header -->
                                 <div class="py-2 border-b rounded-t mb-4">
                                     <h3 class="text-xl font-semibold text-gray-900">
-                                        Informações do Produto
+                                        Adicionar compras de produto
                                     </h3>
                                 </div>
                                 <!-- Modal body -->
@@ -163,8 +169,18 @@ $products_query = new WP_Query( $args );
                                                 <input type="text" name="product_name" id="" class="updateProductName shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" placeholder="<?php echo the_title();?>" required="">
                                             </div>
                                             <div class="">
-                                                <label for="price" class="block mb-2 text-sm font-medium text-gray-900">Preço</label>
+                                                <label for="marketPrice" class="block mb-2 text-sm font-medium text-gray-900">Preço de mercado</label>
+                                                <input type="number" name="market_price" id="" class="updateMarketPrice shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" placeholder="<?php echo 'R$' . number_format(get_field('market_price', $post->ID), 2, ',', '.');?>" required="">
+                                            </div>                                        
+                                            <div class="">
+                                                <label for="stock" class="block mb-2 text-sm font-medium text-gray-900">Quantidade</label>
+                                                <input type="number" name="stock" id="" class="updateStock shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" placeholder="EX: 1" required="">
+                                            </div>
+                                            <div class="">
+                                                <label for="price" class="block mb-2 text-sm font-medium text-gray-900">Preço (Porcentagem)</label>
                                                 <input type="number" name="product_price" id="" class="updateProductPrice shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" placeholder="<?php echo 'R$' . number_format(get_field('product_price', $post->ID), 2, ',', '.');?>" required="">
+                                                <input type="checkbox" id="valueFixed" name="value_fixed" class="mt-2">
+                                                <label for="valueFixed">Digitar valor fixo</label>
                                             </div>
                                     </div>
                                 </div>

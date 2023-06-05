@@ -115,9 +115,6 @@
 .z-50 {
     z-index: 50
 }
-.col-span-2 {
-    grid-column: span 2 / span 2
-}
 .col-span-3 {
     grid-column: span 3 / span 3
 }
@@ -841,6 +838,10 @@
     --tw-text-opacity: 1;
     color: rgb(133 77 14 / var(--tw-text-opacity))
 }
+.text-green-600 {
+    --tw-text-opacity: 1;
+    color: rgb(22 163 74 / var(--tw-text-opacity))
+}
 .underline {
     text-decoration-line: underline
 }
@@ -1247,6 +1248,9 @@ body {
     .md\:grid-cols-2 {
         grid-template-columns: repeat(2, minmax(0, 1fr))
     }
+    .md\:grid-cols-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr))
+    }
     .md\:flex-row {
         flex-direction: row
     }
@@ -1287,6 +1291,9 @@ body {
     }
     .lg\:max-w-5xl {
         max-width: 64rem
+    }
+    .lg\:grid-cols-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr))
     }
     .lg\:grid-cols-4 {
         grid-template-columns: repeat(4, minmax(0, 1fr))

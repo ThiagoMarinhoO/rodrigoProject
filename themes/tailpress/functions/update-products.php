@@ -2,17 +2,41 @@
 add_action('wp_ajax_update_product', 'update_product');
 add_action('wp_ajax_nopriv_update_product', 'update_product');
 
-function update_product() {
+function update_product($post_id) {
     $post_id = $_POST['product_id'];
-    $title = $_POST['title'];
+    $title = $_POST['title'] != '' ? $_POST['title'] : get_the_title($post_id);
     $price = $_POST['price'];
+    $stock = get_field('estoque' , $post_id);
+    $quantity = $_POST['estoque'];
+    $market_price = $_POST['marketPrice'];
+
+    $new_stock = $stock + $quantity;
 
     $post_data = array(
         'ID' => $post_id,
         'post_title' => $title,
     );
-    $post_updated = wp_update_post($post_data);
-    update_field('product_price', $price, $post_id);
+
+    $transacao_value = $market_price != '' ? $market_price * $quantity : 0;
+
+    $post_data['post_title'] != '' ? $post_updated = wp_update_post($post_data) : false;
+    $price != '' ? update_field('product_price', $price, $post_id) : false;
+    $market_price != '' ? update_field('market_price', $market_price, $post_id) : false;
+    $stock != '' ? update_field('estoque' , $new_stock , $post_id) : false;
+
+    if($quantity != ''){
+        $transacao = array(
+            'post_title'   => '[Saída] - ' . $title,
+            'post_status'  => 'publish',
+            'post_type'    => 'transacoes',
+          );
+    
+          $transacao_id = wp_insert_post( $transacao );
+    
+          $title != '' ? update_field('produto_cadastrado' , $title , $transacao_id) : false;
+          update_field('valor_da_transacao' , $transacao_value , $transacao_id);
+          $quantity != '' ? update_field('quantidade_cadastrada' , $quantity , $transacao_id) : false;
+    }
     
     if ($post_updated instanceof WP_Error) {
         echo 'Ocorreu um erro ao atualizar o post: ' . $post_updated->get_error_message();

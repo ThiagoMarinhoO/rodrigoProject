@@ -31,7 +31,8 @@ function add_product() {
 
                 $price = floatval(str_replace(',', '.', get_field('product_price' , get_the_ID())));
                 $title = get_the_title();
-                $marca = get_field('product_brand' , get_the_ID());
+                $barcode = intval(get_field('barcode' , get_the_ID()));
+                $market_price = floatval(str_replace(',', '.', get_field('market_price' , get_the_ID())));
 
                 $product_found = false;
                 $product_key = '';
@@ -57,8 +58,9 @@ function add_product() {
                         'produto_id' => $produto_id,
                         'title' => $title,
                         'price' => $price,
+                        'marketPrice' => $market_price,
                         'quantity' => 1,
-                        'marca' => $marca,
+                        'barcode' => $barcode,
                         'total_price' => $price,
                     );
                     $_SESSION['cart'][] = $product;
@@ -74,7 +76,8 @@ function add_product() {
                     'title' => $product['title'],
                     'price' => $product['price'],
                     'quantity' => $product['quantity'],
-                    'marca' => $marca,
+                    'marketPrice' => $product['marketPrice'],
+                    'barcode' => $product['barcode'],
                     'total_price' => $product['total_price'],
                 );
             }

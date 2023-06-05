@@ -1,7 +1,5 @@
 
 const axios = require('axios').default;
-// window.products = []
-// let products = window.products
 let cart = [];
 let total = 0
 const Datas = {
@@ -106,15 +104,24 @@ async function SignUp() {
       }
 }
 
+// Cadastrar produtos
+
 async function PublishProduct() {
 
-      const Product = {
+      const product = {
             author: tailpress_object.userID,
             title: document.querySelector('#productName').value,
             price: document.querySelector('#productPrice').value,
+            marketPrice: document.querySelector('#marketPrice').value,
+            barcode: document.querySelector('#barcode').value,
+            estoque: document.querySelector('#estoque').value
       }
 
-      const { data } = await axios.post(`${tailpress_object.homeUrl}/wp-json/loginsystem/v1/products`, Product);
+      let pricePercentage = product.marketPrice * product.price / 100
+
+      product.price = parseFloat(pricePercentage) + parseFloat(product.marketPrice)
+
+      const { data } = await axios.post(`${tailpress_object.homeUrl}/wp-json/loginsystem/v1/products`, product);
       console.log(data);
       if (data.success == true) {
             Swal.fire({
@@ -632,21 +639,15 @@ jQuery(document).ready(function($){
       //ATUALIZAR PRODUTOS (ADMIN)
       $('.atualizarProdutoButton').each(function(index, button) {
             $(button).on('click',function() {
-              let title = $(".updateProductName").eq(index).val();
-              let price = $(".updateProductPrice").eq(index).val();
-              let product_id = $(".atualizarProdutoButton").eq(index).attr("data-id");
-              if(!title || !price) {
-                  Swal.fire({
-                        title: 'Atenção!',
-                        text: 'Preencha todos os campos!',
-                        icon: 'warning',
-                        confirmButtonText: 'OK'
-                      }).then(function(result) {
-                        if (result.isConfirmed) {
-                          $('#readProductDrawer').addClass('-translate-x-full');
-                        }
-                  });
-              } else {
+                  let title = $(".updateProductName").eq(index).val();
+                  let price = $(".updateProductPrice").eq(index).val();
+                  let estoque = $(".updateStock").eq(index).val();
+                  let marketPrice = $(".updateMarketPrice").eq(index).val();
+                  let product_id = $(".atualizarProdutoButton").eq(index).attr("data-id");
+
+                  let pricePercentage = marketPrice * price / 100
+                  price = parseFloat(pricePercentage) + parseFloat(marketPrice)
+
                   $.ajax({
                   url: tailpress_object.ajaxurl,
                   type: 'POST',
@@ -656,6 +657,8 @@ jQuery(document).ready(function($){
                   product_id: product_id,
                   title: title,
                   price: price,
+                  estoque: estoque,
+                  marketPrice: marketPrice
                   },
                   beforeSend: function() {
                   loading(true);
@@ -683,10 +686,9 @@ jQuery(document).ready(function($){
                   });
                   },
                   complete: function() {
-                  loading(false);
+                        loading(false);
                   }
                   });
-              }
             });
       });
 
@@ -844,42 +846,36 @@ jQuery(document).ready(function($){
                       });
             })
       })
+      // Relatório de lucro
+      $('.profit-date').change(function() {
+            loading(true)
+            var selectedDate = $(this).val();
+            var dailyDate = new Date(selectedDate);
+            dailyDate.setDate(dailyDate.getDate() + 1);
+            var tomorrow = dailyDate.toISOString().slice(0, 10);
+            $.ajax({
+                url: tailpress_object.ajaxurl,
+                type: 'POST',
+                data: { 
+                  action: 'profit_report',
+                  startDate: selectedDate,
+                  endDate: tomorrow
+                },
+                dataType: 'json',
+                success: function(response) {
+                  console.log(JSON.stringify(response, null, 2));
+                  $('#saidas_balanco').text('-' + formatPrice(response.data.total_market_price))
+                  $('#entradas_balanco').text('+' + formatPrice(response.data.sales_total))
+                  let indicator = response.data.total_market_price > response.data.sales_total ? '-' : '+'
+                  $('#profit_value').text(indicator + formatPrice(response.data.sales_total - response.data.total_market_price))
+                  loading(false)
+                },
+                error: function(xhr, status, error) {
+                }
+            });
+        });
 })
 
 document.addEventListener('DOMContentLoaded', async function() {
       const products = await getProducts();
-
-      // const qtyElements = document.querySelectorAll('#qty');
-      // const increaseButtons = document.querySelectorAll('#qtyIncrease');
-      // const decreaseButtons = document.querySelectorAll('#qtyDecrease');
-
-      // increaseButtons.forEach((button, index) => {
-      //       button.addEventListener('click', () => {
-      //             qtyElements[index].innerText++;
-      //             console.log(qtyElements[index].value)
-      //       });
-      // })
-
-      // decreaseButtons.forEach((button, index) => {
-      //       button.addEventListener('click', () => {
-      //             if (qtyElements[index].innerText > 1 ) {
-      //                   qtyElements[index].innerText--;
-      //                   console.log(qtyElements[index].value)
-      //             }
-      //       });
-      // })
-
-      // const addToCartButtons = document.querySelectorAll('#productsTable tbody button');
-      // addToCartButtons.forEach((button) => {
-      //       button.addEventListener('click', () => {
-      //             const productId = parseInt(button.dataset.id);
-      //             const productToAdd = products.find((product) => product.id == productId);
-      //             productToAdd["quantity"] = 1;
-      //             cart.push(productToAdd);
-      //             localStorage.setItem('cart', JSON.stringify(cart));
-      //             updateCartCounter();
-      //             createDrawerCart();
-      //             alert('Produto adicionado ao carrinho')
-      //       });
-      // })
 });

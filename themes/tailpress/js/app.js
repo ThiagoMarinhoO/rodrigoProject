@@ -2065,8 +2065,6 @@ function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyri
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 var axios = (__webpack_require__(/*! axios */ "./node_modules/axios/index.js")["default"]);
-// window.products = []
-// let products = window.products
 var cart = [];
 var total = 0;
 var Datas = {
@@ -2171,7 +2169,7 @@ function _SignIn() {
 }
 function SignUp() {
   return _SignUp.apply(this, arguments);
-}
+} // Cadastrar produtos
 function _SignUp() {
   _SignUp = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
     var name, email, password, _yield$axios$post2, data;
@@ -2211,18 +2209,23 @@ function PublishProduct() {
 }
 function _PublishProduct() {
   _PublishProduct = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
-    var Product, _yield$axios$post3, data;
+    var product, pricePercentage, _yield$axios$post3, data;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
         case 0:
-          Product = {
+          product = {
             author: tailpress_object.userID,
             title: document.querySelector('#productName').value,
-            price: document.querySelector('#productPrice').value
+            price: document.querySelector('#productPrice').value,
+            marketPrice: document.querySelector('#marketPrice').value,
+            barcode: document.querySelector('#barcode').value,
+            estoque: document.querySelector('#estoque').value
           };
-          _context4.next = 3;
-          return axios.post("".concat(tailpress_object.homeUrl, "/wp-json/loginsystem/v1/products"), Product);
-        case 3:
+          pricePercentage = product.marketPrice * product.price / 100;
+          product.price = parseFloat(pricePercentage) + parseFloat(product.marketPrice);
+          _context4.next = 5;
+          return axios.post("".concat(tailpress_object.homeUrl, "/wp-json/loginsystem/v1/products"), product);
+        case 5:
           _yield$axios$post3 = _context4.sent;
           data = _yield$axios$post3.data;
           console.log(data);
@@ -2235,7 +2238,7 @@ function _PublishProduct() {
             });
             window.location.reload();
           }
-        case 7:
+        case 9:
         case "end":
           return _context4.stop();
       }
@@ -2751,59 +2754,52 @@ jQuery(document).ready(function ($) {
     $(button).on('click', function () {
       var title = $(".updateProductName").eq(index).val();
       var price = $(".updateProductPrice").eq(index).val();
+      var estoque = $(".updateStock").eq(index).val();
+      var marketPrice = $(".updateMarketPrice").eq(index).val();
       var product_id = $(".atualizarProdutoButton").eq(index).attr("data-id");
-      if (!title || !price) {
-        Swal.fire({
-          title: 'Atenção!',
-          text: 'Preencha todos os campos!',
-          icon: 'warning',
-          confirmButtonText: 'OK'
-        }).then(function (result) {
-          if (result.isConfirmed) {
-            $('#readProductDrawer').addClass('-translate-x-full');
-          }
-        });
-      } else {
-        $.ajax({
-          url: tailpress_object.ajaxurl,
-          type: 'POST',
-          dataType: 'json',
-          data: {
-            action: 'update_product',
-            product_id: product_id,
-            title: title,
-            price: price
-          },
-          beforeSend: function beforeSend() {
-            loading(true);
-          },
-          success: function success(response) {
-            Swal.fire({
-              title: 'Sucesso!',
-              text: 'Produto atualizado!',
-              icon: 'success',
-              confirmButtonText: 'OK'
-            }).then(function (result) {
-              if (result.isConfirmed) {
-                $('#readProductDrawer').addClass('-translate-x-full');
-                window.location.reload();
-              }
-            });
-          },
-          error: function error(xhr, status, _error10) {
-            console.log(_error10);
-            Swal.fire({
-              title: 'Erro!',
-              text: 'Erro ao atualizar produto',
-              icon: 'error',
-              confirmButtonText: 'OK'
-            });
-          },
-          complete: function complete() {
-            loading(false);
-          }
-        });
-      }
+      var pricePercentage = marketPrice * price / 100;
+      price = parseFloat(pricePercentage) + parseFloat(marketPrice);
+      $.ajax({
+        url: tailpress_object.ajaxurl,
+        type: 'POST',
+        dataType: 'json',
+        data: {
+          action: 'update_product',
+          product_id: product_id,
+          title: title,
+          price: price,
+          estoque: estoque,
+          marketPrice: marketPrice
+        },
+        beforeSend: function beforeSend() {
+          loading(true);
+        },
+        success: function success(response) {
+          Swal.fire({
+            title: 'Sucesso!',
+            text: 'Produto atualizado!',
+            icon: 'success',
+            confirmButtonText: 'OK'
+          }).then(function (result) {
+            if (result.isConfirmed) {
+              $('#readProductDrawer').addClass('-translate-x-full');
+              window.location.reload();
+            }
+          });
+        },
+        error: function error(xhr, status, _error10) {
+          console.log(_error10);
+          Swal.fire({
+            title: 'Erro!',
+            text: 'Erro ao atualizar produto',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
+        },
+        complete: function complete() {
+          loading(false);
+        }
+      });
     });
   });
 
@@ -2956,6 +2952,33 @@ jQuery(document).ready(function ($) {
           });
         }
       });
+    });
+  });
+  // Relatório de lucro
+  $('.profit-date').change(function () {
+    loading(true);
+    var selectedDate = $(this).val();
+    var dailyDate = new Date(selectedDate);
+    dailyDate.setDate(dailyDate.getDate() + 1);
+    var tomorrow = dailyDate.toISOString().slice(0, 10);
+    $.ajax({
+      url: tailpress_object.ajaxurl,
+      type: 'POST',
+      data: {
+        action: 'profit_report',
+        startDate: selectedDate,
+        endDate: tomorrow
+      },
+      dataType: 'json',
+      success: function success(response) {
+        console.log(JSON.stringify(response, null, 2));
+        $('#saidas_balanco').text('-' + formatPrice(response.data.total_market_price));
+        $('#entradas_balanco').text('+' + formatPrice(response.data.sales_total));
+        var indicator = response.data.total_market_price > response.data.sales_total ? '-' : '+';
+        $('#profit_value').text(indicator + formatPrice(response.data.sales_total - response.data.total_market_price));
+        loading(false);
+      },
+      error: function error(xhr, status, _error14) {}
     });
   });
 });

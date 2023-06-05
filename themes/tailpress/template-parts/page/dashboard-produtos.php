@@ -2,7 +2,8 @@
 get_header();
 
 $args = array(
-    'post_type' => 'products'
+    'post_type' => 'products',
+    'posts_per_page' => -1
 );
 
 $products_query = new WP_Query( $args );
@@ -63,6 +64,8 @@ $products_query = new WP_Query( $args );
                         </tr>
                     <?php endwhile; ?>
                 </tbody>
+                <?php else: ?>
+                    <?php echo 'Nenhum produto cadastrado'?>
                 <?php endif; ?>
             </table>
         </div>

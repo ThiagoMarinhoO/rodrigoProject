@@ -32,24 +32,27 @@ function create_order(){
         $price = $product['price'];
         $quantity = $product['quantity'];
         $total_price = $product['total_price'];
-        $marca = $product['marca'];
+        $barcode = $product['barcode'];
+        $marketPrice = $product['marketPrice'];
 
         add_row( 'produtos_da_venda', array(
+            'barcode' => $barcode,
             'produto_id' => $produto_id,
             'nome' => $title,
+            'market_price' => $marketPrice,
             'preco' => $price,
             'quantidade' => $quantity,
-            'marca' => $marca,
             'valor_total' => $total_price,
+            'barcode' => $barcode
         ), $post_id );
 
         $product_id = null;
         $products_query = new WP_Query(array(
-            'post_type' => 'sales',
+            'post_type' => 'products',
             'meta_query' => array(
                 array(
-                    'key' => 'produto_id',
-                    'value' => $produto_id,
+                    'key' => 'barcode',
+                    'value' => $barcode,
                     'compare' => '=',
                 ),
             ),

@@ -12,7 +12,7 @@ function cpt_produtos() {
             'show_ui' => true,
             'capability_type' => 'post',
             'hierarchical' => false,
-			'rewrite'     => array( 'slug' => 'products' ), // my custom slug
+			'rewrite'     => array( 'slug' => 'products' ),
             'query_var' => true,
             'menu_icon' => 'dashicons-products',
             'supports' => array(
@@ -40,7 +40,7 @@ function cpt_vendas() {
             'show_ui' => true,
             'capability_type' => 'post',
             'hierarchical' => false,
-			'rewrite'     => array( 'slug' => 'sales' ), // my custom slug
+			'rewrite'     => array( 'slug' => 'sales' ),
             'query_var' => true,
             'menu_icon' => 'dashicons-products',
             'supports' => array(
@@ -54,6 +54,31 @@ function cpt_vendas() {
 	);
 }
 add_action('init', 'cpt_vendas');
+
+function cpt_transacoes() {
+	register_post_type('transacoes',
+		array(
+			'labels'      => array(
+				'name'          => __( 'Transações', 'textdomain' ),
+				'singular_name' => __( 'Transação', 'textdomain' ),
+			),
+			'public'      => true,
+			'has_archive' => true,
+            'show_ui' => true,
+            'capability_type' => 'post',
+            'hierarchical' => false,
+			'rewrite'     => array( 'slug' => 'transacoes' ),
+            'query_var' => true,
+            'menu_icon' => 'dashicons-products',
+            'supports' => array(
+                'title',
+                'author',
+                'comments'
+            ),
+        )
+	);
+}
+add_action('init', 'cpt_transacoes');
 
 function redirecionar_admin_logado() {
     if ( is_user_logged_in() && current_user_can('manage_options') && is_page('login') ) {
