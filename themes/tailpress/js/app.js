@@ -2974,13 +2974,38 @@ jQuery(document).ready(function ($) {
         console.log(JSON.stringify(response, null, 2));
         $('#saidas_balanco').text('-' + formatPrice(response.data.total_market_price));
         $('#entradas_balanco').text('+' + formatPrice(response.data.sales_total));
-        var indicator = response.data.total_market_price > response.data.sales_total ? '-' : '+';
+        var indicator = response.data.total_market_price > response.data.sales_total ? '' : '+';
+        var profitColor = response.data.sales_total < response.data.total_market_price ? 'text-red-600' : 'text-green-600';
         $('#profit_value').text(indicator + formatPrice(response.data.sales_total - response.data.total_market_price));
+        $('#profit_value').addClass(profitColor);
         loading(false);
       },
       error: function error(xhr, status, _error14) {}
     });
   });
+  function initProfit() {
+    loading(true);
+    $.ajax({
+      url: tailpress_object.ajaxurl,
+      type: 'POST',
+      data: {
+        action: 'init_profit'
+      },
+      dataType: 'json',
+      success: function success(response) {
+        console.log(JSON.stringify(response, null, 2));
+        $('#saidas_balanco').text('-' + formatPrice(response.data.total_market_price));
+        $('#entradas_balanco').text('+' + formatPrice(response.data.sales_total));
+        var indicator = response.data.total_market_price > response.data.sales_total ? '' : '+';
+        var profitColor = response.data.sales_total < response.data.total_market_price ? 'text-red-600' : 'text-green-600';
+        $('#profit_value').text(indicator + formatPrice(response.data.sales_total - response.data.total_market_price));
+        $('#profit_value').addClass(profitColor);
+        loading(false);
+      },
+      error: function error(xhr, status, _error15) {}
+    });
+  }
+  initProfit();
 });
 document.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
   var products;

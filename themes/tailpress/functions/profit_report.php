@@ -8,6 +8,7 @@ function profit_report(){
     $args_products = array(
         'post_type' => 'transacoes',
         'posts_per_page' => -1,
+        'post_status'  => 'publish',
         'date_query' => array(
             array(
                 'after' => $start_date,
@@ -19,6 +20,7 @@ function profit_report(){
     $args_sales = array(
         'post_type' => 'sales',
         'posts_per_page' => -1,
+        'post_status'  => 'publish',
         'date_query' => array(
             array(
                 'after' => $start_date,
@@ -57,6 +59,39 @@ function profit_report(){
         'total_market_price' => $transacao_price,
         'sales_total' => $sales_total,
         'sales' => $profit_infos
+    ));
+}
+add_action('wp_ajax_init_profit', 'init_profit');
+add_action('wp_ajax_nopriv_init_profit', 'init_profit');
+function init_profit(){
+    $args_products = array(
+        'post_type' => 'transacoes',
+        'posts_per_page' => -1,
+    );
+    $args_sales = array(
+        'post_type' => 'sales',
+        'post_status'  => 'publish',
+        'posts_per_page' => -1,
+    );
+    $query_products = new WP_Query($args_products);
+    $query_sales = new WP_Query($args_sales);
+    $transacao_price = 0;
+    while ($query_products->have_posts()) {
+        $query_products->the_post();
+        $transacao_id = get_the_ID();
+        $transacao_price += get_field('valor_da_transacao' , $transacao_id);
+    }
+    $profit_infos = array();
+    $sales_total = 0;
+    while ($query_sales->have_posts()) {
+        $query_sales->the_post();
+        $sales_total += get_field('valor_da_venda' , get_the_ID());
+    }
+    wp_reset_postdata();
+
+    wp_send_json_success(array(
+        'total_market_price' => $transacao_price,
+        'sales_total' => $sales_total,
     ));
 }
 ?>

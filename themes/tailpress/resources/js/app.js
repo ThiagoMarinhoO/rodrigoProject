@@ -866,14 +866,41 @@ jQuery(document).ready(function($){
                   console.log(JSON.stringify(response, null, 2));
                   $('#saidas_balanco').text('-' + formatPrice(response.data.total_market_price))
                   $('#entradas_balanco').text('+' + formatPrice(response.data.sales_total))
-                  let indicator = response.data.total_market_price > response.data.sales_total ? '-' : '+'
+                  let indicator = response.data.total_market_price > response.data.sales_total ? '' : '+'
+                  let profitColor = response.data.sales_total < response.data.total_market_price ? 'text-red-600' : 'text-green-600'
                   $('#profit_value').text(indicator + formatPrice(response.data.sales_total - response.data.total_market_price))
+                  $('#profit_value').addClass(profitColor)
                   loading(false)
                 },
                 error: function(xhr, status, error) {
                 }
             });
         });
+
+        function initProfit(){
+            loading(true)
+            $.ajax({
+                  url: tailpress_object.ajaxurl,
+                  type: 'POST',
+                  data: { 
+                    action: 'init_profit',
+                  },
+                  dataType: 'json',
+                  success: function(response) {
+                    console.log(JSON.stringify(response, null, 2));
+                    $('#saidas_balanco').text('-' + formatPrice(response.data.total_market_price))
+                    $('#entradas_balanco').text('+' + formatPrice(response.data.sales_total))
+                    let indicator = response.data.total_market_price > response.data.sales_total ? '' : '+'
+                    let profitColor = response.data.sales_total < response.data.total_market_price ? 'text-red-600' : 'text-green-600'
+                    $('#profit_value').text(indicator + formatPrice(response.data.sales_total - response.data.total_market_price))
+                    $('#profit_value').addClass(profitColor)
+                    loading(false)
+                  },
+                  error: function(xhr, status, error) {
+                  }
+            })
+        }
+        initProfit()
 })
 
 document.addEventListener('DOMContentLoaded', async function() {
