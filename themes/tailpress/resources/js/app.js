@@ -364,7 +364,7 @@ jQuery(document).ready(function($){
                                                       <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
                                                 </svg>                              
                                           </a>
-                                          <a id="qty" class="relative inline-flex items-center px-2 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">${product.quantity}</a>
+                                          <a id="qty" class="relative inline-flex items-center px-2 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0" data-estoque="${product.estoque}">${product.quantity}</a>
                                           <a id="qtyIncrease" data-id="${product.produto_id}" class="relative inline-flex items-center rounded-r-md px-1 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                                       <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
@@ -448,42 +448,54 @@ jQuery(document).ready(function($){
       })
 
       $(document).on("click", "#qtyIncrease", function(e) {
-            e.preventDefault()
-            productID = $(this).attr("data-id");
-            addProduct(productID)
-            console.log(cart)
-            console.log(total)
-      });
-
-      $(document).on("click", "#qtyDecrease", function(e) {
+            e.preventDefault();
+            var $qtyElement = $(this).siblings('#qty');
+            var estoque = parseInt($qtyElement.data('estoque'));
+            var currentQty = parseInt($qtyElement.text());
+            $qtyElement.next().attr('max', estoque);
+            if (currentQty < estoque) {
+                  var productID = $(this).attr("data-id");
+                  addProduct(productID);
+            }else{
+                  Swal.fire({
+                        title: 'Aviso!',
+                        text: 'Você só possui ' + estoque + ' produtos no estoque',
+                        icon: 'warning',
+                        confirmButtonText: 'OK'
+                  });
+            }
+        });
+        
+        $(document).on("click", "#qtyDecrease", function(e) {
+            e.preventDefault();
             var productID = $(this).attr("data-id");
             $.ajax({
-              url: tailpress_object.ajaxurl,
-              type: 'POST',
-              dataType: 'json',
-                  data: {
-                  action: 'decrease_product',
-                  produto_id: productID
-                  },
-                  success: function(response) {
-                        cart = response.data.products
-                        total = response.data.total_price
-                        updateCartCounter()
-                        createDrawerCart()
-                        updateCartTotal()
-                        console.log(JSON.stringify(response, null, 2));
-                        // updateTableAndTotalPrice(products);
-                  },
-                  error: function(xhr, status, error) {
-                        Swal.fire({
-                              title: 'Erro!',
-                              text: 'Erro ao excluir o produto',
-                              icon: 'error',
-                              confirmButtonText: 'OK'
-                            });
-            }
+                url: tailpress_object.ajaxurl,
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    action: 'decrease_product',
+                    produto_id: productID
+                },
+                success: function(response) {
+                    cart = response.data.products;
+                    total = response.data.total_price;
+                    updateCartCounter();
+                    createDrawerCart();
+                    updateCartTotal();
+                    console.log(JSON.stringify(response, null, 2));
+                    // updateTableAndTotalPrice(products);
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        title: 'Erro!',
+                        text: 'Erro ao excluir o produto',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
             });
-      });
+        });
 
       $(document).on('click', '#deleteButton', function() {
             var productID = $(this).attr("data-id");

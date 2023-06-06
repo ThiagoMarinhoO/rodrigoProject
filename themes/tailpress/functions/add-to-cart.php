@@ -33,6 +33,7 @@ function add_product() {
                 $title = get_the_title();
                 $barcode = intval(get_field('barcode' , get_the_ID()));
                 $market_price = floatval(str_replace(',', '.', get_field('market_price' , get_the_ID())));
+                $stock = intval(get_field('estoque' , get_the_ID()));
 
                 $product_found = false;
                 $product_key = '';
@@ -61,6 +62,7 @@ function add_product() {
                         'marketPrice' => $market_price,
                         'quantity' => 1,
                         'barcode' => $barcode,
+                        'estoque' => $stock,
                         'total_price' => $price,
                     );
                     $_SESSION['cart'][] = $product;
@@ -78,6 +80,7 @@ function add_product() {
                     'quantity' => $product['quantity'],
                     'marketPrice' => $product['marketPrice'],
                     'barcode' => $product['barcode'],
+                    'estoque' => $product['estoque'],
                     'total_price' => $product['total_price'],
                 );
             }
