@@ -2957,17 +2957,14 @@ jQuery(document).ready(function ($) {
   // Relatório de lucro
   $('.profit-date').change(function () {
     loading(true);
+    $('#clearFilter').attr('disabled', false);
     var selectedDate = $(this).val();
-    var dailyDate = new Date(selectedDate);
-    dailyDate.setDate(dailyDate.getDate() + 1);
-    var tomorrow = dailyDate.toISOString().slice(0, 10);
     $.ajax({
       url: tailpress_object.ajaxurl,
       type: 'POST',
       data: {
         action: 'profit_report',
-        startDate: selectedDate,
-        endDate: tomorrow
+        startDate: selectedDate
       },
       dataType: 'json',
       success: function success(response) {
@@ -2978,11 +2975,13 @@ jQuery(document).ready(function ($) {
         var profitColor = response.data.sales_total < response.data.total_market_price ? 'text-red-600' : 'text-green-600';
         $('#profit_value').text(indicator + formatPrice(response.data.sales_total - response.data.total_market_price));
         $('#profit_value').addClass(profitColor);
+        $('#salesTable').html(response.data.sales);
         loading(false);
       },
       error: function error(xhr, status, _error14) {}
     });
   });
+  //   Relatório de lucro inicial
   function initProfit() {
     loading(true);
     $.ajax({
@@ -3000,12 +2999,28 @@ jQuery(document).ready(function ($) {
         var profitColor = response.data.sales_total < response.data.total_market_price ? 'text-red-600' : 'text-green-600';
         $('#profit_value').text(indicator + formatPrice(response.data.sales_total - response.data.total_market_price));
         $('#profit_value').addClass(profitColor);
+        $('#salesTable').html(response.data.sales);
         loading(false);
       },
       error: function error(xhr, status, _error15) {}
     });
   }
   initProfit();
+
+  //   datepicker
+
+  $('.clickable-date').click(function () {
+    $(this).find('input').click();
+  });
+
+  // Limpar filtro
+
+  $('#clearFilter').on('click', function (e) {
+    e.preventDefault();
+    $('.profit-date').val('');
+    initProfit();
+    $(this).attr('disabled', true);
+  });
 });
 document.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
   var products;

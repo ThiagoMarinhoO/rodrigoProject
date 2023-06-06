@@ -8,7 +8,7 @@ function update_product($post_id) {
     $price = $_POST['price'];
     $stock = get_field('estoque' , $post_id);
     $quantity = $_POST['estoque'];
-    $market_price = $_POST['marketPrice'];
+    $market_price = $_POST['marketPrice'] != '' ? $_POST['marketPrice'] : get_field('market_price' , $post_id);
 
     $new_stock = $stock + $quantity;
 

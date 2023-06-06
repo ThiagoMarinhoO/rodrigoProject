@@ -19,9 +19,14 @@ $dash_product_query = new WP_Query($args);
         <h2 class="text-gray-950 text-3xl font-semibold">Bem vindo ao Dashboard de Vendas</h2>
         <p class="text-gray-600 text-sm">Gerencie por aqui suas vendas</p>
     </div>
-    <div class="w-full mb-3">
-        <label>Selecione a data da venda</label>
-        <input type="date" name="profit_date" class="profit-date w-full py-2 px-5 bg-white rounded-md shadow-md">
+    <div class="w-full mb-3 flex justify-between gap-5 items-center">
+        <div class="w-4/5">
+            <label>Selecione a data da venda</label>
+            <input type="date" name="profit_date" class="profit-date w-full py-2 px-5 bg-white rounded-md shadow-md">
+        </div>
+        <div class="w-1/5 flex justify-center items-center">
+            <button type="button" id="clearFilter" disabled class="py-2 px-5 bg-blue-700 rounded-md mt-6 text-white w-full disabled:bg-gray-300 disabled:opacity-80 shadow-md">Limpar filtro</button>
+        </div>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-7 mb-5">
         <div class="px-4 py-3 bg-white rounded-md shadow-md">
@@ -101,10 +106,10 @@ $dash_product_query = new WP_Query($args);
                         </th>
                     </tr>
                 </thead>
+                <tbody id="salesTable">
                 <?php if($dash_product_query->have_posts()):?>
-                <tbody>
                     <?php while($dash_product_query->have_posts()): $dash_product_query->the_post();?>
-                    <tr class="bg-white border-b hover:bg-gray-50">
+                    <tr class="bg-white border-b hover:bg-gray-50" sale-id="<?php echo get_the_ID()?>">
                         <?php if( have_rows('produtos_da_venda') ): ?>
                             <td class="px-6 py-4 text-gray-600 whitespace-nowrap">
                                 <?php echo get_the_ID()?>
@@ -149,8 +154,8 @@ $dash_product_query = new WP_Query($args);
                         </td>
                     </tr>
                     <?php endwhile; ?>
-                </tbody>
                 <?php endif; ?>
+                </tbody>
             </table>
         </div>
     </div>
