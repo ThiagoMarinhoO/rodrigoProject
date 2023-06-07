@@ -2171,10 +2171,10 @@ function PublishProduct() {
   return _PublishProduct.apply(this, arguments);
 }
 function _PublishProduct() {
-  _PublishProduct = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-    var product, pricePercentage, _yield$axios$post2, data;
-    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-      while (1) switch (_context3.prev = _context3.next) {
+ _PublishProduct = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+    var product, fixedValue, pricePercentage, _yield$axios$post3, data;
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) switch (_context4.prev = _context4.next) {
         case 0:
           product = {
             author: tailpress_object.userID,
@@ -2184,9 +2184,12 @@ function _PublishProduct() {
             barcode: document.querySelector('#barcode').value,
             estoque: document.querySelector('#estoque').value
           };
-          pricePercentage = product.marketPrice * product.price / 100;
-          product.price = parseFloat(pricePercentage) + parseFloat(product.marketPrice);
-          _context3.next = 5;
+fixedValue = document.querySelector('#valueFixed');
+if (!fixedValue.checked) {
+  pricePercentage = product.marketPrice * product.price / 100;
+  product.price = parseFloat(pricePercentage) + parseFloat(product.marketPrice);
+}
+_context4.next = 5;
           return axios.post("".concat(tailpress_object.homeUrl, "/wp-json/loginsystem/v1/products"), product);
         case 5:
           _yield$axios$post2 = _context3.sent;
@@ -2771,10 +2774,13 @@ jQuery(document).ready(function ($) {
       var title = $(".updateProductName").eq(index).val();
       var price = $(".updateProductPrice").eq(index).val();
       var estoque = $(".updateStock").eq(index).val();
-      var marketPrice = $(".updateMarketPrice").eq(index).val();
+      var marketPrice = $(".updateMarketPrice").eq(index).val() == '' ? $(".updateMarketPrice").attr('placeholder').replace(/^R\$(.*)/, "$1").replace(",", ".") : $(".updateMarketPrice").eq(index).val();
       var product_id = $(".atualizarProdutoButton").eq(index).attr("data-id");
-      var pricePercentage = marketPrice * price / 100;
-      price = parseFloat(pricePercentage) + parseFloat(marketPrice);
+      var valueFixed = $(".valueFixedAtualizar").eq(index).prop('checked');
+      if (valueFixed == false) {
+        var pricePercentage = marketPrice * price / 100;
+        price = parseFloat(pricePercentage) + parseFloat(marketPrice);
+      }
       $.ajax({
         url: tailpress_object.ajaxurl,
         type: 'POST',
@@ -3039,6 +3045,15 @@ jQuery(document).ready(function ($) {
     $(this).attr('disabled', true);
   });
 
+  // Margem de Lucro
+
+  $('.valueFixed').each(function (index, input) {
+    $(input).on('change', function () {
+      var isChecked = $(input).prop('checked');
+      var indicator = isChecked ? 'R$' : '%';
+      var LabelText = isChecked ? 'Digitar valor percentual' : 'Digitar valor fixo';
+      $('.digitarValor').eq(index).text(LabelText);
+      $('.labelForPrice').eq(index).text('Margem de Lucro (' + indicator + ')');
   // Preço
 
   $('#valueFixed').on('change', function () {
