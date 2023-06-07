@@ -250,6 +250,8 @@ $products_query = new WP_Query( $args );
 </div>
 <?php } ?>
 
+<?php echo do_shortcode('[modalNewUser]')?>
+
 
 
 

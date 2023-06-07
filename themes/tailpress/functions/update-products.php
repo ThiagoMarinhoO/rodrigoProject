@@ -26,13 +26,14 @@ function update_product($post_id) {
 
     if($quantity != 0){
         $transacao = array(
-            'post_title'   => '[Saída] - ' . $title,
+            'post_title'   => '[Saída] - Atualização de estoque do produto ' . $title,
             'post_status'  => 'publish',
             'post_type'    => 'transacoes',
           );
     
           $transacao_id = wp_insert_post( $transacao );
     
+          update_field('tipo' , 'saida' , $transacao_id);
           $title != '' ? update_field('produto_cadastrado' , $title , $transacao_id) : false;
           update_field('valor_da_transacao' , $transacao_value , $transacao_id);
           $quantity != '' ? update_field('quantidade_cadastrada' , $quantity , $transacao_id) : false;
