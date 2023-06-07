@@ -44,7 +44,7 @@
       // Cria uma transação
 
       $transacao = array(
-        'post_title'   => '[Saída] - ' . $title,
+        'post_title'   => '[Saída] - Cadastro de estoque do novo produto ' . $title,
         'post_status'  => 'publish',
         'post_type'    => 'transacoes',
         'post_author'  => $author,
@@ -52,6 +52,7 @@
 
       $transacao_id = wp_insert_post( $transacao );
 
+      update_field('tipo' , 'saida' , $transacao_id);
       update_field('produto_cadastrado' , $title , $transacao_id);
       update_field('valor_da_transacao' , $transacao_value , $transacao_id);
       update_field('quantidade_cadastrada' , $quantity , $transacao_id);

@@ -2,7 +2,7 @@
 get_header();
 
 $args = array(
-    'post_type' => 'sales',
+    'post_type' => 'transacoes',
     'post_status' => array(
         'publish',
         'pending',
@@ -16,8 +16,8 @@ $dash_product_query = new WP_Query($args);
 <div id="loading-animation"></div>
 <div class="max-w-xs sm:max-w-lg md:max-w-3xl lg:max-w-5xl max-2xl:max-w-7xl mx-auto pt-12">
     <div class="mb-12">
-        <h2 class="text-gray-950 text-3xl font-semibold">Bem vindo ao Dashboard de Vendas</h2>
-        <p class="text-gray-600 text-sm">Gerencie por aqui suas vendas</p>
+        <h2 class="text-gray-950 text-3xl font-semibold">Bem vindo ao Dashboard de transações</h2>
+        <p class="text-gray-600 text-sm">Gerencie por aqui suas transações</p>
     </div>
     <div class="w-full mb-3 flex justify-between gap-5 items-center">
         <div class="w-4/5">
@@ -73,10 +73,10 @@ $dash_product_query = new WP_Query($args);
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
                         <th scope="col" class="px-6 py-3 font-semibold text-gray-600 whitespace-nowrap">
-                            ID da venda
+                            ID da transação
                         </th>
-                        <th scope="col" class="px-6 py-3 font-semibold text-gray-600 whitespace-nowrap">
-                            Produtos
+                        <th scope="col" class="px-6 py-3 font-semibold text-gray-600">
+                            Identificação
                         </th>
                         <th scope="col" class="px-6 py-3 font-semibold text-gray-600 whitespace-nowrap">
                             Data
@@ -85,62 +85,56 @@ $dash_product_query = new WP_Query($args);
                             Valor (R$)
                         </th>
                         <th scope="col" class="px-6 py-3 font-semibold text-gray-600 whitespace-nowrap">
-                            Vendedor
+                            Tipo
                         </th>
-                        <th scope="col" class="px-6 py-3 font-semibold text-gray-600 whitespace-nowrap">
-                            Status
-                        </th>
-                        <th scope="col" class="px-6 py-3 font-semibold text-gray-600 whitespace-nowrap">
+                        <!-- <th scope="col" class="px-6 py-3 font-semibold text-gray-600 whitespace-nowrap">
                             Ação
-                        </th>
+                        </th> -->
                     </tr>
                 </thead>
-                <tbody id="salesTable">
+                <tbody id="transacaoTable">
                 <?php if($dash_product_query->have_posts()):?>
                     <?php while($dash_product_query->have_posts()): $dash_product_query->the_post();?>
                     <tr class="bg-white border-b hover:bg-gray-50" sale-id="<?php echo get_the_ID()?>">
-                        <?php if( have_rows('produtos_da_venda') ): ?>
-                            <td class="px-6 py-4 text-gray-600 whitespace-nowrap">
-                                <?php echo get_the_ID()?>
-                            </td>
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900">
-                            <?php while( have_rows('produtos_da_venda') ) : the_row(); ?>
-                                <?php 
-                                    $nome_do_produto = get_sub_field('nome');
-                                    $qty_do_produto = get_sub_field('quantidade');
-                                    echo $nome_do_produto. ' ' . '(' . $qty_do_produto . ')';  
-                                ?>
-                            <?php endwhile; ?>
-                        </th>
-                        <?php endif;?>
+                        <td class="px-6 py-4 text-gray-600 whitespace-nowrap">
+                            <?php echo get_the_ID()?>
+                        </td>
+                        <td class="px-6 py-4 text-gray-600">
+                            <?php echo the_title()?>
+                        </td>
                         <td class="px-6 py-4 text-gray-600 whitespace-nowrap">
                             <?php echo get_the_date('d/m/Y'); ?>
                         </td>
-                        <td class="px-6 py-4 text-gray-950 font-bold">
-                            <?php echo 'R$' . number_format(get_field('valor_da_venda' , get_the_ID()), 2, ',', '.');?>
-                        </td>
-                        <td class="px-6 py-4">
-                            <?php the_author()?>
-                        </td>
-                        <td class="px-6 py-4">
-                            <?php if (get_post_status() == 'publish') {
-                                echo '<span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Efetuada</span>';
-                            } else if(get_post_status() == 'pending') {
-                                echo '<span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Pendente</span>';
+                        <?php if (get_field('tipo' , get_the_ID()) == 'entrada') {
+                                ?>
+                                <td class="px-6 py-4 text-green-800 font-bold whitespace-nowrap">
+                                    <?php echo '+ R$' . number_format(get_field('valor_da_transacao' , get_the_ID()), 2, ',', '.');?>
+                                </td>
+                                <?php
+                        }else{
+                            ?>
+                            <td class="px-6 py-4 text-red-800 font-bold whitespace-nowrap">
+                                <?php echo '- R$' . number_format(get_field('valor_da_transacao' , get_the_ID()), 2, ',', '.');?>
+                            </td>
+                            <?php
+                        }?>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <?php if (get_field('tipo' , get_the_ID()) == 'entrada') {
+                                echo '<span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Entrada</span>';
                             } else {
-                                echo '<span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Cancelada</span>';
+                                echo '<span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Saída</span>';
                             }?>
                         </td>
-                        <td class="px-6 py-4 flex justify-center">
-                            <?php if (get_post_status() == 'publish') {
-                                echo '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="deleteSale w-5 h-5 text-red-500 cursor-pointer" data-id="' . $post->ID . '" data-status="draft">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                                </svg>';
-                            } else {
-                                echo '<a class="editSalesButton text-green-500 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded cursor-pointer hover:underline" data-id="' . $post->ID . '" data-status="publish">Efetuar</a>';
-                            }?>
+                        <!-- <td class="px-6 py-4 flex justify-center">
+                            <?php #if (get_post_status() == 'publish') {
+                                #echo '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="deleteSale w-5 h-5 text-red-500 cursor-pointer" data-id="' . $post->ID . '" data-status="draft">
+                                #<path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                               # </svg>';
+                            #} else {
+                                #echo '<a class="editSalesButton text-green-500 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded cursor-pointer hover:underline" data-id="' . $post->ID . '" data-status="publish">Efetuar</a>';
+                            #}?>
                             
-                        </td>
+                        </td> -->
                     </tr>
                     <?php endwhile; ?>
                 <?php endif; ?>

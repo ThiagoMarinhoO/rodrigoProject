@@ -2123,7 +2123,7 @@ var Datas = {
 };
 function SignIn() {
   return _SignIn.apply(this, arguments);
-}
+} // Cadastrar produtos
 function _SignIn() {
   _SignIn = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
     var email, password, loginForm, _yield$axios$post, data, errorLabel;
@@ -2167,51 +2167,14 @@ function _SignIn() {
   }));
   return _SignIn.apply(this, arguments);
 }
-function SignUp() {
-  return _SignUp.apply(this, arguments);
-} // Cadastrar produtos
-function _SignUp() {
-  _SignUp = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-    var name, email, password, _yield$axios$post2, data;
-    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-      while (1) switch (_context3.prev = _context3.next) {
-        case 0:
-          name = document.querySelector('#newUserName').value;
-          email = document.querySelector('#newUserEmail').value;
-          password = document.querySelector('#newUserPassword').value;
-          _context3.prev = 3;
-          _context3.next = 6;
-          return axios.post("".concat(tailpress_object.homeUrl, "/wp-json/loginsystem/v1/register"), {
-            name: name,
-            email: email,
-            password: password
-          });
-        case 6:
-          _yield$axios$post2 = _context3.sent;
-          data = _yield$axios$post2.data;
-          window.location.reload();
-          _context3.next = 14;
-          break;
-        case 11:
-          _context3.prev = 11;
-          _context3.t0 = _context3["catch"](3);
-          alert(_context3.t0.response.data.error);
-        case 14:
-        case "end":
-          return _context3.stop();
-      }
-    }, _callee3, null, [[3, 11]]);
-  }));
-  return _SignUp.apply(this, arguments);
-}
 function PublishProduct() {
   return _PublishProduct.apply(this, arguments);
 }
 function _PublishProduct() {
-  _PublishProduct = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
-    var product, pricePercentage, _yield$axios$post3, data;
-    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
-      while (1) switch (_context4.prev = _context4.next) {
+  _PublishProduct = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+    var product, pricePercentage, _yield$axios$post2, data;
+    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+      while (1) switch (_context3.prev = _context3.next) {
         case 0:
           product = {
             author: tailpress_object.userID,
@@ -2223,11 +2186,11 @@ function _PublishProduct() {
           };
           pricePercentage = product.marketPrice * product.price / 100;
           product.price = parseFloat(pricePercentage) + parseFloat(product.marketPrice);
-          _context4.next = 5;
+          _context3.next = 5;
           return axios.post("".concat(tailpress_object.homeUrl, "/wp-json/loginsystem/v1/products"), product);
         case 5:
-          _yield$axios$post3 = _context4.sent;
-          data = _yield$axios$post3.data;
+          _yield$axios$post2 = _context3.sent;
+          data = _yield$axios$post2.data;
           console.log(data);
           if (data.success == true) {
             Swal.fire({
@@ -2240,9 +2203,9 @@ function _PublishProduct() {
           }
         case 9:
         case "end":
-          return _context4.stop();
+          return _context3.stop();
       }
-    }, _callee4);
+    }, _callee3);
   }));
   return _PublishProduct.apply(this, arguments);
 }
@@ -2250,22 +2213,22 @@ function getProducts() {
   return _getProducts.apply(this, arguments);
 }
 function _getProducts() {
-  _getProducts = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
+  _getProducts = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
     var _yield$axios$get, data;
-    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
-      while (1) switch (_context5.prev = _context5.next) {
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) switch (_context4.prev = _context4.next) {
         case 0:
-          _context5.next = 2;
+          _context4.next = 2;
           return axios.get("".concat(tailpress_object.homeUrl, "/wp-json/loginsystem/v1/products"));
         case 2:
-          _yield$axios$get = _context5.sent;
+          _yield$axios$get = _context4.sent;
           data = _yield$axios$get.data;
-          return _context5.abrupt("return", data);
+          return _context4.abrupt("return", data);
         case 5:
         case "end":
-          return _context5.stop();
+          return _context4.stop();
       }
-    }, _callee5);
+    }, _callee4);
   }));
   return _getProducts.apply(this, arguments);
 }
@@ -2389,12 +2352,6 @@ document.addEventListener('DOMContentLoaded', function () {
   if (SignInButton) {
     SignInButton.onclick = function () {
       SignIn();
-    };
-  }
-  var signUpButton = document.querySelector('#createNewUserButton');
-  if (signUpButton) {
-    signUpButton.onclick = function () {
-      SignUp();
     };
   }
 });
@@ -2626,6 +2583,53 @@ jQuery(document).ready(function ($) {
     e.preventDefault();
     closeSale();
   });
+
+  // Cadastro vendedor
+  $('#createNewUserButton').on('click', function (e) {
+    e.preventDefault();
+    SignUp();
+  });
+  function SignUp() {
+    var name = $('#newUserName').val();
+    var email = $('#newUserEmail').val();
+    var wageType = $('#newUserWageType').val();
+    var wage = $('#newUserWage').val();
+    var payday = $('#payday').val();
+    $.ajax({
+      url: tailpress_object.ajaxurl,
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        action: 'create_seller',
+        name: name,
+        email: email,
+        wageType: wageType,
+        wage: wage,
+        payday: payday
+      },
+      success: function success(response) {
+        console.log(response);
+        Swal.fire({
+          title: 'Boa!',
+          text: 'Novo vendedor cadastrado',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        }).then(function (result) {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
+        });
+      },
+      error: function error(response) {
+        Swal.fire({
+          title: 'Erro!',
+          text: response.responseJSON.data,
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
+    });
+  }
 
   //balanço diario
   $.ajax({
@@ -2988,6 +2992,7 @@ jQuery(document).ready(function ($) {
         $('#profit_value').text(indicator + formatPrice(response.data.sales_total - response.data.total_market_price));
         $('#profit_value').addClass(profitColor);
         $('#salesTable').html(response.data.sales);
+        $('#transacaoTable').html(response.data.transacoes);
         loading(false);
       },
       error: function error(xhr, status, _error14) {}
@@ -3021,7 +3026,7 @@ jQuery(document).ready(function ($) {
 
   //   datepicker
 
-  $('.clickable-date').click(function () {
+  $('.profit-date').click(function () {
     $(this).find('input').click();
   });
 
@@ -3032,6 +3037,43 @@ jQuery(document).ready(function ($) {
     $('.profit-date').val('');
     initProfit();
     $(this).attr('disabled', true);
+  });
+
+  // Preço
+
+  $('#valueFixed').on('change', function () {
+    var isChecked = $(this).prop('checked');
+    var indicator = isChecked ? 'R$' : '%';
+    $('#priceLabel').text('Preço (' + indicator + ')');
+  });
+
+  // Pagamento de salário
+  $('.paymentEfetued').on('click', function (e) {
+    e.preventDefault();
+    var userID = $(this).closest('tr').attr('user-id');
+    $.ajax({
+      url: tailpress_object.ajaxurl,
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        action: 'confirm_payment',
+        userID: userID
+      },
+      success: function success(response) {
+        console.log(response);
+        Swal.fire({
+          title: 'Boa!',
+          text: 'Salário pago!',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        }).then(function (result) {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
+        });
+      },
+      error: function error(response) {}
+    });
   });
 });
 document.addEventListener('DOMContentLoaded', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {

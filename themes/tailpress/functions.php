@@ -157,3 +157,6 @@ require_once($functions_path . 'daily-report.php');
 require_once($functions_path . 'import-product.php');
 require_once($functions_path . 'update-products.php');
 require_once($functions_path. 'profit_report.php');
+require_once($functions_path. 'shortcodes.php');
+require_once($functions_path. 'create-user.php');
+require_once($functions_path. 'confirm-payment.php');

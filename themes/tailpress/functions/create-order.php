@@ -78,6 +78,20 @@ function create_order(){
             
         }
     }
+
+    $transacao = array(
+        'post_title'  => '[Entrada] - Venda ' . $post_id,
+        'post_status' => 'publish',
+        'post_type'   => 'transacoes',
+    );
+
+    $transacao_id = wp_insert_post($transacao);
+
+    update_field('tipo' , 'entrada' , $transacao_id);
+    update_field('produto_cadastrado', $author, $transacao_id);
+    update_field('valor_da_transacao', $total, $transacao_id);
+    update_field('quantidade_cadastrada', $quantity, $transacao_id);
+
     wp_send_json_success(array(
         'venda' => $post_data,
     ));

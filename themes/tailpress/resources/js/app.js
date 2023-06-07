@@ -87,23 +87,6 @@ async function SignIn() {
       }
 }
 
-async function SignUp() {
-      const name = document.querySelector('#newUserName').value;
-      const email = document.querySelector('#newUserEmail').value;
-      const password = document.querySelector('#newUserPassword').value;
-      
-      try {
-            const { data } = await axios.post(`${tailpress_object.homeUrl}/wp-json/loginsystem/v1/register`, {
-                  name,
-                  email,
-                  password
-            });
-            window.location.reload();
-      } catch(error) {
-            alert(error.response.data.error);
-      }
-}
-
 // Cadastrar produtos
 
 async function PublishProduct() {
@@ -261,13 +244,6 @@ document.addEventListener('DOMContentLoaded', function () {
       if(SignInButton) {
             SignInButton.onclick = () => {
                   SignIn();
-            }
-      }
-
-      const signUpButton = document.querySelector('#createNewUserButton');
-      if(signUpButton) {
-            signUpButton.onclick = () => {
-                  SignUp();
             }
       }
 });
@@ -531,6 +507,54 @@ jQuery(document).ready(function($){
             e.preventDefault()
             closeSale();
       });
+
+      // Cadastro vendedor
+      $('#createNewUserButton').on('click' , function(e) { 
+            e.preventDefault()
+            SignUp();
+      })
+      function SignUp() {
+            let name = $('#newUserName').val();
+            let email = $('#newUserEmail').val();
+            let wageType = $('#newUserWageType').val()
+            let wage = $('#newUserWage').val()
+            let payday = $('#payday').val()
+
+            $.ajax({
+                  url: tailpress_object.ajaxurl,
+                  type: 'POST',
+                  dataType: 'json',
+                      data: {
+                        action: 'create_seller',
+                        name: name,
+                        email: email,
+                        wageType: wageType, 
+                        wage: wage,
+                        payday: payday
+                      },
+                      success: function(response) {
+                        console.log(response)
+                        Swal.fire({
+                              title: 'Boa!',
+                              text: 'Novo vendedor cadastrado',
+                              icon: 'success',
+                              confirmButtonText: 'OK'
+                        }).then(function(result) {
+                              if (result.isConfirmed) {
+                                    window.location.reload();
+                              }
+                        });
+                      },
+                      error: function(response) {
+                        Swal.fire({
+                              title: 'Erro!',
+                              text: response.responseJSON.data,
+                              icon: 'error',
+                              confirmButtonText: 'OK'
+                        });
+                      }
+            });
+      }
 
       //balanço diario
       $.ajax({
@@ -880,6 +904,7 @@ jQuery(document).ready(function($){
                   $('#profit_value').text(indicator + formatPrice(response.data.sales_total - response.data.total_market_price))
                   $('#profit_value').addClass(profitColor)
                   $('#salesTable').html(response.data.sales)
+                  $('#transacaoTable').html(response.data.transacoes)
                   loading(false)
                 },
                 error: function(xhr, status, error) {
@@ -915,7 +940,7 @@ jQuery(document).ready(function($){
 
       //   datepicker
 
-      $('.clickable-date').click(function() {
+      $('.profit-date').click(function() {
             $(this).find('input').click();
       });
 
@@ -935,6 +960,36 @@ jQuery(document).ready(function($){
             let indicator = isChecked ? 'R$' : '%';
             $('#priceLabel').text('Preço (' + indicator + ')');
       });
+
+      // Pagamento de salário
+      $('.paymentEfetued').on('click' , function(e) { 
+            e.preventDefault()
+            let userID = $(this).closest('tr').attr('user-id');
+            $.ajax({
+                  url: tailpress_object.ajaxurl,
+                  type: 'POST',
+                  dataType: 'json',
+                  data: {
+                        action: 'confirm_payment',
+                        userID: userID
+                  },
+                  success: function(response) {
+                        console.log(response)
+                        Swal.fire({
+                              title: 'Boa!',
+                              text: 'Salário pago!',
+                              icon: 'success',
+                              confirmButtonText: 'OK'
+                        }).then(function(result) {
+                              if (result.isConfirmed) {
+                                    window.location.reload();
+                              }
+                        });
+                  },
+                  error: function(response) {
+                  }
+            });
+      })
       
 })
 
