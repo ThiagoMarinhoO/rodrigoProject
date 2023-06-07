@@ -927,6 +927,14 @@ jQuery(document).ready(function($){
             initProfit()
             $(this).attr('disabled' , true)
       })
+
+      // Preço
+
+      $('#valueFixed').on('change', function() {
+            let isChecked = $(this).prop('checked');
+            let indicator = isChecked ? 'R$' : '%';
+            $('#priceLabel').text('Preço (' + indicator + ')');
+      });
       
 })
 

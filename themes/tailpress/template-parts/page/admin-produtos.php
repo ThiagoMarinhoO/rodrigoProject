@@ -54,8 +54,10 @@ $products_query = new WP_Query( $args );
                                         <input type="number" name="estoque" id="estoque" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" placeholder="Estoque" required="">
                                     </div>
                                     <div class="">
-                                        <label for="productPrice" class="block mb-2 text-sm font-medium text-gray-900">Preço (Porcentagem)</label>
+                                        <label for="productPrice" class="block mb-2 text-sm font-medium text-gray-900">Preço (%)</label>
                                         <input type="number" name="product_price" id="productPrice" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" placeholder="Preço" required="">
+                                        <input type="checkbox" id="valueFixed" name="value_fixed" class="mt-2">
+                                        <label for="valueFixed">Digitar valor fixo</label>
                                     </div>
                                 </div>
                             </div>

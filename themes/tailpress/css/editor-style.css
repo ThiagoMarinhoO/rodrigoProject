@@ -215,6 +215,9 @@
 .block {
     display: block
 }
+.inline-block {
+    display: inline-block
+}
 .flex {
     display: flex
 }
@@ -340,6 +343,11 @@
 .cursor-pointer {
     cursor: pointer
 }
+.select-none {
+    -webkit-user-select: none;
+       -moz-user-select: none;
+            user-select: none
+}
 .list-decimal {
     list-style-type: decimal
 }
@@ -348,6 +356,11 @@
 }
 .list-none {
     list-style-type: none
+}
+.appearance-none {
+    -webkit-appearance: none;
+       -moz-appearance: none;
+            appearance: none
 }
 .grid-cols-1 {
     grid-template-columns: repeat(1, minmax(0, 1fr))
@@ -463,6 +476,9 @@
 .border {
     border-width: 1px
 }
+.border-4 {
+    border-width: 4px
+}
 .border-b {
     border-bottom-width: 1px
 }
@@ -555,6 +571,10 @@
 .bg-yellow-100 {
     --tw-bg-opacity: 1;
     background-color: rgb(254 249 195 / var(--tw-bg-opacity))
+}
+.bg-gray-300 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(209 213 219 / var(--tw-bg-opacity))
 }
 .bg-opacity-50 {
     --tw-bg-opacity: 0.5
@@ -718,6 +738,9 @@
 }
 .text-center {
     text-align: center
+}
+.align-middle {
+    vertical-align: middle
 }
 .text-2xl {
     font-size: 1.5rem;
@@ -919,8 +942,21 @@
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms
 }
+.transition {
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms
+}
 .duration-300 {
     transition-duration: 300ms
+}
+.duration-200 {
+    transition-duration: 200ms
+}
+.ease-in {
+    transition-timing-function: cubic-bezier(0.4, 0, 1, 1)
 }
 .alignfull {
     margin: 2rem calc(50% - 50vw) !important;
