@@ -117,9 +117,12 @@ async function PublishProduct() {
             estoque: document.querySelector('#estoque').value
       }
 
-      let pricePercentage = product.marketPrice * product.price / 100
+      let fixedValue = document.querySelector('#valueFixed')
 
-      product.price = parseFloat(pricePercentage) + parseFloat(product.marketPrice)
+      if(!fixedValue.checked) {
+            let pricePercentage = product.marketPrice * product.price / 100
+            product.price = parseFloat(pricePercentage) + parseFloat(product.marketPrice)
+      }
 
       const { data } = await axios.post(`${tailpress_object.homeUrl}/wp-json/loginsystem/v1/products`, product);
       console.log(data);
@@ -654,52 +657,56 @@ jQuery(document).ready(function($){
                   let title = $(".updateProductName").eq(index).val();
                   let price = $(".updateProductPrice").eq(index).val();
                   let estoque = $(".updateStock").eq(index).val();
-                  let marketPrice = $(".updateMarketPrice").eq(index).val();
+                  let marketPrice = $(".updateMarketPrice").eq(index).val() == '' ? $(".updateMarketPrice").attr('placeholder').replace(/^R\$(.*)/, "$1").replace(",", ".") : $(".updateMarketPrice").eq(index).val();
                   let product_id = $(".atualizarProdutoButton").eq(index).attr("data-id");
+                  let valueFixed = $(".valueFixedAtualizar").eq(index).prop('checked')
 
-                  let pricePercentage = marketPrice * price / 100
-                  price = parseFloat(pricePercentage) + parseFloat(marketPrice)
+                  if(valueFixed == false){
+                        let pricePercentage = marketPrice * price / 100
+                        price = parseFloat(pricePercentage) + parseFloat(marketPrice)
+                  }
+                  
 
                   $.ajax({
-                  url: tailpress_object.ajaxurl,
-                  type: 'POST',
-                  dataType: 'json',
-                  data: {
-                  action: 'update_product',
-                  product_id: product_id,
-                  title: title,
-                  price: price,
-                  estoque: estoque,
-                  marketPrice: marketPrice
-                  },
-                  beforeSend: function() {
-                  loading(true);
-                  },
-                  success: function(response) {
-                  Swal.fire({
-                        title: 'Sucesso!',
-                        text: 'Produto atualizado!',
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                  }).then(function(result) {
-                        if (result.isConfirmed) {
-                        $('#readProductDrawer').addClass('-translate-x-full');
-                        window.location.reload();
+                        url: tailpress_object.ajaxurl,
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                        action: 'update_product',
+                        product_id: product_id,
+                        title: title,
+                        price: price,
+                        estoque: estoque,
+                        marketPrice: marketPrice
+                        },
+                        beforeSend: function() {
+                        loading(true);
+                        },
+                        success: function(response) {
+                              Swal.fire({
+                                    title: 'Sucesso!',
+                                    text: 'Produto atualizado!',
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                              }).then(function(result) {
+                                    if (result.isConfirmed) {
+                                    $('#readProductDrawer').addClass('-translate-x-full');
+                                    window.location.reload();
+                                    }
+                              });
+                        },
+                        error: function(xhr, status, error) {
+                        console.log(error);
+                        Swal.fire({
+                              title: 'Erro!',
+                              text: 'Erro ao atualizar produto',
+                              icon: 'error',
+                              confirmButtonText: 'OK'
+                        });
+                        },
+                        complete: function() {
+                              loading(false);
                         }
-                  });
-                  },
-                  error: function(xhr, status, error) {
-                  console.log(error);
-                  Swal.fire({
-                        title: 'Erro!',
-                        text: 'Erro ao atualizar produto',
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                  });
-                  },
-                  complete: function() {
-                        loading(false);
-                  }
                   });
             });
       });
@@ -928,14 +935,17 @@ jQuery(document).ready(function($){
             $(this).attr('disabled' , true)
       })
 
-      // Preço
+      // Margem de Lucro
 
-      $('#valueFixed').on('change', function() {
-            let isChecked = $(this).prop('checked');
-            let indicator = isChecked ? 'R$' : '%';
-            $('#priceLabel').text('Preço (' + indicator + ')');
-      });
-      
+      $('.valueFixed').each((index, input) => {
+            $(input).on('change', function() {
+                  let isChecked = $(input).prop('checked');
+                  let indicator = isChecked ? 'R$' : '%';
+                  let LabelText = isChecked ? 'Digitar valor percentual' : 'Digitar valor fixo';
+                  $('.digitarValor').eq(index).text(LabelText);
+                  $('.labelForPrice').eq(index).text('Margem de Lucro (' + indicator + ')');
+            })
+      })
 })
 
 document.addEventListener('DOMContentLoaded', async function() {

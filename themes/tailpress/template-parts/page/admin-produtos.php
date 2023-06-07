@@ -54,10 +54,13 @@ $products_query = new WP_Query( $args );
                                         <input type="number" name="estoque" id="estoque" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" placeholder="Estoque" required="">
                                     </div>
                                     <div class="">
-                                        <label for="productPrice" class="block mb-2 text-sm font-medium text-gray-900">Preço (%)</label>
+                                        <label for="productPrice" class="labelForPrice block mb-2 text-sm font-medium text-gray-900">Margem de Lucro (%)</label>
                                         <input type="number" name="product_price" id="productPrice" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" placeholder="Preço" required="">
-                                        <input type="checkbox" id="valueFixed" name="value_fixed" class="mt-2">
-                                        <label for="valueFixed">Digitar valor fixo</label>
+                                        <label class="relative inline-flex items-center cursor-pointer mt-4">
+                                            <input type="checkbox" id="valueFixed" name="value_fixed" class="valueFixed sr-only peer">
+                                            <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                            <span class="digitarValor ml-3 text-sm font-medium text-gray-900">Digitar valor fixo</span>
+                                        </label>
                                     </div>
                                 </div>
                             </div>
@@ -179,10 +182,13 @@ $products_query = new WP_Query( $args );
                                                 <input type="number" name="stock" id="" class="updateStock shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" placeholder="EX: 1" required="">
                                             </div>
                                             <div class="">
-                                                <label for="price" class="block mb-2 text-sm font-medium text-gray-900">Preço (Porcentagem)</label>
-                                                <input type="number" name="product_price" id="" class="updateProductPrice shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" placeholder="<?php echo 'R$' . number_format(get_field('product_price', $post->ID), 2, ',', '.');?>" required="">
-                                                <input type="checkbox" id="valueFixed" name="value_fixed" class="mt-2">
-                                                <label for="valueFixed">Digitar valor fixo</label>
+                                                <label for="price" class="labelForPrice block mb-2 text-sm font-medium text-gray-900">Margem de Lucro (%)</label>
+                                                <input type="number" name="product_price" id="price" class="updateProductPrice shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" placeholder="<?php echo 'R$' . number_format(get_field('product_price', $post->ID), 2, ',', '.');?>">
+                                                <label class="relative inline-flex items-center cursor-pointer mt-4">
+                                                    <input type="checkbox" id="valueFixed" name="value_fixed" class="valueFixed valueFixedAtualizar sr-only peer">
+                                                    <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                                    <span class="digitarValor ml-3 text-sm font-medium text-gray-900">Digitar valor fixo</span>
+                                                </label>
                                             </div>
                                     </div>
                                 </div>

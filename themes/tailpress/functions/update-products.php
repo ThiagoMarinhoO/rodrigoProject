@@ -7,7 +7,7 @@ function update_product($post_id) {
     $title = $_POST['title'] != '' ? $_POST['title'] : get_the_title($post_id);
     $price = $_POST['price'];
     $stock = get_field('estoque' , $post_id);
-    $quantity = $_POST['estoque'];
+    $quantity = $_POST['estoque'] != '' ? $_POST['estoque'] : 0;
     $market_price = $_POST['marketPrice'] != '' ? $_POST['marketPrice'] : get_field('market_price' , $post_id);
 
     $new_stock = $stock + $quantity;
@@ -24,7 +24,7 @@ function update_product($post_id) {
     $market_price != '' ? update_field('market_price', $market_price, $post_id) : false;
     $stock != '' ? update_field('estoque' , $new_stock , $post_id) : false;
 
-    if($quantity != ''){
+    if($quantity != 0){
         $transacao = array(
             'post_title'   => '[Saída] - ' . $title,
             'post_status'  => 'publish',
