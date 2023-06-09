@@ -121,7 +121,6 @@ async function PublishProduct() {
       }
   
       const { data } = await axios.post(`${tailpress_object.homeUrl}/wp-json/loginsystem/v1/products`, product);
-      console.log(data);
       if (data.success == true) {
           Swal.fire({
               title: 'Sucesso!',
@@ -254,7 +253,6 @@ document.addEventListener('DOMContentLoaded', function () {
             publishButton.onclick = function() {
                   PublishProduct();
             }
-            // console.log(publishButton)
       }     
 
       const SignInButton = document.querySelector('#signin');
@@ -268,7 +266,6 @@ document.addEventListener('DOMContentLoaded', function () {
 jQuery(document).ready(function($){
       function loading(isLoading){
             if(isLoading){
-              console.log('true')
               var animationData = {
                 container: document.getElementById('loading-animation'),
                 renderer: 'svg',
@@ -285,7 +282,6 @@ jQuery(document).ready(function($){
         
               return anim
             }else{
-              console.log('false')
               $('#loading-animation').fadeOut('fast', function() {
                 $(this).remove();
                 $(this).removeClass('active')
@@ -314,14 +310,13 @@ jQuery(document).ready(function($){
               success: function(response) {
                 cart = response.data.products
                 total = response.data.total_price
-                console.log(JSON.stringify(response, null, 2));
                   updateCartCounter();
                   createDrawerCart();        
                   updateCartTotal()
+                  console.log(JSON.stringify(response, null, 2));
                   $('#readProductDrawer').removeClass('-translate-x-full')
               },
               error: function(xhr, status, error) {
-                  console.log(error)
                   Swal.fire({
                         title: 'Erro!',
                         text: 'Erro ao adicionar o produto',
@@ -357,7 +352,7 @@ jQuery(document).ready(function($){
                                                       <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
                                                 </svg>                              
                                           </a>
-                                          <a id="qty" class="relative inline-flex items-center px-2 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0" data-estoque="${product.estoque}">${product.quantity}</a>
+                                          <input type="number" id="qty" class="relative inline-flex items-center px-2 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0" readonly value="${product.quantity}" max="${product.estoque}">
                                           <a id="qtyIncrease" data-id="${product.produto_id}" class="relative inline-flex items-center rounded-r-md px-1 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                                       <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
@@ -405,7 +400,6 @@ jQuery(document).ready(function($){
                                     });
                         },
                         error: function(xhr, status, error) {
-                              console.log(error)
                               Swal.fire({
                               title: 'Erro!',
                               text: 'Erro ao fechar a venda',
@@ -442,20 +436,21 @@ jQuery(document).ready(function($){
 
       $(document).on("click", "#qtyIncrease", function(e) {
             e.preventDefault();
-            var $qtyElement = $(this).siblings('#qty');
-            var estoque = parseInt($qtyElement.data('estoque'));
-            var currentQty = parseInt($qtyElement.text());
-            $qtyElement.next().attr('max', estoque);
+            var $qtyElement = $(this).siblings('input[type="number"]');
+            var currentQty = parseInt($qtyElement.val());
+            var estoque = parseInt($qtyElement.attr('max'))
+            console.log(currentQty)
+            console.log(estoque)
             if (currentQty < estoque) {
-                  var productID = $(this).attr("data-id");
-                  addProduct(productID);
-            }else{
-                  Swal.fire({
-                        title: 'Aviso!',
-                        text: 'Você só possui ' + estoque + ' produtos no estoque',
-                        icon: 'warning',
-                        confirmButtonText: 'OK'
-                  });
+                var productID = $(this).attr("data-id");
+                addProduct(productID);
+            } else {
+                Swal.fire({
+                    title: 'Aviso!',
+                    text: 'Você só possui ' + estoque + ' produtos no estoque',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                });
             }
         });
         
@@ -491,8 +486,7 @@ jQuery(document).ready(function($){
         });
 
       $(document).on('click', '#deleteButton', function() {
-            var productID = $(this).attr("data-id");
-            // console.log(productID)
+            var productID = $(this).attr("data-id");            
             $.ajax({
               url: tailpress_object.ajaxurl,
               type: 'POST',
@@ -550,7 +544,6 @@ jQuery(document).ready(function($){
                         payday: payday
                       },
                       success: function(response) {
-                        console.log(response)
                         Swal.fire({
                               title: 'Boa!',
                               text: 'Novo vendedor cadastrado',
@@ -587,7 +580,6 @@ jQuery(document).ready(function($){
                   loading(true)
                   },
             success: function(response) {
-                  // console.log(response)
                   $('#balanco_diario').text(response.data.valor_final.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }))
                   // $('.nome-produto-daily').text(response.data.produto_mais_vendido.title)
                   // $('.barcode-produto-daily').text(response.data.produto_mais_vendido.barcode)
@@ -595,7 +587,6 @@ jQuery(document).ready(function($){
                   // $('.total-produto-daily').text(response.data.produto_mais_vendido.unity_price * response.data.quantidade_mais_vendida)
             },
             error: function(xhr, status, error) {
-                  console.log(error)
             },
       });
       //balanço semanal
@@ -609,11 +600,9 @@ jQuery(document).ready(function($){
               final_date: Datas.ultimoDiaSemana().toISOString().slice(0, 10)
             },
             success: function(response) {
-                  // console.log(response)
                   $('#balanco_semanal').text(response.data.valor_final.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }))
             },
             error: function(xhr, status, error) {
-                  console.log(error)
             }
       });
       // //balanço mensal
@@ -627,13 +616,11 @@ jQuery(document).ready(function($){
               final_date: Datas.ultimoDiaMes().toISOString().slice(0, 10)
             },
             success: function(response) {
-                  // console.log(response)
                   $('#balanco_mensal').text(response.data.valor_final.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }))
                   $('#produtoMaisVendidoPreco').text(parseInt(response.data.produto_mais_vendido?.produto_preco)?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }))
                   $('#produtoMaisVendidoNome').text(response.data.produto_mais_vendido?.produto_nome)
             },
             error: function(xhr, status, error) {
-                  console.log(error);
             }
       });
       // //balanço semestral
@@ -647,11 +634,9 @@ jQuery(document).ready(function($){
               final_date: Datas.recorteSemestre().ultimoDia.toISOString().slice(0, 10)
             },
             success: function(response) {
-                  // console.log(response)
                   $('#balanco_semestral').text(response.data.valor_final.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }))
             },
             error: function(xhr, status, error) {
-                  console.log(error);
             }
       });
       // //balanço anual
@@ -668,7 +653,6 @@ jQuery(document).ready(function($){
                   $('#balanco_anual').text(response.data.valor_final.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }))
             },
             error: function(xhr, status, error) {
-                  console.log(error);
             },
             complete: function(){
                   loading(false)
@@ -743,7 +727,6 @@ jQuery(document).ready(function($){
                         });
                     },
                     error: function(xhr, status, error) {
-                        console.log(error);
                         Swal.fire({
                             title: 'Erro!',
                             text: 'Erro ao atualizar produto',
@@ -788,7 +771,6 @@ jQuery(document).ready(function($){
                               });
                         },
                         error: function(xhr, status, error) {
-                              console.log(error);
                               Swal.fire({
                                     title: 'Erro!',
                                     text: 'Erro ao deletar produto',
@@ -842,7 +824,6 @@ jQuery(document).ready(function($){
                                       });
                                     },
                                     error: function(xhr, status, error) {
-                                      console.log(error);
                                       Swal.fire({
                                         title: 'Erro!',
                                         text: 'Erro ao cancelar venda',
@@ -896,7 +877,6 @@ jQuery(document).ready(function($){
                                       });
                                     },
                                     error: function(xhr, status, error) {
-                                      console.log(error);
                                       Swal.fire({
                                         title: 'Erro!',
                                         text: 'Erro ao efetuar venda',
@@ -926,7 +906,6 @@ jQuery(document).ready(function($){
                 },
                 dataType: 'json',
                 success: function(response) {
-                  console.log(JSON.stringify(response, null, 2));
                   $('#saidas_balanco').text('-' + formatPrice(response.data.total_market_price))
                   $('#entradas_balanco').text('+' + formatPrice(response.data.sales_total))
                   let indicator = response.data.total_market_price > response.data.sales_total ? '' : '+'
@@ -952,7 +931,6 @@ jQuery(document).ready(function($){
                   },
                   dataType: 'json',
                   success: function(response) {
-                    console.log(JSON.stringify(response, null, 2));
                     $('#saidas_balanco').text('-' + formatPrice(response.data.total_market_price))
                     $('#entradas_balanco').text('+' + formatPrice(response.data.sales_total))
                     let indicator = response.data.total_market_price > response.data.sales_total ? '' : '+'
@@ -1017,7 +995,6 @@ jQuery(document).ready(function($){
                             userID: userID
                         },
                         success: function(response) {
-                            console.log(response);
                             Swal.fire({
                                 title: 'Sucesso!',
                                 text: 'Salário pago!',
@@ -1060,7 +1037,6 @@ jQuery(document).ready(function($){
                         },
                         success: function(response) {
                               loading(false)
-                            console.log(response);
                             Swal.fire({
                                 title: 'Sucesso!',
                                 text: 'Usuário excluído com sucesso!',

@@ -2211,7 +2211,6 @@ function _PublishProduct() {
         case 8:
           _yield$axios$post2 = _context3.sent;
           data = _yield$axios$post2.data;
-          console.log(data);
           if (data.success == true) {
             Swal.fire({
               title: 'Sucesso!',
@@ -2221,7 +2220,7 @@ function _PublishProduct() {
             });
             window.location.reload();
           }
-        case 12:
+        case 11:
         case "end":
           return _context3.stop();
       }
@@ -2365,9 +2364,7 @@ document.addEventListener('DOMContentLoaded', function () {
     publishButton.onclick = function () {
       PublishProduct();
     };
-    // console.log(publishButton)
   }
-
   var SignInButton = document.querySelector('#signin');
   if (SignInButton) {
     SignInButton.onclick = function () {
@@ -2378,7 +2375,6 @@ document.addEventListener('DOMContentLoaded', function () {
 jQuery(document).ready(function ($) {
   function loading(isLoading) {
     if (isLoading) {
-      console.log('true');
       var animationData = {
         container: document.getElementById('loading-animation'),
         renderer: 'svg',
@@ -2394,7 +2390,6 @@ jQuery(document).ready(function ($) {
       $('#loading-animation').addClass('active');
       return anim;
     } else {
-      console.log('false');
       $('#loading-animation').fadeOut('fast', function () {
         $(this).remove();
         $(this).removeClass('active');
@@ -2422,14 +2417,13 @@ jQuery(document).ready(function ($) {
       success: function success(response) {
         cart = response.data.products;
         total = response.data.total_price;
-        console.log(JSON.stringify(response, null, 2));
         updateCartCounter();
         createDrawerCart();
         updateCartTotal();
+        console.log(JSON.stringify(response, null, 2));
         $('#readProductDrawer').removeClass('-translate-x-full');
       },
       error: function error(xhr, status, _error) {
-        console.log(_error);
         Swal.fire({
           title: 'Erro!',
           text: 'Erro ao adicionar o produto',
@@ -2451,7 +2445,7 @@ jQuery(document).ready(function ($) {
   function createDrawerCart() {
     var row = '';
     cart.forEach(function (product) {
-      row += "\n                   <div>\n                        <div class=\"product py-3\" data-id=\"".concat(product.produto_id, "\">\n                              <div class=\"flex justify-between mb-3\">\n                                    <p class=\"font-semibold\">").concat(product.title, "</p>\n                                    <p class=\"font-bold\">").concat(formatPrice(product.price), "</p>\n                              </div>\n                              <div class=\"flex justify-between\">\n                                    <div class=\"flex items-center\">\n                                          <a id=\"qtyDecrease\" data-id=\"").concat(product.produto_id, "\" class=\"relative inline-flex items-center rounded-l-md px-1 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0\">\n                                                <svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-6 h-6\">\n                                                      <path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M18 12H6\" />\n                                                </svg>                              \n                                          </a>\n                                          <a id=\"qty\" class=\"relative inline-flex items-center px-2 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0\" data-estoque=\"").concat(product.estoque, "\">").concat(product.quantity, "</a>\n                                          <a id=\"qtyIncrease\" data-id=\"").concat(product.produto_id, "\" class=\"relative inline-flex items-center rounded-r-md px-1 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0\">\n                                                <svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-6 h-6\">\n                                                      <path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M12 6v12m6-6H6\" />\n                                                </svg>                                  \n                                          </a>\n                                    </div>\n                                    <button id=\"deleteButton\" type=\"button\" data-id=\"").concat(product.produto_id, "\" class=\"text-red-700 hover:text-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium text-sm\"><svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-6 h-6\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0\" /></svg></button>\n                              </div>\n                        </div>\n                  </div>\n                  ");
+      row += "\n                   <div>\n                        <div class=\"product py-3\" data-id=\"".concat(product.produto_id, "\">\n                              <div class=\"flex justify-between mb-3\">\n                                    <p class=\"font-semibold\">").concat(product.title, "</p>\n                                    <p class=\"font-bold\">").concat(formatPrice(product.price), "</p>\n                              </div>\n                              <div class=\"flex justify-between\">\n                                    <div class=\"flex items-center\">\n                                          <a id=\"qtyDecrease\" data-id=\"").concat(product.produto_id, "\" class=\"relative inline-flex items-center rounded-l-md px-1 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0\">\n                                                <svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-6 h-6\">\n                                                      <path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M18 12H6\" />\n                                                </svg>                              \n                                          </a>\n                                          <input type=\"number\" id=\"qty\" class=\"relative inline-flex items-center px-2 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0\" readonly value=\"").concat(product.quantity, "\" max=\"").concat(product.estoque, "\">\n                                          <a id=\"qtyIncrease\" data-id=\"").concat(product.produto_id, "\" class=\"relative inline-flex items-center rounded-r-md px-1 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0\">\n                                                <svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-6 h-6\">\n                                                      <path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M12 6v12m6-6H6\" />\n                                                </svg>                                  \n                                          </a>\n                                    </div>\n                                    <button id=\"deleteButton\" type=\"button\" data-id=\"").concat(product.produto_id, "\" class=\"text-red-700 hover:text-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium text-sm\"><svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-6 h-6\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0\" /></svg></button>\n                              </div>\n                        </div>\n                  </div>\n                  ");
     });
     $('#productDrawerList').html(row);
   }
@@ -2488,7 +2482,6 @@ jQuery(document).ready(function ($) {
           });
         },
         error: function error(xhr, status, _error2) {
-          console.log(_error2);
           Swal.fire({
             title: 'Erro!',
             text: 'Erro ao fechar a venda',
@@ -2522,10 +2515,11 @@ jQuery(document).ready(function ($) {
   });
   $(document).on("click", "#qtyIncrease", function (e) {
     e.preventDefault();
-    var $qtyElement = $(this).siblings('#qty');
-    var estoque = parseInt($qtyElement.data('estoque'));
-    var currentQty = parseInt($qtyElement.text());
-    $qtyElement.next().attr('max', estoque);
+    var $qtyElement = $(this).siblings('input[type="number"]');
+    var currentQty = parseInt($qtyElement.val());
+    var estoque = parseInt($qtyElement.attr('max'));
+    console.log(currentQty);
+    console.log(estoque);
     if (currentQty < estoque) {
       var productID = $(this).attr("data-id");
       addProduct(productID);
@@ -2571,7 +2565,6 @@ jQuery(document).ready(function ($) {
   });
   $(document).on('click', '#deleteButton', function () {
     var productID = $(this).attr("data-id");
-    // console.log(productID)
     $.ajax({
       url: tailpress_object.ajaxurl,
       type: 'POST',
@@ -2628,7 +2621,6 @@ jQuery(document).ready(function ($) {
         payday: payday
       },
       success: function success(response) {
-        console.log(response);
         Swal.fire({
           title: 'Boa!',
           text: 'Novo vendedor cadastrado',
@@ -2665,7 +2657,6 @@ jQuery(document).ready(function ($) {
       loading(true);
     },
     success: function success(response) {
-      // console.log(response)
       $('#balanco_diario').text(response.data.valor_final.toLocaleString('pt-BR', {
         style: 'currency',
         currency: 'BRL'
@@ -2676,9 +2667,7 @@ jQuery(document).ready(function ($) {
       // $('.total-produto-daily').text(response.data.produto_mais_vendido.unity_price * response.data.quantidade_mais_vendida)
     },
 
-    error: function error(xhr, status, _error5) {
-      console.log(_error5);
-    }
+    error: function error(xhr, status, _error5) {}
   });
   //balanço semanal
   $.ajax({
@@ -2691,15 +2680,12 @@ jQuery(document).ready(function ($) {
       final_date: Datas.ultimoDiaSemana().toISOString().slice(0, 10)
     },
     success: function success(response) {
-      // console.log(response)
       $('#balanco_semanal').text(response.data.valor_final.toLocaleString('pt-BR', {
         style: 'currency',
         currency: 'BRL'
       }));
     },
-    error: function error(xhr, status, _error6) {
-      console.log(_error6);
-    }
+    error: function error(xhr, status, _error6) {}
   });
   // //balanço mensal
   $.ajax({
@@ -2713,7 +2699,6 @@ jQuery(document).ready(function ($) {
     },
     success: function success(response) {
       var _parseInt, _response$data$produt, _response$data$produt2;
-      // console.log(response)
       $('#balanco_mensal').text(response.data.valor_final.toLocaleString('pt-BR', {
         style: 'currency',
         currency: 'BRL'
@@ -2724,9 +2709,7 @@ jQuery(document).ready(function ($) {
       }));
       $('#produtoMaisVendidoNome').text((_response$data$produt2 = response.data.produto_mais_vendido) === null || _response$data$produt2 === void 0 ? void 0 : _response$data$produt2.produto_nome);
     },
-    error: function error(xhr, status, _error7) {
-      console.log(_error7);
-    }
+    error: function error(xhr, status, _error7) {}
   });
   // //balanço semestral
   $.ajax({
@@ -2739,15 +2722,12 @@ jQuery(document).ready(function ($) {
       final_date: Datas.recorteSemestre().ultimoDia.toISOString().slice(0, 10)
     },
     success: function success(response) {
-      // console.log(response)
       $('#balanco_semestral').text(response.data.valor_final.toLocaleString('pt-BR', {
         style: 'currency',
         currency: 'BRL'
       }));
     },
-    error: function error(xhr, status, _error8) {
-      console.log(_error8);
-    }
+    error: function error(xhr, status, _error8) {}
   });
   // //balanço anual
   $.ajax({
@@ -2765,9 +2745,7 @@ jQuery(document).ready(function ($) {
         currency: 'BRL'
       }));
     },
-    error: function error(xhr, status, _error9) {
-      console.log(_error9);
-    },
+    error: function error(xhr, status, _error9) {},
     complete: function complete() {
       loading(false);
     }
@@ -2836,7 +2814,6 @@ jQuery(document).ready(function ($) {
           });
         },
         error: function error(xhr, status, _error10) {
-          console.log(_error10);
           Swal.fire({
             title: 'Erro!',
             text: 'Erro ao atualizar produto',
@@ -2881,7 +2858,6 @@ jQuery(document).ready(function ($) {
             });
           },
           error: function error(xhr, status, _error11) {
-            console.log(_error11);
             Swal.fire({
               title: 'Erro!',
               text: 'Erro ao deletar produto',
@@ -2933,7 +2909,6 @@ jQuery(document).ready(function ($) {
               });
             },
             error: function error(xhr, status, _error12) {
-              console.log(_error12);
               Swal.fire({
                 title: 'Erro!',
                 text: 'Erro ao cancelar venda',
@@ -2986,7 +2961,6 @@ jQuery(document).ready(function ($) {
               });
             },
             error: function error(xhr, status, _error13) {
-              console.log(_error13);
               Swal.fire({
                 title: 'Erro!',
                 text: 'Erro ao efetuar venda',
@@ -3016,7 +2990,6 @@ jQuery(document).ready(function ($) {
       },
       dataType: 'json',
       success: function success(response) {
-        console.log(JSON.stringify(response, null, 2));
         $('#saidas_balanco').text('-' + formatPrice(response.data.total_market_price));
         $('#entradas_balanco').text('+' + formatPrice(response.data.sales_total));
         var indicator = response.data.total_market_price > response.data.sales_total ? '' : '+';
@@ -3041,7 +3014,6 @@ jQuery(document).ready(function ($) {
       },
       dataType: 'json',
       success: function success(response) {
-        console.log(JSON.stringify(response, null, 2));
         $('#saidas_balanco').text('-' + formatPrice(response.data.total_market_price));
         $('#entradas_balanco').text('+' + formatPrice(response.data.sales_total));
         var indicator = response.data.total_market_price > response.data.sales_total ? '' : '+';
@@ -3105,7 +3077,6 @@ jQuery(document).ready(function ($) {
             userID: userID
           },
           success: function success(response) {
-            console.log(response);
             Swal.fire({
               title: 'Sucesso!',
               text: 'Salário pago!',
@@ -3147,7 +3118,6 @@ jQuery(document).ready(function ($) {
           },
           success: function success(response) {
             loading(false);
-            console.log(response);
             Swal.fire({
               title: 'Sucesso!',
               text: 'Usuário excluído com sucesso!',

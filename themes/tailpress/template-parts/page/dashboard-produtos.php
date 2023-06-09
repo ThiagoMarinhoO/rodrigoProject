@@ -30,14 +30,17 @@ $products_query = new WP_Query( $args );
             <table id="productsTable" class="w-full text-sm text-left text-gray-500">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
+                    <th scope="col" class="px-6 py-3 font-semibold text-gray-600">
+                            ID
+                        </th>
                         <th scope="col" class="px-6 py-3 font-semibold text-gray-600">
                             Nome
                         </th>
                         <th scope="col" class="px-6 py-3 font-semibold text-gray-600">
-                            ID
+                            Preço
                         </th>
                         <th scope="col" class="px-6 py-3 font-semibold text-gray-600">
-                            Preço
+                            Estoque
                         </th>
                         <th scope="col" class="px-6 py-3 font-semibold text-gray-600">
                             Ação
@@ -49,17 +52,24 @@ $products_query = new WP_Query( $args );
                     <?php while($products_query->have_posts()): $products_query->the_post();?>
                     <tr class="bg-white border-b hover:bg-gray-50 product-table" product-id="<?php echo get_the_ID()?>">
                             <input type="hidden" name="quantidade" value="1">
+                            <td class="px-6 py-4">
+                                <?php echo '#' . $post->ID;?>
+                            </td>
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap product-name">
                                 <?php the_title();?>
                             </th>
                             <td class="px-6 py-4">
-                                <?php echo '#' . $post->ID;?>
-                            </td>
-                            <td class="px-6 py-4">
                                 <?php echo 'R$' . number_format(get_field('product_price', $post->ID), 2, ',', '.');?>
                             </td>
                             <td class="px-6 py-4">
-                                <button class="font-medium text-blue-600 hover:underline add-to-cart-btn">Adicionar ao Carrinho</button>
+                                <?php echo get_field('estoque' , $post->ID)?>
+                            </td>
+                            <td class="px-6 py-4">
+                                <?php if(get_field('estoque' , $post->ID) != 0):?>
+                                    <button class="font-medium text-blue-600 hover:underline add-to-cart-btn">Adicionar ao Carrinho</button>
+                                <?php else: ?>
+                                    <span class="text-red-600">Produto sem estoque</span>
+                                <?php endif; ?>
                             </td>
                         </tr>
                     <?php endwhile; ?>
