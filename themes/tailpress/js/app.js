@@ -3061,28 +3061,81 @@ jQuery(document).ready(function ($) {
   $('.paymentEfetued').on('click', function (e) {
     e.preventDefault();
     var userID = $(this).closest('tr').attr('user-id');
-    $.ajax({
-      url: tailpress_object.ajaxurl,
-      type: 'POST',
-      dataType: 'json',
-      data: {
-        action: 'confirm_payment',
-        userID: userID
-      },
-      success: function success(response) {
-        console.log(response);
-        Swal.fire({
-          title: 'Boa!',
-          text: 'Salário pago!',
-          icon: 'success',
-          confirmButtonText: 'OK'
-        }).then(function (result) {
-          if (result.isConfirmed) {
-            window.location.reload();
-          }
+    Swal.fire({
+      title: 'Confirmação',
+      text: 'Tem certeza de que deseja efetuar o pagamento de salário?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sim, efetuar pagamento',
+      cancelButtonText: 'Cancelar'
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: tailpress_object.ajaxurl,
+          type: 'POST',
+          dataType: 'json',
+          data: {
+            action: 'confirm_payment',
+            userID: userID
+          },
+          success: function success(response) {
+            console.log(response);
+            Swal.fire({
+              title: 'Sucesso!',
+              text: 'Salário pago!',
+              icon: 'success',
+              confirmButtonText: 'OK'
+            }).then(function (result) {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
+            });
+          },
+          error: function error(response) {}
         });
-      },
-      error: function error(response) {}
+      }
+    });
+  });
+  // Excluir vendedor
+
+  $('.deleteSeller').on('click', function (e) {
+    e.preventDefault();
+    var userID = $(this).closest('tr').attr('user-id');
+    Swal.fire({
+      title: 'Confirmação',
+      text: 'Tem certeza de que deseja excluir este usuário?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sim, excluir',
+      cancelButtonText: 'Cancelar'
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        loading(true);
+        $.ajax({
+          url: tailpress_object.ajaxurl,
+          type: 'POST',
+          dataType: 'json',
+          data: {
+            action: 'delete_seller',
+            user_id: userID
+          },
+          success: function success(response) {
+            loading(false);
+            console.log(response);
+            Swal.fire({
+              title: 'Sucesso!',
+              text: 'Usuário excluído com sucesso!',
+              icon: 'success',
+              confirmButtonText: 'OK'
+            }).then(function (result) {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
+            });
+          },
+          error: function error(response) {}
+        });
+      }
     });
   });
 });

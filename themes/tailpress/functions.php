@@ -160,3 +160,4 @@ require_once($functions_path. 'profit_report.php');
 require_once($functions_path. 'shortcodes.php');
 require_once($functions_path. 'create-user.php');
 require_once($functions_path. 'confirm-payment.php');
+require_once($functions_path. 'delete-seller.php');
