@@ -2123,7 +2123,7 @@ var Datas = {
 };
 function SignIn() {
   return _SignIn.apply(this, arguments);
-} // Cadastrar produtos
+}
 function _SignIn() {
   _SignIn = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
     var email, password, loginForm, _yield$axios$post, data, errorLabel;
@@ -2167,6 +2167,11 @@ function _SignIn() {
   }));
   return _SignIn.apply(this, arguments);
 }
+function isFieldEmpty(field) {
+  return !field.trim();
+}
+
+// Cadastrar produtos
 function PublishProduct() {
   return _PublishProduct.apply(this, arguments);
 }
@@ -2184,14 +2189,26 @@ function _PublishProduct() {
             barcode: document.querySelector('#barcode').value,
             estoque: document.querySelector('#estoque').value
           };
+          if (!Object.values(product).some(isFieldEmpty)) {
+            _context3.next = 4;
+            break;
+          }
+          Swal.fire({
+            title: 'Erro!',
+            text: 'Por favor, preencha todos os campos.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
+          return _context3.abrupt("return");
+        case 4:
           fixedValue = document.querySelector('#valueFixed');
           if (!fixedValue.checked) {
             pricePercentage = product.marketPrice * product.price / 100;
             product.price = parseFloat(pricePercentage) + parseFloat(product.marketPrice);
           }
-          _context3.next = 5;
+          _context3.next = 8;
           return axios.post("".concat(tailpress_object.homeUrl, "/wp-json/loginsystem/v1/products"), product);
-        case 5:
+        case 8:
           _yield$axios$post2 = _context3.sent;
           data = _yield$axios$post2.data;
           console.log(data);
@@ -2204,7 +2221,7 @@ function _PublishProduct() {
             });
             window.location.reload();
           }
-        case 9:
+        case 12:
         case "end":
           return _context3.stop();
       }
@@ -2777,7 +2794,16 @@ jQuery(document).ready(function ($) {
       var marketPrice = $(".updateMarketPrice").eq(index).val() == '' ? $(".updateMarketPrice").eq(index).attr('placeholder').replace(/^R\$(.*)/, "$1").replace(",", ".") : $(".updateMarketPrice").eq(index).val();
       var product_id = $(".atualizarProdutoButton").eq(index).attr("data-id");
       var valueFixed = $(".valueFixedAtualizar").eq(index).prop('checked');
-      if (valueFixed == false) {
+      if (!price) {
+        Swal.fire({
+          title: 'Erro!',
+          text: 'Por favor, preencha o campo de preço de venda do produto.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+        return;
+      }
+      if (valueFixed === false) {
         var pricePercentage = marketPrice * price / 100;
         price = parseFloat(pricePercentage) + parseFloat(marketPrice);
       }

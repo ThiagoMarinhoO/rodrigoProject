@@ -87,38 +87,52 @@ async function SignIn() {
       }
 }
 
+function isFieldEmpty(field) {
+      return !field.trim();
+}
+
 // Cadastrar produtos
 
 async function PublishProduct() {
-
       const product = {
-            author: tailpress_object.userID,
-            title: document.querySelector('#productName').value,
-            price: document.querySelector('#productPrice').value,
-            marketPrice: document.querySelector('#marketPrice').value,
-            barcode: document.querySelector('#barcode').value,
-            estoque: document.querySelector('#estoque').value
+          author: tailpress_object.userID,
+          title: document.querySelector('#productName').value,
+          price: document.querySelector('#productPrice').value,
+          marketPrice: document.querySelector('#marketPrice').value,
+          barcode: document.querySelector('#barcode').value,
+          estoque: document.querySelector('#estoque').value
+      };
+      
+      if (Object.values(product).some(isFieldEmpty)) {
+          Swal.fire({
+              title: 'Erro!',
+              text: 'Por favor, preencha todos os campos.',
+              icon: 'error',
+              confirmButtonText: 'OK'
+          });
+          return;
       }
-
-      let fixedValue = document.querySelector('#valueFixed')
-
-      if(!fixedValue.checked) {
-            let pricePercentage = product.marketPrice * product.price / 100
-            product.price = parseFloat(pricePercentage) + parseFloat(product.marketPrice)
+  
+      let fixedValue = document.querySelector('#valueFixed');
+  
+      if (!fixedValue.checked) {
+          let pricePercentage = (product.marketPrice * product.price) / 100;
+          product.price = parseFloat(pricePercentage) + parseFloat(product.marketPrice);
       }
-
+  
       const { data } = await axios.post(`${tailpress_object.homeUrl}/wp-json/loginsystem/v1/products`, product);
       console.log(data);
       if (data.success == true) {
-            Swal.fire({
-                  title: 'Sucesso!',
-                  text: 'Produto cadastrado!',
-                  icon: 'success',
-                  confirmButtonText: 'OK'
-            })
-            window.location.reload();
+          Swal.fire({
+              title: 'Sucesso!',
+              text: 'Produto cadastrado!',
+              icon: 'success',
+              confirmButtonText: 'OK'
+          });
+          window.location.reload();
       }
-}
+  }
+  
 
 async function getProducts() {
       const { data } = await axios.get(`${tailpress_object.homeUrl}/wp-json/loginsystem/v1/products`);
@@ -677,63 +691,72 @@ jQuery(document).ready(function($){
       
       //ATUALIZAR PRODUTOS (ADMIN)
       $('.atualizarProdutoButton').each(function(index, button) {
-            $(button).on('click',function() {
-                  let title = $(".updateProductName").eq(index).val();
-                  let price = $(".updateProductPrice").eq(index).val();
-                  let estoque = $(".updateStock").eq(index).val();
-                  let marketPrice = $(".updateMarketPrice").eq(index).val() == '' ? $(".updateMarketPrice").eq(index).attr('placeholder').replace(/^R\$(.*)/, "$1").replace(",", ".") : $(".updateMarketPrice").eq(index).val();
-                  let product_id = $(".atualizarProdutoButton").eq(index).attr("data-id");
-                  let valueFixed = $(".valueFixedAtualizar").eq(index).prop('checked')
-
-                  if(valueFixed == false){
-                        let pricePercentage = marketPrice * price / 100
-                        price = parseFloat(pricePercentage) + parseFloat(marketPrice)
-                  }
-                  
-
-                  $.ajax({
-                        url: tailpress_object.ajaxurl,
-                        type: 'POST',
-                        dataType: 'json',
-                        data: {
+            $(button).on('click', function() {
+                let title = $(".updateProductName").eq(index).val();
+                let price = $(".updateProductPrice").eq(index).val();
+                let estoque = $(".updateStock").eq(index).val();
+                let marketPrice = $(".updateMarketPrice").eq(index).val() == '' ? $(".updateMarketPrice").eq(index).attr('placeholder').replace(/^R\$(.*)/, "$1").replace(",", ".") : $(".updateMarketPrice").eq(index).val();
+                let product_id = $(".atualizarProdutoButton").eq(index).attr("data-id");
+                let valueFixed = $(".valueFixedAtualizar").eq(index).prop('checked');
+        
+                if (!price) {
+                    Swal.fire({
+                        title: 'Erro!',
+                        text: 'Por favor, preencha o campo de preço de venda do produto.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    return;
+                }
+        
+                if (valueFixed === false) {
+                    let pricePercentage = marketPrice * price / 100;
+                    price = parseFloat(pricePercentage) + parseFloat(marketPrice);
+                }
+        
+                $.ajax({
+                    url: tailpress_object.ajaxurl,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
                         action: 'update_product',
                         product_id: product_id,
                         title: title,
                         price: price,
                         estoque: estoque,
                         marketPrice: marketPrice
-                        },
-                        beforeSend: function() {
+                    },
+                    beforeSend: function() {
                         loading(true);
-                        },
-                        success: function(response) {
-                              Swal.fire({
-                                    title: 'Sucesso!',
-                                    text: 'Produto atualizado!',
-                                    icon: 'success',
-                                    confirmButtonText: 'OK'
-                              }).then(function(result) {
-                                    if (result.isConfirmed) {
-                                    $('#readProductDrawer').addClass('-translate-x-full');
-                                    window.location.reload();
-                                    }
-                              });
-                        },
-                        error: function(xhr, status, error) {
+                    },
+                    success: function(response) {
+                        Swal.fire({
+                            title: 'Sucesso!',
+                            text: 'Produto atualizado!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then(function(result) {
+                            if (result.isConfirmed) {
+                                $('#readProductDrawer').addClass('-translate-x-full');
+                                window.location.reload();
+                            }
+                        });
+                    },
+                    error: function(xhr, status, error) {
                         console.log(error);
                         Swal.fire({
-                              title: 'Erro!',
-                              text: 'Erro ao atualizar produto',
-                              icon: 'error',
-                              confirmButtonText: 'OK'
+                            title: 'Erro!',
+                            text: 'Erro ao atualizar produto',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
                         });
-                        },
-                        complete: function() {
-                              loading(false);
-                        }
-                  });
+                    },
+                    complete: function() {
+                        loading(false);
+                    }
+                });
             });
-      });
+        });
 
       //DELETAR PRODUTOS (ADMIN)
       $('.deletarProdutoButton').each(function(index, button) {
