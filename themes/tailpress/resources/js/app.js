@@ -352,7 +352,7 @@ jQuery(document).ready(function($){
                                                       <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
                                                 </svg>                              
                                           </a>
-                                          <input type="number" id="qty" class="relative inline-flex items-center px-2 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0" readonly value="${product.quantity}" max="${product.estoque}">
+                                          <input type="number" id="qty" class="relative inline-flex items-center px-2 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 w-12 text-center hover:bg-gray-50 focus:z-20 focus:outline-offset-0" readonly value="${product.quantity}" max="${product.estoque}">
                                           <a id="qtyIncrease" data-id="${product.produto_id}" class="relative inline-flex items-center rounded-r-md px-1 py-1 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                                       <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
