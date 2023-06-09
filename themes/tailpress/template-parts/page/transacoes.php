@@ -21,7 +21,7 @@ $dash_product_query = new WP_Query($args);
     </div>
     <div class="w-full mb-3 flex justify-between gap-5 items-center">
         <div class="w-4/5">
-            <label>Selecione a data da venda</label>
+            <label>Selecione a data da transação</label>
             <input type="date" name="profit_date" class="profit-date w-full py-2 px-5 bg-white rounded-md shadow-md">
         </div>
         <div class="w-1/5 flex justify-center items-center">

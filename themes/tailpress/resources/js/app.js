@@ -681,7 +681,7 @@ jQuery(document).ready(function($){
                   let title = $(".updateProductName").eq(index).val();
                   let price = $(".updateProductPrice").eq(index).val();
                   let estoque = $(".updateStock").eq(index).val();
-                  let marketPrice = $(".updateMarketPrice").eq(index).val() == '' ? $(".updateMarketPrice").attr('placeholder').replace(/^R\$(.*)/, "$1").replace(",", ".") : $(".updateMarketPrice").eq(index).val();
+                  let marketPrice = $(".updateMarketPrice").eq(index).val() == '' ? $(".updateMarketPrice").eq(index).attr('placeholder').replace(/^R\$(.*)/, "$1").replace(",", ".") : $(".updateMarketPrice").eq(index).val();
                   let product_id = $(".atualizarProdutoButton").eq(index).attr("data-id");
                   let valueFixed = $(".valueFixedAtualizar").eq(index).prop('checked')
 
