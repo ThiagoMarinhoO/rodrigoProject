@@ -109,6 +109,23 @@ function status_order() {
         'post_status' => $post_status,
     );
     $post_updated = wp_update_post($post_data);
+
+    $products = get_field('produtos_da_venda' , $post_id);
+
+    foreach($products as $product){
+        $product_id = $product['produto_id'];
+
+        $stock = intval(get_field('estoque' , $product_id));
+        $sale_quantity = $product['quantidade'];
+
+        if($post_status == 'draft'){
+            $total_estoque = $stock + $sale_quantity;
+        }else{
+            $total_estoque = $stock - $sale_quantity;
+        }
+
+        update_field('estoque' , $total_estoque , $product_id);
+    }
     
     if ($post_updated instanceof WP_Error) {
         echo 'Ocorreu um erro ao atualizar o post: ' . $post_updated->get_error_message();
@@ -116,14 +133,11 @@ function status_order() {
         wp_send_json_success(array(
             'postID' => $post_id,
             'post_status' => $post_status,
+            'products' => $products,
+            'total_estoque' => $total_estoque,
+            'stock' => $stock,
+            'sale_quantity' => $sale_quantity,
+            'product_id' => $product_id
         ));
     }
-    // $post_id = $_POST['product_id'];
-    
-
-    // wp_delete_post($post_id, true);
-
-    // wp_send_json_success(array(
-    //     'message' => 'post deletado com sucesso',
-    // ));
 }

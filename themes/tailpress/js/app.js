@@ -2872,57 +2872,58 @@ jQuery(document).ready(function ($) {
       }
     });
   });
-  $('.deleteSale').each(function (index, button) {
-    $(button).on('click', function () {
-      var product_id = $('.deleteSale').eq(index).attr('data-id');
-      var status_order = $('.deleteSale').eq(index).attr('data-status');
-      Swal.fire({
-        title: 'Confirmação',
-        text: 'Deseja cancelar esta venda ?',
-        icon: 'warning',
-        confirmButtonText: 'OK'
-      }).then(function (result) {
-        if (result.isConfirmed) {
-          $.ajax({
-            url: tailpress_object.ajaxurl,
-            type: 'POST',
-            dataType: 'json',
-            data: {
-              action: 'status_order',
-              product_id: product_id,
-              status_order: status_order
-            },
-            beforeSend: function beforeSend() {
-              loading(true);
-            },
-            success: function success(response) {
-              Swal.fire({
-                title: 'Sucesso!',
-                text: 'Venda cancelada!',
-                icon: 'success',
-                confirmButtonText: 'OK'
-              }).then(function (result) {
-                if (result.isConfirmed) {
-                  $('#readProductDrawer').addClass('-translate-x-full');
-                  window.location.reload();
-                }
-              });
-            },
-            error: function error(xhr, status, _error12) {
-              Swal.fire({
-                title: 'Erro!',
-                text: 'Erro ao cancelar venda',
-                icon: 'error',
-                confirmButtonText: 'OK'
-              });
-            },
-            complete: function complete() {
-              loading(false);
-            }
-          });
-        }
-      });
+  $(document).on('click', '.deleteSale', function (e) {
+    var product_id = $(this).attr('data-id');
+    var status_order = $(this).attr('data-status');
+    Swal.fire({
+      title: 'Confirmação',
+      text: 'Deseja cancelar esta venda ?',
+      icon: 'warning',
+      confirmButtonText: 'OK'
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: tailpress_object.ajaxurl,
+          type: 'POST',
+          dataType: 'json',
+          data: {
+            action: 'status_order',
+            product_id: product_id,
+            status_order: status_order
+          },
+          beforeSend: function beforeSend() {
+            loading(true);
+          },
+          success: function success(response) {
+            Swal.fire({
+              title: 'Sucesso!',
+              text: 'Venda cancelada!',
+              icon: 'success',
+              confirmButtonText: 'OK'
+            }).then(function (result) {
+              if (result.isConfirmed) {
+                $('#readProductDrawer').addClass('-translate-x-full');
+                window.location.reload();
+              }
+            });
+          },
+          error: function error(xhr, status, _error12) {
+            Swal.fire({
+              title: 'Erro!',
+              text: 'Erro ao cancelar venda',
+              icon: 'error',
+              confirmButtonText: 'OK'
+            });
+          },
+          complete: function complete() {
+            loading(false);
+          }
+        });
+      }
     });
+  });
+  $('.deleteSale').each(function (index, button) {
+    $(document).on('click', button, function () {});
   });
   $('.editSalesButton').each(function (index, button) {
     $(button).on('click', function () {
