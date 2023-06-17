@@ -85,6 +85,9 @@ $dash_product_query = new WP_Query($args);
                             Valor (R$)
                         </th>
                         <th scope="col" class="px-6 py-3 font-semibold text-gray-600 whitespace-nowrap">
+                            Pagamento
+                        </th>
+                        <th scope="col" class="px-6 py-3 font-semibold text-gray-600 whitespace-nowrap">
                             Vendedor
                         </th>
                         <th scope="col" class="px-6 py-3 font-semibold text-gray-600 whitespace-nowrap">
@@ -118,6 +121,9 @@ $dash_product_query = new WP_Query($args);
                         </td>
                         <td class="px-6 py-4 text-gray-950 font-bold">
                             <?php echo 'R$' . number_format(get_field('valor_da_venda' , get_the_ID()), 2, ',', '.');?>
+                        </td>
+                        <td class="px-6 py-4 text-gray-950 font-bold">
+                            <?php echo get_field('metodo_de_pagamento' , get_the_ID());?>
                         </td>
                         <td class="px-6 py-4">
                             <?php the_author()?>

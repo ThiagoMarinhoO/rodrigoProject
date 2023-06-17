@@ -373,6 +373,7 @@ jQuery(document).ready(function($){
       function closeSale() {
             const author  = parseInt($('#vendedores').val());
             if(author){
+                  let paymentMethod = $('#paymentMethod').val()
                   $.ajax({
                         url: tailpress_object.ajaxurl,
                         type: 'POST',
@@ -380,6 +381,7 @@ jQuery(document).ready(function($){
                         data: {
                               action: 'create_order',
                               products: cart,
+                              paymentMethod: paymentMethod,
                               total,
                               author
                         },
@@ -1057,6 +1059,14 @@ jQuery(document).ready(function($){
                 }
             });
         });
+      // Exibir desconto
+
+      // $('.discountInput').on('click' , function(e){
+      //       e.preventDefault()
+      //       let active = $('.discountInput:checked').val()
+      //       console.log(active)
+      //       active == 'sim' ? $('.discountValue').removeClass('hidden') : $('.discountValue').addClass('hidden')
+      // })
 })
 
 document.addEventListener('DOMContentLoaded', async function() {

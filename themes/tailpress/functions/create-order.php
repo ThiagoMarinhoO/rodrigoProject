@@ -6,6 +6,9 @@ function create_order(){
     if(isset($_POST['products'])) {
         $products = $_POST['products'];
     }
+    if(isset($_POST['paymentMethod'])) {
+        $payment_method = $_POST['paymentMethod'];
+    }
     if(isset($_POST['total'])) {
         $total = $_POST['total'];
     }
@@ -25,6 +28,7 @@ function create_order(){
     $post_id = wp_insert_post( $post_data );
     
     update_field( 'valor_da_venda', $total, $post_id );
+    update_field( 'metodo_de_pagamento', $payment_method, $post_id );
     
     foreach ( $products as $product ) {
         $produto_id = $product['produto_id'];
@@ -94,6 +98,7 @@ function create_order(){
 
     wp_send_json_success(array(
         'venda' => $post_data,
+        'paymentMethod' => $payment_method
     ));
 }
 

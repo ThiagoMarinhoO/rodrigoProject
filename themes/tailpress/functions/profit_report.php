@@ -148,6 +148,9 @@ function sales_table($start_date){
                 <td class="px-6 py-4 text-gray-950 font-bold">
                     <?php echo 'R$' . number_format(get_field('valor_da_venda', get_the_ID()), 2, ',', '.'); ?>
                 </td>
+                <td class="px-6 py-4 text-gray-950 font-bold">
+                    <?php echo get_field('metodo_de_pagamento' , get_the_ID());?>
+                </td>
                 <td class="px-6 py-4">
                     <?php the_author() ?>
                 </td>
