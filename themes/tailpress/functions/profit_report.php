@@ -47,7 +47,16 @@ function profit_report(){
     $sales_total = 0;
     while ($query_sales->have_posts()) {
         $query_sales->the_post();
-            $sales_total += get_field('valor_da_venda' , get_the_ID());
+        // ------------ ALTERAÇÕES AQUI --------------
+        if( have_rows('produtos_da_venda') ):
+            while( have_rows('produtos_da_venda') ) : the_row();
+                $sales_total += (get_sub_field('preco', get_the_ID()) - get_sub_field('market_price', get_the_ID())) * get_sub_field('quantidade', get_the_ID());
+            endwhile;
+        else :
+            // Do something...
+        endif;
+        // ------------CÓDIGO ANTERIOR --------------
+        // $sales_total += get_field('valor_da_venda' , get_the_ID());
     }
     wp_reset_postdata();
 
@@ -90,7 +99,14 @@ function init_profit(){
     $sales_total = 0;
     while ($query_sales->have_posts()) {
         $query_sales->the_post();
-        $sales_total += get_field('valor_da_venda' , get_the_ID());
+        if( have_rows('produtos_da_venda') ):
+            while( have_rows('produtos_da_venda') ) : the_row();
+                $sales_total += (get_sub_field('preco', get_the_ID()) - get_sub_field('market_price', get_the_ID())) * get_sub_field('quantidade', get_the_ID());
+            endwhile;
+        else :
+            // Do something...
+        endif;
+        // $sales_total += get_field('valor_da_venda' , get_the_ID());
     }
     wp_reset_postdata();
 
