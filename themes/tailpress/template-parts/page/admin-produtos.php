@@ -2,7 +2,8 @@
 get_header();
 
 $args = array(
-    'post_type' => 'products'
+    'post_type' => 'products',
+    'posts_per_page' => -1
 );
 
 $products_query = new WP_Query( $args );
