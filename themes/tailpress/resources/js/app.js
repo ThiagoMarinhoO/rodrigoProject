@@ -936,7 +936,9 @@ jQuery(document).ready(function($){
                 dataType: 'json',
                 success: function(response) {
                   $('#saidas_balanco').text('-' + formatPrice(response.data.total_market_price))
-                  $('#entradas_balanco').text('+' + formatPrice(response.data.sales_total))
+                  //alterações feitas 03-10-23
+                  $('#entradas_balanco').text('+' + formatPrice(response.data.sale_full_value))
+                  //   $('#entradas_balanco').text('+' + formatPrice(response.data.sales_total))
                   let indicator = response.data.total_market_price > response.data.sales_total ? '' : '+'
                   let profitColor = response.data.sales_total < response.data.total_market_price ? 'text-red-600' : 'text-green-600'
                   $('#profit_value').text(indicator + formatPrice(response.data.sales_total - response.data.total_market_price))
@@ -961,7 +963,9 @@ jQuery(document).ready(function($){
                   dataType: 'json',
                   success: function(response) {
                     $('#saidas_balanco').text('-' + formatPrice(response.data.total_market_price))
-                    $('#entradas_balanco').text('+' + formatPrice(response.data.sales_total))
+                    //alterações feitas 03-10-23
+                    $('#entradas_balanco').text('+' + formatPrice(response.data.sale_full_value))
+                  //   $('#entradas_balanco').text('+' + formatPrice(response.data.sales_total))
                     let indicator = response.data.total_market_price > response.data.sales_total ? '' : '+'
                     let profitColor = response.data.sales_total < response.data.total_market_price ? 'text-red-600' : 'text-green-600'
                     $('#profit_value').text(indicator + formatPrice(response.data.sales_total - response.data.total_market_price))

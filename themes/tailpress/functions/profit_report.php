@@ -37,7 +37,8 @@ function profit_report(){
     );
     $query_products = new WP_Query($args_products);
     $query_sales = new WP_Query($args_sales);
-    $total_market_price = 0;
+    //alterações feitas 03-10-23
+    $sale_full_value = 0;
     $transacao_price = 0;
     while ($query_products->have_posts()) {
         $query_products->the_post();
@@ -51,6 +52,8 @@ function profit_report(){
         if( have_rows('produtos_da_venda') ):
             while( have_rows('produtos_da_venda') ) : the_row();
                 $sales_total += (get_sub_field('preco', get_the_ID()) - get_sub_field('market_price', get_the_ID())) * get_sub_field('quantidade', get_the_ID());
+                //alterações feitas 03-10-23
+                $sale_full_value += (get_sub_field('valor_total', get_the_ID()));
             endwhile;
         else :
             // Do something...
@@ -61,6 +64,8 @@ function profit_report(){
     wp_reset_postdata();
 
     wp_send_json_success(array(
+        //alterações feitas 03-10-23
+        'sale_full_value' => $sale_full_value,
         'total_market_price' => $transacao_price,
         'sales_total' => $sales_total,
         'sales' => sales_table($start_date),
@@ -96,12 +101,16 @@ function init_profit(){
         $transacao_price += get_field('valor_da_transacao' , $transacao_id);
     }
     $profit_infos = array();
+    //alterações feitas 03-10-23
+    $sale_full_value = 0;
     $sales_total = 0;
     while ($query_sales->have_posts()) {
         $query_sales->the_post();
         if( have_rows('produtos_da_venda') ):
             while( have_rows('produtos_da_venda') ) : the_row();
                 $sales_total += (get_sub_field('preco', get_the_ID()) - get_sub_field('market_price', get_the_ID())) * get_sub_field('quantidade', get_the_ID());
+                //alterações feitas 03-10-23
+                $sale_full_value += (get_sub_field('valor_total', get_the_ID()));
             endwhile;
         else :
             // Do something...
@@ -111,6 +120,8 @@ function init_profit(){
     wp_reset_postdata();
 
     wp_send_json_success(array(
+        //alterações feitas 03-10-23
+        'sale_full_value' => $sale_full_value,
         'total_market_price' => $transacao_price,
         'sales_total' => $sales_total,
         'sales' => sales_table($start_date),
