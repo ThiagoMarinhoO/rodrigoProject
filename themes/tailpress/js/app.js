@@ -2371,6 +2371,30 @@ document.addEventListener('DOMContentLoaded', function () {
       SignIn();
     };
   }
+  var ModalBoxClose = {
+    modal: document.querySelector('#closeBoxModal'),
+    closeBox: document.querySelector('#closeBox'),
+    openModal: function openModal() {
+      if (ModalBoxClose.closeBox) {
+        ModalBoxClose.closeBox.onclick = function () {
+          ModalBoxClose.modal.classList.remove('hidden');
+          ModalBoxClose.modal.classList.add('flex');
+        };
+      }
+    },
+    closeModal: function closeModal() {
+      if (ModalBoxClose.modal) {
+        ModalBoxClose.modal.onclick = function (event) {
+          if (event.target == ModalBoxClose.modal) {
+            ModalBoxClose.modal.classList.remove('flex');
+            ModalBoxClose.modal.classList.add('hidden');
+          }
+        };
+      }
+    }
+  };
+  ModalBoxClose.openModal();
+  ModalBoxClose.closeModal();
 });
 jQuery(document).ready(function ($) {
   function loading(isLoading) {
@@ -3137,6 +3161,47 @@ jQuery(document).ready(function ($) {
       }
     });
   });
+  $('#boxClose').on('click', function () {
+    var selectedSeller = $('#closeSeller').val();
+    console.log(selectedSeller);
+    Swal.fire({
+      title: 'Confirmação',
+      text: 'Tem certeza que deseja fechar o caixa?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sim',
+      cancelButtonText: 'Cancelar'
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        loading(true);
+        $.ajax({
+          url: tailpress_object.ajaxurl,
+          type: 'POST',
+          dataType: 'json',
+          data: {
+            action: 'close_box',
+            selectedSeller: selectedSeller
+          },
+          success: function success(response) {
+            console.log(response);
+            loading(false);
+            Swal.fire({
+              title: 'Sucesso!',
+              text: 'Caixa fechado com sucesso!',
+              icon: 'success',
+              confirmButtonText: 'OK'
+            }).then(function (result) {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
+            });
+          },
+          error: function error(response) {}
+        });
+      }
+    });
+  });
+
   // Exibir desconto
 
   // $('.discountInput').on('click' , function(e){

@@ -4,7 +4,9 @@ add_action('wp_ajax_nopriv_daily_report', 'daily_report');
 function daily_report(){
     $data_inicio = $_POST['init_date'];
     $data_fim = $_POST['final_date'];
-    $args = array(
+    
+    // Recupere todas as vendas do dia atual
+    $args_vendas = array(
         'post_type' => 'sales',
         'post_status' => 'publish',
         'meta_query' => array(
@@ -22,39 +24,48 @@ function daily_report(){
         'posts_per_page' => -1,
     );
     
-    $query = new WP_Query( $args );
+    $query_vendas = new WP_Query($args_vendas);
     
-    $total_value = 0;
-    $quantidade_mais_vendida = 0;
-    $produto_mais_vendido = null;
-    $produtos_quantidades = array();
+    $total_value_vendas = 0;
     
-    if ( $query->have_posts() ) {
-        while ( $query->have_posts() ) {
-            $query->the_post();
-            $valor_da_venda = get_field( 'valor_da_venda', get_the_ID() );
-            $total_value += (float) $valor_da_venda;
-            $produtos = get_field('produtos_da_venda' , get_the_ID());
+    if ($query_vendas->have_posts()) {
+        while ($query_vendas->have_posts()) {
+            $query_vendas->the_post();
+            $valor_da_venda = get_field('valor_da_venda', get_the_ID());
+            $total_value_vendas += (float) $valor_da_venda;
+        }
+    }
 
-            foreach ($produtos as $produto) {
-                $produto_id = $produto['produto_id'];
-                
-                if(isset($produtos_quantidades[$produto_id])){
-                    $produtos_quantidades[$produto_id]['quantidade'] += $produto['quantidade'];
-                } else {
-                    $produtos_quantidades[$produto_id] = array(
-                        'produto_id' => $produto_id,
-                        'quantidade' => $produto['quantidade'],
-                        'produto_nome' => get_the_title(strval($produto_id)),
-                        'produto_preco' => get_field('product_price' , strval($produto_id)),
-                    );
-                }
-            }
-
-            foreach ($produtos_quantidades as $produto) {
-                if($produto['quantidade'] > $quantidade_mais_vendida) {
-                    $quantidade_mais_vendida = $produto['quantidade'];
-                    $produto_mais_vendido = $produto;
+    // Recupere todas as vendas relacionadas a um post "caixa"
+    $args_caixa = array(
+        'post_type' => 'caixa',
+        'post_status' => 'publish',
+        'date_query' => array(
+            'after' => $data_inicio,
+            'before' => $data_fim,
+            'inclusive' => true,
+        ),
+        'posts_per_page' => -1,
+    );
+    
+    $query_caixa = new WP_Query($args_caixa);
+    
+    $total_value_caixa = 0;
+    
+    if ($query_caixa->have_posts()) {
+        while ($query_caixa->have_posts()) {
+            $query_caixa->the_post();
+            $venda_do_dia = get_field('venda_do_dia');
+            if (is_array($venda_do_dia)) {
+                foreach ($venda_do_dia as $venda) {
+                    $id_da_venda_caixa = $venda['id_da_venda'];
+                    foreach ($query_vendas->posts as $venda_post) {
+                        $id_da_venda_vendas = get_field('id_da_venda', $venda_post);
+                        
+                        if ($id_da_venda_caixa === $id_da_venda_vendas) {
+                            $total_value_caixa -= (float) $venda['valor_da_venda'];
+                        }
+                    }
                 }
             }
         }
@@ -65,11 +76,12 @@ function daily_report(){
             $data_inicio,
             $data_fim,
         ),
-        'produto_mais_vendido' => $produto_mais_vendido,
-        'valor_final' => $total_value,
+        'valor_final' => $total_value_vendas + $total_value_caixa, // Valor total de vendas - Valor total das vendas relacionadas ao caixa
     ));
     
     wp_reset_postdata();
 }
+
+
 
 ?>

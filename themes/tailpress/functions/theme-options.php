@@ -80,6 +80,31 @@ function cpt_transacoes() {
 }
 add_action('init', 'cpt_transacoes');
 
+function cpt_caixa() {
+	register_post_type('caixa',
+		array(
+			'labels'      => array(
+				'name'          => __( 'Caixa', 'textdomain' ),
+				'singular_name' => __( 'Caixa', 'textdomain' ),
+			),
+			'public'      => true,
+			'has_archive' => true,
+            'show_ui' => true,
+            'capability_type' => 'post',
+            'hierarchical' => false,
+			'rewrite'     => array( 'slug' => 'caixa' ),
+            'query_var' => true,
+            'menu_icon' => 'dashicons-products',
+            'supports' => array(
+                'title',
+                'author',
+                'comments'
+            ),
+        )
+	);
+}
+add_action('init', 'cpt_caixa');
+
 function redirecionar_admin_logado() {
     if ( is_user_logged_in() && current_user_can('manage_options') && is_page('login') ) {
         wp_redirect( '/admin-dashboard' );

@@ -17,7 +17,7 @@ $dash_product_query = new WP_Query($args);
                     </svg>
                 </div>
                 <div class="my-3">
-                    <h1 id="balanco_diario" class="text-2xl font-bold text-gray-800">R$2000,00</h1>
+                    <h1 id="balanco_diario" class="text-2xl font-bold text-gray-800">R$0,00</h1>
                     <p class="text-sm font-normal text-gray-500">Balanço Diário</p>
                 </div>
             </div>
@@ -28,7 +28,7 @@ $dash_product_query = new WP_Query($args);
                     </svg>
                 </div>
                 <div class="my-3">
-                    <h1 id="balanco_semanal" class="text-2xl font-bold text-gray-800">R$2000,00</h1>
+                    <h1 id="balanco_semanal" class="text-2xl font-bold text-gray-800">R$0,00</h1>
                     <p class="text-sm font-normal text-gray-500">Balanço Semanal</p>
                 </div>
             </div>
@@ -39,7 +39,7 @@ $dash_product_query = new WP_Query($args);
                     </svg>
                 </div>
                 <div class="my-3">
-                    <h1 id="balanco_mensal" class="text-2xl font-bold text-gray-800">R$2000,00</h1>
+                    <h1 id="balanco_mensal" class="text-2xl font-bold text-gray-800">R$0,00</h1>
                     <p class="text-sm font-normal text-gray-500">Balanço Mensal</p>
                 </div>
             </div>
@@ -50,7 +50,7 @@ $dash_product_query = new WP_Query($args);
                     </svg>
                 </div>
                 <div class="my-3">
-                    <h1 id="balanco_semestral" class="text-2xl font-bold text-gray-800">R$2000,00</h1>
+                    <h1 id="balanco_semestral" class="text-2xl font-bold text-gray-800">R$0,00</h1>
                     <p class="text-sm font-normal text-gray-500">Balanço Semestral</p>
                 </div>
             </div>
@@ -59,7 +59,7 @@ $dash_product_query = new WP_Query($args);
                     <img src="/wp-content/themes/tailpress/assets/linessla.svg" alt="">
                 </div>
                 <div class="">
-                    <h1 id="balanco_anual" class="text-4xl font-bold text-white mb-3">R$2000,00</h1>
+                    <h1 id="balanco_anual" class="text-4xl font-bold text-white mb-3">R$0,00</h1>
                     <p class="text-sm font-normal text-white text-center">Balanço Anual</p>
                 </div>
             </div>
@@ -69,7 +69,7 @@ $dash_product_query = new WP_Query($args);
                     <img src="https://images.unsplash.com/photo-1634712282287-14ed57b9cc89?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1206&q=80" class="rounded-md" />
                 </div>
                 <div class="my-3">
-                    <h1 id="produtoMaisVendidoPreco" class="text-lg font-bold text-gray-800">R$2000,00</h1>
+                    <h1 id="produtoMaisVendidoPreco" class="text-lg font-bold text-gray-800">R$0,00</h1>
                     <p id="produtoMaisVendidoNome" class="text-sm font-normal text-gray-500">Nome de Produto</p>
                 </div>
             </div>

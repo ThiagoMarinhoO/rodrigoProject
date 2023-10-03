@@ -24,10 +24,21 @@ $dash_product_query = new WP_Query($args);
         <div class="mb-12">
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <table class="w-full text-sm text-left text-gray-500">
-                    <caption class="p-5 text-lg font-semibold text-left text-gray-900 bg-white">
-                        Transações
-                        <p class="mt-1 text-sm font-normal text-gray-500">Esta é sua lista de transações desenvolvida para te ajudar a se manter organizado e informados de suas vendas recentes</p>
-                    </caption>
+                    <div class="row">
+                        <div class="col">
+                            <caption class="p-5 text-lg font-semibold text-left text-gray-900 bg-white">
+                                <div class="flex justify-between w-full items-center">
+                                    <div class="w-3/4">
+                                        Transações
+                                        <p class="mt-1 text-sm font-normal text-gray-500">Esta é sua lista de transações desenvolvida para te ajudar a se manter organizado e informados de suas vendas recentes</p>
+                                    </div>
+                                    <div class="w-1/4 text-right">
+                                        <button type="button" id="closeBox" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 text-center mr-2 inline-flex items-center cursor-pointer">Fechar caixa</button>
+                                    </div>
+                                </div>
+                        </caption>
+                        </div>
+                    </div>
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                         <tr>
                             <th scope="col" class="px-6 py-3 font-semibold text-gray-600 whitespace-nowrap">
@@ -98,6 +109,47 @@ $dash_product_query = new WP_Query($args);
                     </tbody>
                     <?php endif; ?>
                 </table>
+            </div>
+        </div>
+    </div>
+    <div id="closeBoxModal" class="fixed top-0 left-0 right-0 z-50 items-center justify-center hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 max-h-full bg-gray-950 bg-opacity-50">
+        <div class="container max-w-3xl p-6 relative bg-white rounded-lg shadow">
+            <!-- Modal header -->
+            <div class="py-2 border-b rounded-t mb-4">
+                <h3 class="text-xl font-semibold text-gray-900">
+                    Fechamento de caixa
+                </h3>
+            </div>
+            <!-- Modal body -->
+            <div class="mb-5">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="">
+                        <div class="mb-4">
+                            <label for="closeSeller" class="block mb-2 text-sm font-medium text-gray-900">Selecione o vendedor</label>
+                            <select id="closeSeller" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                <option selected value="">Vendedor</option>
+                                <?php
+                                    $vendedores = get_users( array(
+                                        'role'    => 'Subscriber',
+                                        'orderby' => 'user_nicename',
+                                        'order'   => 'ASC'
+                                    ) );
+
+                                    foreach($vendedores as $vendedor) {
+                                        $vendedor_id = $vendedor->ID;
+                                        $vendedor_name = $vendedor->user_nicename;
+
+                                        echo '<option value="' . $vendedor_id . '">' . $vendedor_name . '</option>';
+                                    }
+                                ?>
+                            </select>
+                        </div>
+                    </div>                                    
+                </div>
+            </div>
+            <!-- Modal footer -->
+            <div class="pt-5 flex items-center space-x-2 border-t border-gray-200 rounded-b">
+                <button type="button" id="boxClose" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Fechar caixa</button>
             </div>
         </div>
     </div>
